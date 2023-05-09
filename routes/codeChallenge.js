@@ -59,7 +59,7 @@ router.post("/", authentication, async (req, res, next) => {
 
 router.put("/:id", authentication, async (req, res, next) => {
     try {
-        const codeChallenge = await codeChallengeService.update(req.params.id, req.body.question, req.body.solution, req.body.hints, req.body.progress, req.body.codeChallengeCategoryId, req.body.userId);
+        const codeChallenge = await codeChallengeService.update(req.params.id, req.body.question, req.body.solution, req.body.hints, req.body.progress, req.body.userId);
         res.status(200).json({
         "message": "Successfully updated code challenge",
         "data": codeChallenge

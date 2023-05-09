@@ -23,12 +23,11 @@ class FlashcardService {
         return this.Flashcard.findAll();
     }
 
-    async update(id, question, answer, userId, flashcardSetId) {
+    async update(id, question, answer, userId) {
         const flashcard = await this.getOne(id);
         flashcard.question = question;
         flashcard.answer = answer;
         flashcard.UserId = userId;
-        flashcard.FlashcardSetId = flashcardSetId;
         await flashcard.save();
         return flashcard;
     }

@@ -31,13 +31,11 @@ class CodeChallengeService {
 
     async update(id, question, solution, hints, progress, userId, codeChallengeCategoryId) {
         const codeChallenge = await this.getOne(id);
-        console.log(codeChallenge)
         codeChallenge.question = question;
         codeChallenge.solution = solution;
         codeChallenge.hints = hints;
         codeChallenge.progress = progress;
         codeChallenge.UserId = userId;
-        codeChallenge.CodeChallengeCategoryId = codeChallengeCategoryId;
         await codeChallenge.save();
         return codeChallenge;
     }

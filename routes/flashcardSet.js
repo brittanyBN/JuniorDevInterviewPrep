@@ -50,7 +50,7 @@ router.post("/", authentication , async (req, res, next) => {
 
 router.put("/:id", authentication, async (req, res, next) => {
     try {
-        const flashcardSet = await flashcardSetService.update(req.params.id, req.body.name, req.body.description, req.body.id);
+        const flashcardSet = await flashcardSetService.update(req.params.id, req.body.name, req.body.userId);
         res.status(200).json({
             "message": "Successfully updated flashcardSet",
             "data": flashcardSet

@@ -56,8 +56,7 @@ router.post("/", authentication, async (req, res, next) => {
 
 router.put("/:id", authentication, async (req, res, next) => {
     try {
-        const { question, answer, UserId, FlashcardSetId } = req.body;
-        const flashcard = await flashcardService.update(req.params.id, req.body);
+        const flashcard = await flashcardService.update(req.params.id, req.body.question, req.body.answer, req.body.userId);
     res.status(200).json({
             "message": "Successfully updated flashcard",
             "data": flashcard
