@@ -13,7 +13,11 @@ class FlashcardSetService {
 
     async getOne(id) {
         return this.FlashcardSet.findOne({
-            where: {id: id}
+            where: {id: id},
+            include: [{
+                model: this.client.models.Flashcard,
+                attributes: ['id', 'question', 'answer'],
+            }]
         })
     }
 

@@ -10,7 +10,11 @@ class CodeChallengeCategoryService {
 
     async getOne(id) {
         return this.CodeChallengeCategory.findOne({
-            where: {id: id}
+            where: {id: id},
+            include: [{
+                model: this.client.models.CodeChallenge,
+                attributes: ['id', 'question', 'solution', 'hints', 'progress']
+            }]
         })
     }
 
