@@ -6,6 +6,8 @@ const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
 const authentication = require('../middleware/authentication');
+const Joi = require("joi");
+const codeChallengeCategorySchema = require('../schemas/codeChallengeCategory.schema');
 
 router.get("/", async (req, res, next) => {
  try {
@@ -36,16 +38,16 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", authentication , async (req, res, next) => {
  try {
-    const name = req.body.name;
-    const userId = req.body.userId;
-    const validateUser = await userService.get(userId);
-    if(validateUser === null) {
+    const { name, UserId } = req.body;
+    await codeChallengeCategorySchema.validateAsync({
+        name,
+        UserId
+    });
+    await userService.get(UserId);
+    if(UserId === null) {
         return res.status(400).json({ message: 'User does not exist.' });
     }
-    if(name === null) {
-        return res.status(400).json({ message: 'Name is required.' });
-    }
-    const codeChallengeCategory = await codeChallengeCategoryService.create(name, userId);
+    const codeChallengeCategory = await codeChallengeCategoryService.create(name, UserId);
     res.status(200).json({
         "message": "Successfully created code challenge category",
         "data": codeChallengeCategory
@@ -57,13 +59,21 @@ router.post("/", authentication , async (req, res, next) => {
 
 router.put("/:id", authentication, async (req, res, next) => {
  try {
-    if(codeChallengeCategory === null) {
-        return res.status(400).json({ message: 'Code challenge category does not exist.' });
-    }
-    if(req.body.userId === null) {
-        return res.status(400).json({ message: 'A valid User ID is required.' });
-    }
-     const codeChallengeCategory = await codeChallengeCategoryService.update(req.params.id, req.body.name, req.body.userId);
+     const { name, UserId } = req.body;
+     const id = req.params.id;
+     await codeChallengeCategorySchema.validateAsync({
+         name,
+         UserId
+     });
+     const user = await userService.get(UserId);
+     if(user === null) {
+         return res.status(400).json({ message: 'User does not exist.' });
+     }
+     const category = await codeChallengeCategoryService.getOne(id);
+        if(category === null) {
+            return res.status(400).json({ message: 'Code challenge category does not exist.' });
+        }
+     const codeChallengeCategory = await codeChallengeCategoryService.update(id, name, UserId);
      res.status(200).json({
         "message": "Successfully updated code challenge category",
         "data": codeChallengeCategory
