@@ -1,0 +1,33 @@
+.Main-cardSet-wrapper {
+    display: inline-block;
+    width: 285px;
+    height: 200px;
+    background-color: #C1CEFE;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 10px 10px 10px;
+}
+
+.Main-cardSet-wrapper:hover {
+    background-color: #AFBCE9;
+}
+
+.cardSet {
+    display: flex;
+    gap: 10px;
+}
+
+#card {
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
