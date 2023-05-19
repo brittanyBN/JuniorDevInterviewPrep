@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import { Card } from "../Components/Card";
+import { Card } from "../Components/CodeChallengeCard";
 import "./practice.css";
 import axios from "axios";
 
@@ -51,7 +51,10 @@ export const CodeChallengePage = () => {
             <div className="page-style">
                 <h1>Code Challenge</h1>
                 {codeChallenges.length > 0 ? (
-                    <Card question={codeChallenges[currentCodeChallengeIndex].question} />
+                    <Card
+                        question={codeChallenges[currentCodeChallengeIndex].question}
+                        solution={codeChallenges[currentCodeChallengeIndex].solution}
+                    />
                 ) : (
                     <div>Loading code challenges...</div>
                 )}

@@ -16,10 +16,22 @@
 }
 
 #front {
-    align-items: center;
+    align-items: normal;
     justify-content: center;
     padding: 20px;
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
+    visibility: hidden;
 }
+
+#back {
+    align-items: normal;
+    justify-content: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    visibility: hidden;
+}
+

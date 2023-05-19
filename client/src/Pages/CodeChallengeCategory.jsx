@@ -37,8 +37,8 @@ export const CodeChallengeCategoryPage = () => {
                 ))}
             </div>
             <div className="button-group">
-                <button>Next</button>
                 <button>Previous</button>
+                <button>Next</button>
             </div>
         </div>
     );

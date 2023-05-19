@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import { Card } from "../Components/Card";
+import { Card } from "../Components/FlashcardCard";
 import "./practice.css";
 import axios from "axios";
 
@@ -51,7 +51,10 @@ export const FlashcardPage = () => {
             <div className="page-style">
                 <h1>Flashcard</h1>
                 {flashcards.length > 0 ? (
-                    <Card question={flashcards[currentFlashcardIndex].question} />
+                    <Card
+                        question={flashcards[currentFlashcardIndex].question}
+                        answer={flashcards[currentFlashcardIndex].answer}
+                    />
                 ) : (
                     <div>Loading flashcards...</div>
                 )}
