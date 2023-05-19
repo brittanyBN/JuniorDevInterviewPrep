@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import "./CardSetCard.css";
 
-export const CardSetCard = () => {
+export const CardSetCard = ({ name }) => {
     return (
         <div className="Main-cardSet-wrapper">
             <div>
-                <div id="card">Question</div>
+                <div id="card">{name}</div>
             </div>
         </div>
     );
-}
+};

@@ -12,7 +12,7 @@ const userService = new UserService(db);
 const CodeChallengeCategoryService = require('../services/CodeChallengeCategoryService');
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 
-router.get("/", authentication, authorization, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
  try {
     const codeChallenges = await codeChallengeService.getAll();
     res.status(200).json({
