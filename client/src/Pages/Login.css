@@ -9,7 +9,7 @@
 
 h2 {
     text-align: center;
-    font-size: 30px;
+    font-size: 24px;
 }
 
 input[type="email"],
@@ -23,6 +23,7 @@ input[type="password"] {
 }
 
 input[type="submit"] {
+    margin-top: 10px;
     width: 100%;
     padding: 10px;
     background-color: #7189FF;
@@ -41,3 +42,4 @@ input[type="submit"] {
 .register-link a {
     color: #7189FF;
 }
+

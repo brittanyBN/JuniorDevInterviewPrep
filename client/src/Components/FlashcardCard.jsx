@@ -9,8 +9,8 @@ export const Card = ({ question, answer }) => {
     };
 
     return (
-        <div className="Main-card-wrapper">
-            <div onClick={handleFlip}>
+        <div className="Main-card-wrapper" onClick={handleFlip}>
+            <div>
                 <div className={isFlipped ? "card flipped" : "card"}>
                     <div className="front">{isFlipped ? answer : question}</div>
                 </div>

@@ -20,13 +20,25 @@ export const CodeChallengeCategoryPage = () => {
         }
     };
 
+    async function addNewCodeChallenge() {
+        let data = prompt("Enter the name of the new code challenge category")
+        try {
+            const response = await axios.post("/codeChallengeCategory", {
+                name: data
+            });
+            setCodeChallengeCategories(response.data.data);
+        } catch (error) {
+            console.error("Error fetching code challenge categories:", error);
+        }
+    }
+
     return (
         <div className="Main-flashcardSet-wrapper">
             <NavigationBar />
             <div className="header">
                 <h1>Code Challenge Category</h1>
                 <div id="add">
-                    <button onClick="addNewCodeChallenge()">
+                    <button onClick={addNewCodeChallenge}>
                         Add New Code Challenge Category
                     </button>
                 </div>

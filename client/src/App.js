@@ -7,6 +7,7 @@ import { CodeChallengePage } from "./Pages/CodeChallenge";
 import { FlashcardPage } from "./Pages/Flashcard";
 import { HomePage } from "./Pages/Home";
 import { LoginPage } from "./Pages/Login";
+import { SignupPage } from "./Pages/Signup";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/flashcard" element={<FlashcardPage></FlashcardPage>} />
                 <Route path="/home" element={<HomePage></HomePage>} />
                 <Route path="/login" element={<LoginPage></LoginPage>} />
+                <Route path="/signup" element={<SignupPage></SignupPage>} />
             </Routes>
         </BrowserRouter>
     );

@@ -21,13 +21,25 @@ export const FlashcardSetPage = () => {
         }
     }
 
+    async function addNewFlashcardSet() {
+        let data = prompt("Enter the name of the new code challenge category")
+        try {
+            const response = await axios.post("/flashcardSet", {
+                name: data
+            });
+            setFlashcardSets(response.data.data);
+        } catch (error) {
+            console.error("Error posting new flashcard sets:", error);
+        }
+    }
+
     return (
         <div className="Main-flashcardSet-wrapper">
             <NavigationBar />
             <div className="header">
                 <h1>Flashcard Set</h1>
                 <div id="add">
-                    <button>Add New Flashcard Set</button>
+                    <button onClick={addNewFlashcardSet}>Add New Flashcard Set</button>
                 </div>
             </div>
             <div className="cardSet">
