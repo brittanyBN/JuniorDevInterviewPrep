@@ -3,13 +3,16 @@ import { NavigationBar } from "../Components/NavigationBar";
 import axios from "axios";
 import "./PracticeSet.css";
 import {CardSetCard} from "../Components/CardSetCard";
+import {Link} from "react-router-dom";
 
 export const CodeChallengeCategoryPage = () => {
     const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [id, setId] = useState(localStorage.getItem('id'));
 
     useEffect(() => {
         fetchCodeChallengeCategories().then(r => console.log("Code challenge categories fetched"));
-    }, []);
+    }, [token, id]);
 
     const fetchCodeChallengeCategories = async () => {
         try {
@@ -21,12 +24,23 @@ export const CodeChallengeCategoryPage = () => {
     };
 
     async function addNewCodeChallenge() {
+        if (!token) {
+            alert("You must be logged in to add a new code challenge category");
+            return;
+        }
         let data = prompt("Enter the name of the new code challenge category")
         try {
             const response = await axios.post("/codeChallengeCategory", {
-                name: data
-            });
-            setCodeChallengeCategories(response.data.data);
+                name: data,
+                UserId: id
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            const finalResponse = await fetchCodeChallengeCategories();
+            setCodeChallengeCategories(finalResponse.data.data);
         } catch (error) {
             console.error("Error fetching code challenge categories:", error);
         }
@@ -45,7 +59,9 @@ export const CodeChallengeCategoryPage = () => {
             </div>
             <div className="cardSet">
                 {codeChallengeCategories.map((category) => (
-                    <CardSetCard key={category.id} name={category.name} />
+                    <Link key={category.id} to={`/codeChallengeCategory/${category.id}`}>
+                        <CardSetCard name={category.name} />
+                    </Link>
                 ))}
             </div>
             <div className="button-group">

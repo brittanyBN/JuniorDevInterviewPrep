@@ -8,6 +8,8 @@ import { FlashcardPage } from "./Pages/Flashcard";
 import { HomePage } from "./Pages/Home";
 import { LoginPage } from "./Pages/Login";
 import { SignupPage } from "./Pages/Signup";
+import { CodeChallengesListPage } from "./Pages/CodeChallengesList";
+import { FlashcardsListPage } from "./Pages/FlashcardsList";
 
 function App() {
     return (
@@ -17,8 +19,10 @@ function App() {
                 <Route path="login" element={<LoginPage></LoginPage>} />
                 <Route path="signup" element={<SignupPage></SignupPage>} />
                 <Route path="flashcardSet" element={<FlashcardSetPage></FlashcardSetPage>} />
+                <Route path="flashcardSet/:id" element={<FlashcardsListPage></FlashcardsListPage>} />
                 <Route path="codeChallengeCategory" element={<CodeChallengeCategoryPage></CodeChallengeCategoryPage>} />
                 <Route path="codeChallenge" element={<CodeChallengePage></CodeChallengePage>} />
+                <Route path="codeChallengeCategory/:id" element={<CodeChallengesListPage></CodeChallengesListPage>} />
                 <Route path="flashcard" element={<FlashcardPage></FlashcardPage>} />
             </Routes>
         </BrowserRouter>

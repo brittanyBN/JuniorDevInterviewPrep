@@ -6,14 +6,9 @@ export const NavigationBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
     const handleLogout = () => {
-        // Remove the token from local storage or secure cookie
         localStorage.removeItem('token');
-
-        // Update the authentication status
+        localStorage.removeItem('id');
         setIsLoggedIn(false);
-
-        // Redirect the user to the login page or any other route
-        // You can use React Router or any other method for navigation
         window.location.href = '/login';
     };
     return (
@@ -26,10 +21,8 @@ export const NavigationBar = () => {
             ) : (
                 <Link to="/login">Login</Link>
             )}
-            <Link to="/flashcard">Flashcard</Link>
             <Link to="/codeChallengeCategory">Code Challenge Category</Link>
             <Link to="/flashcardSet">Flashcard Set</Link>
-            <Link to="/codeChallenge">Code Challenge</Link>
         </nav>
     );
 };

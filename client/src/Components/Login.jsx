@@ -18,8 +18,9 @@ const Login = () => {
         });
 
         if (response.ok) {
-            const { token } = await response.json();
+            const { token, id } = await response.json();
             localStorage.setItem('token', token);
+            localStorage.setItem('id', id);
             window.location.href = '/home';
         } else {
             console.error('Authentication failed');
