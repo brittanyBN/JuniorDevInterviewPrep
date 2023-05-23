@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import { CardSetCard } from "../Components/CardSetCard";
 import "./PracticeSet.css";
@@ -9,7 +8,7 @@ export const FlashcardSetPage = () => {
     const [flashcardSets, setFlashcardSets] = useState([]);
 
     useEffect(() => {
-        fetchFlashcardSets().then(r => console.log(r));
+        fetchFlashcardSets().then(r => console.log("Flashcard sets fetched"));
     }, []);
 
     const fetchFlashcardSets = async () => {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import { Card } from "../Components/FlashcardCard";
 import "./practice.css";
@@ -9,7 +9,7 @@ export const FlashcardPage = () => {
     const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
 
     useEffect(() => {
-        fetchFlashcards().then(r => console.log(r));
+        fetchFlashcards().then(r => console.log("Flashcards fetched"));
     }, []);
 
     const fetchFlashcards = async () => {

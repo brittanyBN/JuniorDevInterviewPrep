@@ -43,3 +43,14 @@ input[type="submit"] {
     color: #7189FF;
 }
 
+#login {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #7189FF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}

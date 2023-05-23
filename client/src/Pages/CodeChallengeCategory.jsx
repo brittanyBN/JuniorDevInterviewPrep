@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import axios from "axios";
 import "./PracticeSet.css";
@@ -8,7 +8,7 @@ export const CodeChallengeCategoryPage = () => {
     const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
 
     useEffect(() => {
-        fetchCodeChallengeCategories().then(r => console.log(r));
+        fetchCodeChallengeCategories().then(r => console.log("Code challenge categories fetched"));
     }, []);
 
     const fetchCodeChallengeCategories = async () => {

@@ -6,7 +6,7 @@ class UserService {
 
     async getAll() {
         return this.User.findAll({
-            attributes: ['id', 'name', 'email']
+            attributes: ['id', 'name', 'email', 'role']
         });
     }
 

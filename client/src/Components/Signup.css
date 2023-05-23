@@ -70,7 +70,7 @@ h2 {
     color: gray;
 }
 
-.link a{
+.link a {
     display: inline-block;
     color: #7189FF;
 }
@@ -85,4 +85,13 @@ h2 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.register-link a {
+    color: #7189FF;
 }

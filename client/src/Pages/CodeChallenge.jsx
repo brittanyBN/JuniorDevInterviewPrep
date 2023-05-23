@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import { Card } from "../Components/CodeChallengeCard";
 import "./practice.css";
@@ -9,7 +9,7 @@ export const CodeChallengePage = () => {
     const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
 
     useEffect(() => {
-        fetchCodeChallenges().then(r => console.log(r));
+        fetchCodeChallenges().then(r => console.log("Code challenges fetched"));
     }, []);
 
     const fetchCodeChallenges = async () => {
