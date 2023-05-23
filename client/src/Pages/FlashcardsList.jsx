@@ -67,12 +67,16 @@ export const FlashcardsListPage = () => {
                 <button className="add-new-code-challenge-button" onClick={addFlashcard}>Add New Flashcard</button>
             </div>
             <div className="code-challenges-container">
-                {flashcards.map((flashcards) => (
-                    <div key={flashcards.id} className="code-challenge">
-                        <div className="question">{flashcards.question}</div>
-                        <div className="solution">{flashcards.answer}</div>
-                    </div>
-                ))}
+                {flashcards.length === 0 ? (
+                    <p id="empty">There are no flashcards in this set yet. Click the button to add one!</p>
+                ) : (
+                    flashcards.map((flashcard) => (
+                        <div key={flashcard.id} className="code-challenge">
+                            <div className="question">{flashcard.question}</div>
+                            <div className="solution">{flashcard.answer}</div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );

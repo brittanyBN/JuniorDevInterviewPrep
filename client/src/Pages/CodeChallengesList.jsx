@@ -65,12 +65,16 @@ export const CodeChallengesListPage = () => {
                 <button className="add-new-code-challenge-button" onClick={addCodeChallenge}>Add New Code Challenge</button>
             </div>
             <div className="code-challenges-container">
-                {codeChallenges.map((codeChallenge) => (
+                {codeChallenges.length === 0 ? (
+                    <p id="empty">There are no code challenges in this category yet. Click the button to add one!</p>
+                ) : (
+                codeChallenges.map((codeChallenge) => (
                     <div key={codeChallenge.id} className="code-challenge">
                         <div className="question">{codeChallenge.question}</div>
                         <div className="solution">{codeChallenge.solution}</div>
                     </div>
-                ))}
+                    ))
+                )}
             </div>
         </div>
     );
