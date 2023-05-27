@@ -33,3 +33,5 @@ The frontend is built with React, and the backend is built with Node.js and Expr
 - Fullstack: https://www.bezkoder.com/react-node-express-mysql/
 - React: https://react.dev/learn/describing-the-ui
 - Frontend Login/Signup: https://www.youtube.com/watch?v=brcHK3P6ChQ&t=0s full tutorial
+- IDE implementation: https://www.youtube.com/watch?v=wcVxX7lu2d4
+- 

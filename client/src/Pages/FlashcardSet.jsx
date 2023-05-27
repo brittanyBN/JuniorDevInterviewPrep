@@ -3,21 +3,26 @@ import { NavigationBar } from "../Components/NavigationBar";
 import { CardSetCard } from "../Components/CardSetCard";
 import "./PracticeSet.css";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const FlashcardSetPage = () => {
     const [flashcardSets, setFlashcardSets] = useState([]);
-    const [token, setToken] = useState(localStorage.getItem('token'));
-    const [id, setId] = useState(localStorage.getItem('id'));
+    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [id, setId] = useState(localStorage.getItem("id"));
 
     useEffect(() => {
-        fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
+        if (token && id) {
+            fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
+        }
     }, [token, id]);
 
     const fetchFlashcardSets = async () => {
         try {
             const response = await axios.get("/flashcardSet");
-            setFlashcardSets(response.data.data);
+            const filteredSets = response.data.data.filter(
+                (flashcardSet) => flashcardSet.UserId === id
+            );
+            setFlashcardSets(filteredSets);
         } catch (error) {
             console.error("Error fetching flashcard sets:", error);
         }
@@ -35,7 +40,7 @@ export const FlashcardSetPage = () => {
                 "/flashcardSet",
                 {
                     name: data,
-                    UserId: id
+                    UserId: id,
                 },
                 {
                     headers: {
@@ -62,7 +67,7 @@ export const FlashcardSetPage = () => {
             <div className="cardSet">
                 {flashcardSets.map((flashcardSet) => (
                     <Link key={flashcardSet.id} to={`/flashcardSet/${flashcardSet.id}`}>
-                    <CardSetCard name={flashcardSet.name} />
+                        <CardSetCard name={flashcardSet.name} />
                     </Link>
                 ))}
             </div>

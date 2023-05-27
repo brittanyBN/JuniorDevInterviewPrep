@@ -1,31 +1,25 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import { Card } from "../Components/FlashcardCard";
 import "./practice.css";
 import axios from "axios";
+import { useParams, useLocation } from "react-router-dom";
 
 export const FlashcardPage = () => {
+    const { id } = useParams();
+    const location = useLocation();
     const [flashcards, setFlashcards] = useState([]);
     const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
+    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [userId, setUserId] = useState(localStorage.getItem("id"));
 
     useEffect(() => {
-        fetchFlashcards().then(r => console.log("Flashcards fetched"));
-    }, []);
-
-    const fetchFlashcards = async () => {
-        try {
-            const response = await axios.get("/flashcard");
-            setFlashcards(response.data.data);
-        } catch (error) {
-            console.error("Error fetching flashcards:", error);
+        const flashcardsData = location.search.split("=")[1];
+        if (flashcardsData) {
+            const decodedFlashcards = JSON.parse(decodeURIComponent(flashcardsData));
+            setFlashcards(decodedFlashcards);
         }
-    };
-
-    const cards = flashcards.map((card) => {
-        return <Card card={card} key={card.id} />;
-    });
-
-    const loading = <div className="loading">Loading flashcard content...</div>;
+    }, [location.search]);
 
     useEffect(() => {
         setCurrentFlashcardIndex(0);
@@ -56,7 +50,9 @@ export const FlashcardPage = () => {
                         answer={flashcards[currentFlashcardIndex].answer}
                     />
                 ) : (
-                    <div>Loading flashcards...</div>
+                    <div className="no-flashcards">
+                        <h2>No flashcards to practice</h2>
+                    </div>
                 )}
                 <div className="button-group">
                     <button

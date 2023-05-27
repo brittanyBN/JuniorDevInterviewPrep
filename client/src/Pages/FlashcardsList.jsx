@@ -7,8 +7,8 @@ import "./CodeChallengesList.css";
 export const FlashcardsListPage = () => {
     const { id } = useParams();
     const [flashcards, setFlashcards] = useState([]);
-    const [token, setToken] = useState(localStorage.getItem('token'));
-    const [userId, setUserId] = useState(localStorage.getItem('id'));
+    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [userId, setUserId] = useState(localStorage.getItem("id"));
 
     useEffect(() => {
         fetchFlashcards(id).then(() => console.log("Flashcards fetched"));
@@ -16,14 +16,13 @@ export const FlashcardsListPage = () => {
 
     const fetchFlashcards = async (flashcardId) => {
         try {
-            const response = await axios.get(`/flashcardSet/${flashcardId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+            const response = await axios.get(`/flashcardSet/${flashcardId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             const flashcardsData = response.data.data.Flashcards;
-            console.log("challenge data", flashcardsData);
+            console.log("flashcardsData", flashcardsData);
             setFlashcards(flashcardsData);
         } catch (error) {
             console.error("Error fetching flashcards:", error);
@@ -31,8 +30,13 @@ export const FlashcardsListPage = () => {
     };
 
     const practiceFlashcards = () => {
-        window.location.href = `/flashcard`;
-    }
+        if(flashcards.length === 0) {
+            alert("You must add flashcards to this set before you can practice them");
+        } else {
+            const flashcardsData = encodeURIComponent(JSON.stringify(flashcards));
+            window.location.href = `/flashcard/${id}?flashcards=${flashcardsData}`;
+        }
+    };
 
     const addFlashcard = async () => {
         if (!token) {
@@ -42,20 +46,24 @@ export const FlashcardsListPage = () => {
         let question = prompt("Enter question");
         let answer = prompt("Enter answer");
         try {
-            const response = await axios.post("/flashcard", {
-                question: question,
-                answer: answer,
-                flashcardSetId: id,
-                UserId: userId
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+            const response = await axios.post(
+                "/flashcard",
+                {
+                    question: question,
+                    answer: answer,
+                    flashcardSetId: id,
+                    UserId: userId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
             const finalResponse = await fetchFlashcards(id);
             setFlashcards(finalResponse.data.data.Flashcards);
         } catch (error) {
-            console.error("Error adding code challenge:", error);
+            console.error("Error adding flashcard:", error);
         }
     };
 
@@ -63,8 +71,12 @@ export const FlashcardsListPage = () => {
         <div className="Main-codeChallengeList-wrapper">
             <NavigationBar />
             <div className="buttonLine">
-                <button className="start-practice-button" onClick={practiceFlashcards}>Start Practice</button>
-                <button className="add-new-code-challenge-button" onClick={addFlashcard}>Add New Flashcard</button>
+                <button className="start-practice-button" onClick={practiceFlashcards}>
+                    Start Practice
+                </button>
+                <button className="add-new-code-challenge-button" onClick={addFlashcard}>
+                    Add New Flashcard
+                </button>
             </div>
             <div className="code-challenges-container">
                 {flashcards.length === 0 ? (

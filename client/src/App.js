@@ -10,6 +10,7 @@ import { LoginPage } from "./Pages/Login";
 import { SignupPage } from "./Pages/Signup";
 import { CodeChallengesListPage } from "./Pages/CodeChallengesList";
 import { FlashcardsListPage } from "./Pages/FlashcardsList";
+import { IdePage } from "./Pages/ide";
 
 function App() {
     return (
@@ -23,7 +24,8 @@ function App() {
                 <Route path="codeChallengeCategory" element={<CodeChallengeCategoryPage></CodeChallengeCategoryPage>} />
                 <Route path="codeChallenge" element={<CodeChallengePage></CodeChallengePage>} />
                 <Route path="codeChallengeCategory/:id" element={<CodeChallengesListPage></CodeChallengesListPage>} />
-                <Route path="flashcard" element={<FlashcardPage></FlashcardPage>} />
+                <Route path="flashcard/:id" element={<FlashcardPage></FlashcardPage>} />
+                <Route path="ide" element={<IdePage></IdePage>} />
             </Routes>
         </BrowserRouter>
     );
