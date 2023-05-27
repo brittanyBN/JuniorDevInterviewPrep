@@ -2,7 +2,7 @@ import { NavigationBar } from "../Components/NavigationBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import "./CodeChallengesList.css";
+import "./FlashcardsList.css";
 
 export const FlashcardsListPage = () => {
     const { id } = useParams();
