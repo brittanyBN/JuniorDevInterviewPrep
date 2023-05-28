@@ -14,17 +14,31 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         hints: {
-            type: Sequelize.STRING,
+            type: Sequelize.ARRAY(Sequelize.STRING),
             allowNull: true,
+            defaultValue: [],
         },
         progress: {
             type: Sequelize.INTEGER,
-            defaultValue: 0
+            defaultValue: 0,
         },
     });
+
     CodeChallenge.associate = function (models) {
-        CodeChallenge.belongsTo(models.CodeChallengeCategory, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-            CodeChallenge.belongsTo(models.User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-    }
+        CodeChallenge.belongsTo(models.CodeChallengeCategory, {
+            foreignKey: {
+                allowNull: false,
+            },
+            onDelete: 'CASCADE',
+        });
+
+        CodeChallenge.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false,
+            },
+            onDelete: 'CASCADE',
+        });
+    };
+
     return CodeChallenge;
 };
