@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './CodeChallenge.css';
 import { NavigationBar } from '../Components/NavigationBar';
-import { Card } from "../Components/FlashcardCard";
 
 export const CodeChallengePage = () => {
     const { id } = useParams();
