@@ -1,21 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { NavigationBar } from "../Components/NavigationBar";
-import axios from "axios";
-import { IDE } from "../Components/IDE";
-import { useParams } from "react-router-dom";
-import "./CodeChallenge.css";
+import React, { useEffect, useState, useRef } from 'react';
+import CodeMirror from 'codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/javascript/javascript';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import './CodeChallenge.css';
+import { NavigationBar } from '../Components/NavigationBar';
+import { Card } from "../Components/FlashcardCard";
 
 export const CodeChallengePage = () => {
     const { id } = useParams();
-    const [token, setToken] = useState(localStorage.getItem("token"));
-    const [userId, setUserId] = useState(localStorage.getItem("id"));
-    const [codeChallenge, setCodeChallenge] = useState(null);
-    const [js, setJs] = useState("");
-    const [srcDoc, setSrcDoc] = useState("");
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [userId, setUserId] = useState(localStorage.getItem('id'));
+    const [codeChallenge, setCodeChallenge] = useState('');
+    const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
+    const [consoleOutput, setConsoleOutput] = useState('');
+    const [error, setError] = useState('');
+    const [editor, setEditor] = useState('');
+    const [codeChallenges, setCodeChallenges] = useState([]);
 
     useEffect(() => {
-        fetchCodeChallenge().then(() => console.log("Code challenge fetched"));
+        fetchCodeChallenge().then(() => console.log(' '));
     }, [id, token, userId]);
+
+    useEffect(() => {
+        setCurrentCodeChallengeIndex(0);
+    }, [codeChallenges]);
+
+    const handleNextCodeChallenge = () => {
+        setCurrentCodeChallengeIndex((prevIndex) =>
+            prevIndex === codeChallenges.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    const handlePreviousCodeChallenge = () => {
+        setCurrentCodeChallengeIndex((prevIndex) =>
+            prevIndex === 0 ? codeChallenges.length - 1 : prevIndex - 1
+        );
+    };
 
     const fetchCodeChallenge = async () => {
         try {
@@ -24,64 +46,78 @@ export const CodeChallengePage = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            const flashcardsData = response.data.data.CodeChallenges;
-            console.log("flashcardsData", flashcardsData);
-            setCodeChallenge(flashcardsData);
+            const codeChallengeData = response.data.data.CodeChallenges;
+            setCodeChallenges(codeChallengeData);
         } catch (error) {
-            console.error("Error fetching code challenge:", error);
+            console.error('Error fetching code challenge:', error);
         }
     };
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            console.log("Updated JavaScript code:", js);
-            setSrcDoc(`
-                <html lang="en">
-                    <body>
-                        <script>${js}</script>
-                    </body>
-                </html>
-            `);
-        }, 250);
+    const runCode = () => {
+        try {
+            const code = editor.getValue();
+            setConsoleOutput('');
+            setError('');
 
-        return () => clearTimeout(timeout);
-    }, [js]);
-
-    const handleCodeChange = (value) => {
-        setJs(value);
+            eval(code);
+        } catch (error) {
+            setError('Error: ' + error.message);
+        }
     };
 
-    console.log("Code challenge:", codeChallenge);
-    console.log("srcDoc:", srcDoc);
+    const handleConsoleLog = (message) => {
+        setConsoleOutput((prevOutput) => prevOutput + message + '\n');
+    };
+
+    const editorRef = useRef();
+
+    useEffect(() => {
+        const codeMirrorEditor = CodeMirror.fromTextArea(editorRef.current, {
+            mode: 'javascript',
+            theme: 'default',
+            lineNumbers: true,
+        });
+
+        setEditor(codeMirrorEditor);
+
+        console.log = handleConsoleLog;
+
+        return () => {
+            codeMirrorEditor.toTextArea();
+        };
+    }, []);
 
     return (
-        <>
+        <div>
             <div className="nav">
                 <NavigationBar />
             </div>
-            <h1 className="title">Code Challenge:</h1>
+            <h1>JavaScript Coding Playground</h1>
             <div className="challengeContainer">
-                {codeChallenge && codeChallenge.length > 0 && (
-                    <div className="pane top-pane">
-                        <h1>{codeChallenge[0].question}</h1>
-                        <IDE
-                            language="javascript"
-                            value={js}
-                            onChange={handleCodeChange}
-                        />
+                {codeChallenges.length > 0 ? (
+                    <h1>{codeChallenges[currentCodeChallengeIndex].question}</h1>
+                ) : (
+                    <div className="no-flashcards">
+                        <h2>No challenges to practice</h2>
                     </div>
                 )}
-                <div className="pane">
-                    <iframe
-                        srcDoc={srcDoc}
-                        title="output"
-                        sandbox="allow-scripts"
-                        frameBorder="0"
-                        width="100%"
-                        height="100%"
-                    />
-                </div>
+                <textarea ref={editorRef}></textarea>
+                <button onClick={runCode}>Run Code</button>
+                {error && <pre>{error}</pre>}
+                {consoleOutput && <pre>{consoleOutput}</pre>}
             </div>
-        </>
+            <div className="button-group">
+                <button
+                    className="action-button"
+                    onClick={handlePreviousCodeChallenge}
+                >
+                    Previous
+                </button>
+                <button>{`${currentCodeChallengeIndex + 1}/${codeChallenges.length}`}</button>
+                <button className="action-button" onClick={handleNextCodeChallenge}>
+                    Next
+                </button>
+            </div>
+        </div>
     );
 };
