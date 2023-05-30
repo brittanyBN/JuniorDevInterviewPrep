@@ -9,6 +9,7 @@ class CodeChallengeService {
     solution,
     hint,
     progress,
+    betterSolution,
     UserId,
     CodeChallengeCategoryId
   ) {
@@ -17,6 +18,7 @@ class CodeChallengeService {
       solution: solution,
       hint: hint,
       progress: progress,
+      betterSolution: betterSolution,
       UserId: UserId,
       CodeChallengeCategoryId: CodeChallengeCategoryId,
     });
@@ -42,6 +44,7 @@ class CodeChallengeService {
     solution,
     hint,
     progress,
+    betterSolution,
     UserId,
     CodeChallengeCategoryId
   ) {
@@ -50,6 +53,7 @@ class CodeChallengeService {
     codeChallenge.solution = solution;
     codeChallenge.hint = hint;
     codeChallenge.progress = progress;
+    codeChallenge.betterSolution = betterSolution;
     codeChallenge.UserId = UserId;
     codeChallenge.CodeChallengeCategoryId = CodeChallengeCategoryId;
     await codeChallenge.save();

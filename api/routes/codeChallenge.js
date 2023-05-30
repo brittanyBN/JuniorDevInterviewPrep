@@ -48,6 +48,7 @@ router.post("/", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
+      betterSolution,
       UserId,
       CodeChallengeCategoryId,
     } = req.body;
@@ -55,8 +56,9 @@ router.post("/", authentication, async (req, res, next) => {
       question,
       solution,
       hint,
-      UserId,
       progress,
+      betterSolution,
+      UserId,
       CodeChallengeCategoryId,
     });
     const user = await userService.get(UserId);
@@ -76,6 +78,7 @@ router.post("/", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
+        betterSolution,
       UserId,
       CodeChallengeCategoryId
     );
@@ -95,6 +98,7 @@ router.put("/:id", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
+      betterSolution,
       UserId,
       CodeChallengeCategoryId,
     } = req.body;
@@ -104,6 +108,7 @@ router.put("/:id", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
+      betterSolution,
       UserId,
       CodeChallengeCategoryId,
     });
@@ -125,6 +130,7 @@ router.put("/:id", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
+        betterSolution,
       UserId,
         CodeChallengeCategoryId
     );

@@ -43,8 +43,8 @@ export const FlashcardsListPage = () => {
       alert("You must be logged in to add a new flashcard");
       return;
     }
-    const adminFlashcardId = "2cab9b57-0f5c-4a5f-a966-20be77b255a4";
-    if (userId !== "2cab9b57-0f5c-4a5f-a966-20be77b255a4") {
+    const adminFlashcardId = "50f048e8-b9d9-4625-890d-d551b0df9dd0";
+    if (userId !== "50f048e8-b9d9-4625-890d-d551b0df9dd0") {
       alert("Only the admin can add new flashcards to this set");
       return;
     }
@@ -56,7 +56,7 @@ export const FlashcardsListPage = () => {
         {
           question: question,
           answer: answer,
-          flashcardSetId: id,
+          FlashcardSetId: id,
           UserId: userId,
         },
         {
