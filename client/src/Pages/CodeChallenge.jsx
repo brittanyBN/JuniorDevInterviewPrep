@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./CodeChallenge.css";
 import { NavigationBar } from "../Components/NavigationBar";
+import { HintButton } from "../Components/HintButton";
+import { SolutionButton } from "../Components/SolutionButton";
+import { BetterSolutionButton } from "../Components/BetterSolutionButton";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
@@ -17,6 +20,7 @@ export const CodeChallengePage = () => {
   const [error, setError] = useState("");
   const [editor, setEditor] = useState("");
   const [codeChallenges, setCodeChallenges] = useState([]);
+  const [isFlippedHint, setIsFlippedHint] = useState(false);
 
   useEffect(() => {
     fetchCodeChallenge().then(() => console.log(" "));
@@ -51,21 +55,6 @@ export const CodeChallengePage = () => {
       console.error("Error fetching code challenge:", error);
     }
   };
-
-  const showHint = () => {
-    const hint = codeChallenges[currentCodeChallengeIndex].hint;
-    alert(hint);
-  }
-
-  const showSolution = () => {
-    const solution = codeChallenges[currentCodeChallengeIndex].solution;
-    alert(solution);
-  }
-
-  const bestSolution = () => {
-    const bestSolution = codeChallenges[currentCodeChallengeIndex].betterSolution;
-    alert(bestSolution);
-  }
 
   const runCode = () => {
     try {
@@ -116,13 +105,46 @@ export const CodeChallengePage = () => {
           </div>
         )}
         <textarea ref={editorRef}></textarea>
-        <button onClick={runCode}>Run Code</button>
+        <button onClick={runCode} className="run-button">Run Code</button>
         {error && <pre>{error}</pre>}
         {consoleOutput && <pre>{consoleOutput}</pre>}
       </div>
-      <button className="hint-button" onClick={showHint}>Hint</button>
-      <button className="solution-button" onClick={showSolution}>Solution</button>
-      <button className="betterSolution" onClick={bestSolution}>Best Solution</button>
+      <div className="help-buttons">
+        <div className="hint-button">
+      {codeChallenges.length > 0 ? (
+          <HintButton
+              hint={codeChallenges[currentCodeChallengeIndex].hint}
+          />
+      ) : (
+          <div className="no-hint">
+            <h2>No hint :(</h2>
+          </div>
+      )}
+        </div>
+        <div className="solution-button">
+      {codeChallenges.length > 0 ? (
+          <SolutionButton
+              solution={codeChallenges[currentCodeChallengeIndex].solution}
+          />
+      ) : (
+          <div className="no-solution">
+            <h2>No solution :(</h2>
+          </div>
+      )}
+        </div>
+        <div className="better-solution-button">
+
+      {codeChallenges.length > 0 ? (
+          <BetterSolutionButton
+              betterSolution={codeChallenges[currentCodeChallengeIndex].betterSolution}
+          />
+      ) : (
+          <div className="no-better-solution">
+            <h2>No better solution :(</h2>
+          </div>
+      )}
+        </div>
+        </div>
       <div className="button-group">
         <button className="action-button" onClick={handlePreviousCodeChallenge}>
           Previous

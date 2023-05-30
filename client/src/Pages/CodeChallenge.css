@@ -16,3 +16,31 @@ h1 {
   font-size: 20px;
   height: 400px;
 }
+
+.help-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: normal;
+  text-align: center;
+}
+
+.hint-button {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.solution-button {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.better-solution-button {
+  margin-top: 30px;
+  margin-bottom: 600px;
+}
+
+.run-button {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
