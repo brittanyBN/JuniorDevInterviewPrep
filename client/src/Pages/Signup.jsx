@@ -1,12 +1,11 @@
 import { NavigationBar } from "../Components/NavigationBar";
-import {Signup} from "../Components/Signup";
+import { Signup } from "../Components/Signup";
 
 export const SignupPage = () => {
-
-    return (
-        <div>
-            <NavigationBar />
-                < Signup />
-        </div>
-    );
+  return (
+    <div>
+      <NavigationBar />
+      <Signup />
+    </div>
+  );
 };

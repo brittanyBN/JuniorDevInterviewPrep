@@ -1,39 +1,38 @@
 .Main-card-wrapper {
-    width: 500px;
-    height: 200px;
-    background-color: #C1CEFE;
-    border: 1px solid black;
-    text-align: center;
-    padding: 150px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 10px;
-    margin: 20px 10px 10px 10px;
+  width: 500px;
+  height: 200px;
+  background-color: #c1cefe;
+  border: 1px solid black;
+  text-align: center;
+  padding: 150px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 20px 10px 10px 10px;
 }
 
 .Main-card-wrapper:hover {
-    background-color: #AFBCE9;
+  background-color: #afbce9;
 }
 
 #front {
-    align-items: normal;
-    justify-content: center;
-    padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    visibility: hidden;
+  align-items: normal;
+  justify-content: center;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  visibility: hidden;
 }
 
 #back {
-    align-items: normal;
-    justify-content: center;
-    padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    visibility: hidden;
-    transform: rotateY(180deg);
+  align-items: normal;
+  justify-content: center;
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  visibility: hidden;
+  transform: rotateY(180deg);
 }
-

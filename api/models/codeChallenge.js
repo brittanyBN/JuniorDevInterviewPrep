@@ -1,44 +1,43 @@
 module.exports = (sequelize, Sequelize) => {
-    const CodeChallenge = sequelize.define('CodeChallenge', {
-        id: {
-            type: Sequelize.UUID,
-            primaryKey: true,
-            defaultValue: Sequelize.UUIDV4,
-        },
-        question: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        solution: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        hints: {
-            type: Sequelize.ARRAY(Sequelize.STRING),
-            allowNull: true,
-            defaultValue: [],
-        },
-        progress: {
-            type: Sequelize.INTEGER,
-            defaultValue: 0,
-        },
+  const CodeChallenge = sequelize.define("CodeChallenge", {
+    id: {
+      type: Sequelize.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV4,
+    },
+    question: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    solution: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    hint: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    progress: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    },
+  });
+
+  CodeChallenge.associate = function (models) {
+    CodeChallenge.belongsTo(models.CodeChallengeCategory, {
+      foreignKey: {
+        allowNull: false,
+      },
+      onDelete: "CASCADE",
     });
 
-    CodeChallenge.associate = function (models) {
-        CodeChallenge.belongsTo(models.CodeChallengeCategory, {
-            foreignKey: {
-                allowNull: false,
-            },
-            onDelete: 'CASCADE',
-        });
+    CodeChallenge.belongsTo(models.User, {
+      foreignKey: {
+        allowNull: false,
+      },
+      onDelete: "CASCADE",
+    });
+  };
 
-        CodeChallenge.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false,
-            },
-            onDelete: 'CASCADE',
-        });
-    };
-
-    return CodeChallenge;
+  return CodeChallenge;
 };
