@@ -43,7 +43,7 @@ export const FlashcardsListPage = () => {
       alert("You must be logged in to add a new flashcard");
       return;
     }
-    const adminFlashcardId = "50f048e8-b9d9-4625-890d-d551b0df9dd0";
+    const adminFlashcardRole = "50f048e8-b9d9-4625-890d-d551b0df9dd0";
     if (userId !== "50f048e8-b9d9-4625-890d-d551b0df9dd0") {
       alert("Only the admin can add new flashcards to this set");
       return;

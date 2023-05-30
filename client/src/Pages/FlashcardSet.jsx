@@ -25,7 +25,7 @@ export const FlashcardSetPage = () => {
       //   let promptUser = prompt("No flashcard sets found. Would you like to use the default sets?");
       //   if (promptUser === "yes") {
       //     filteredSets = response.data.data.filter(
-      //         (flashcardSet) => flashcardSet.UserId === "d3721562-786c-4fe1-82bf-b3aaa0206fbf"
+      //         (flashcardSet) => flashcardSet.role === "admin"
       //     );
       //   }
       // } else {

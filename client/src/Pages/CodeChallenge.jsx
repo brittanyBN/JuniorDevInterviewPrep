@@ -52,6 +52,21 @@ export const CodeChallengePage = () => {
     }
   };
 
+  const showHint = () => {
+    const hint = codeChallenges[currentCodeChallengeIndex].hint;
+    alert(hint);
+  }
+
+  const showSolution = () => {
+    const solution = codeChallenges[currentCodeChallengeIndex].solution;
+    alert(solution);
+  }
+
+  const bestSolution = () => {
+    const bestSolution = codeChallenges[currentCodeChallengeIndex].betterSolution;
+    alert(bestSolution);
+  }
+
   const runCode = () => {
     try {
       const code = editor.getValue();
@@ -105,6 +120,9 @@ export const CodeChallengePage = () => {
         {error && <pre>{error}</pre>}
         {consoleOutput && <pre>{consoleOutput}</pre>}
       </div>
+      <button className="hint-button" onClick={showHint}>Hint</button>
+      <button className="solution-button" onClick={showSolution}>Solution</button>
+      <button className="betterSolution" onClick={bestSolution}>Best Solution</button>
       <div className="button-group">
         <button className="action-button" onClick={handlePreviousCodeChallenge}>
           Previous
