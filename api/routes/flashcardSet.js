@@ -21,6 +21,18 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/admin", async (req, res, next) => {
+    try {
+        const flashcardSets = await flashcardSetService.getAllAdmin();
+        res.status(200).json({
+        message: "Successfully fetched all flashcardSets",
+        data: flashcardSets,
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.get("/:id", authentication, async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.getOne(req.params.id);

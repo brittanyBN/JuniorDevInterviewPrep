@@ -9,6 +9,7 @@ export const FlashcardsListPage = () => {
   const [flashcards, setFlashcards] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userId, setUserId] = useState(localStorage.getItem("id"));
+  const [adminFlashcard, setAdminFlashcard] = useState(false);
 
   useEffect(() => {
     fetchFlashcards(id).then(() => console.log("Flashcards fetched"));
@@ -24,6 +25,9 @@ export const FlashcardsListPage = () => {
       const flashcardsData = response.data.data.Flashcards;
       console.log("flashcardsData", flashcardsData);
       setFlashcards(flashcardsData);
+      const adminFlashcardData = response.data.data.UserId;
+      console.log("adminFlashcardData", adminFlashcardData);
+      setAdminFlashcard(adminFlashcardData)
     } catch (error) {
       console.error("Error fetching flashcards:", error);
     }
@@ -43,27 +47,29 @@ export const FlashcardsListPage = () => {
       alert("You must be logged in to add a new flashcard");
       return;
     }
-    const adminFlashcardRole = "50f048e8-b9d9-4625-890d-d551b0df9dd0";
-    if (userId !== "50f048e8-b9d9-4625-890d-d551b0df9dd0") {
+
+    if (userId !== adminFlashcard) {
       alert("Only the admin can add new flashcards to this set");
       return;
     }
-    let question = prompt("Enter question");
-    let answer = prompt("Enter answer");
+
+    const question = prompt("Enter question");
+    const answer = prompt("Enter answer");
+
     try {
       const response = await axios.post(
-        "/flashcard",
-        {
-          question: question,
-          answer: answer,
-          FlashcardSetId: id,
-          UserId: userId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+          "/flashcard",
+          {
+            question: question,
+            answer: answer,
+            FlashcardSetId: id,
+            UserId: userId,
           },
-        }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
       );
       const finalResponse = await fetchFlashcards(id);
       setFlashcards(finalResponse.data.data.Flashcards);
@@ -71,6 +77,7 @@ export const FlashcardsListPage = () => {
       console.error("Error adding flashcard:", error);
     }
   };
+
 
   return (
     <div className="Main-codeChallengeList-wrapper">

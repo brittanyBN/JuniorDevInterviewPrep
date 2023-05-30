@@ -30,6 +30,14 @@ class FlashcardSetService {
     return this.FlashcardSet.findAll();
   }
 
+  async getAllAdmin() {
+    return this.FlashcardSet.findAll({
+      where: {
+        UserId: "50f048e8-b9d9-4625-890d-d551b0df9dd0"
+      }
+    });
+  }
+
   async update(id, name, userId) {
     const flashcardSet = await this.getOne(id);
     if (!flashcardSet) {

@@ -6,90 +6,93 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export const FlashcardSetPage = () => {
-  const [flashcardSets, setFlashcardSets] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [id, setId] = useState(localStorage.getItem("id"));
+    const [flashcardSets, setFlashcardSets] = useState([]);
+    const [adminSets, setAdminSets] = useState([]);
+    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [id, setId] = useState(localStorage.getItem("id"));
 
-  useEffect(() => {
-    if (token && id) {
-      fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
-    }
-  }, [token, id]);
+    useEffect(() => {
+        if (token && id) {
+            fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
+        }
+        fetchAdminSets().then(() => console.log("Admin sets fetched"));
+    }, [token, id]);
 
     async function fetchFlashcardSets() {
-    try {
-      const response = await axios.get("/flashcardSet");
-      let filteredSets = [];
-
-      // if (flashcardSets.length === 0) {
-      //   let promptUser = prompt("No flashcard sets found. Would you like to use the default sets?");
-      //   if (promptUser === "yes") {
-      //     filteredSets = response.data.data.filter(
-      //         (flashcardSet) => flashcardSet.role === "admin"
-      //     );
-      //   }
-      // } else {
-         filteredSets = response.data.data.filter(
-             (flashcardSet) => flashcardSet.UserId === id
-         );
-         console.log("filteredSets", filteredSets);
-     // }
-
-      setFlashcardSets(filteredSets);
-    } catch (error) {
-      console.error("Error fetching flashcard sets:", error);
+        try {
+            const response = await axios.get("/flashcardSet");
+            const userSets = response.data.data.filter(
+                (flashcardSet) => flashcardSet.UserId === id
+            );
+            setFlashcardSets(userSets);
+        } catch (error) {
+            console.error("Error fetching user flashcard sets:", error);
+        }
     }
-  }
+
+    async function fetchAdminSets() {
+        try {
+            const response = await axios.get("/flashcardSet/admin");
+            setAdminSets(response.data.data);
+        } catch (error) {
+            console.error("Error fetching admin flashcard sets:", error);
+        }
+    }
 
     async function addNewFlashcardSet() {
-    if (!token) {
-      alert("You must be logged in to add a new flashcard set");
-      return;
+        if (!token) {
+            alert("You must be logged in to add a new flashcard set");
+            return;
+        }
+
+        let data = prompt("Enter the name of the new flashcard set");
+        console.log(data);
+        try {
+            const response = await axios.post(
+                "/flashcardSet",
+                {
+                    name: data,
+                    UserId: id,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            const finalResponse = await fetchFlashcardSets();
+            console.log("finalResponse", finalResponse);
+            setFlashcardSets(finalResponse.data.data);
+        } catch (error) {
+            console.error("Error posting new flashcard set:", error);
+        }
     }
 
-    let data = prompt("Enter the name of the new flashcard set");
-    console.log(data);
-    try {
-      const response = await axios.post(
-          "/flashcardSet ",
-          {
-            name: data,
-            UserId: id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-      );
-      const finalResponse = await fetchFlashcardSets();
-        console.log("finalResponse", finalResponse);
-      setFlashcardSets(finalResponse.data.data);
-    } catch (error) {
-      console.error("Error posting new flashcard set:", error);
-    }
-  }
-
-  return (
-      <div className="Main-flashcardSet-wrapper">
-        <NavigationBar />
-        <div className="header">
-          <h1>Flashcard Set</h1>
-          <div id="add">
-            <button onClick={addNewFlashcardSet}>Add New Flashcard Set</button>
-          </div>
+    return (
+        <div className="Main-flashcardSet-wrapper">
+            <NavigationBar />
+            <div className="header">
+                <h1>Flashcard Set</h1>
+                <div id="add">
+                    <button onClick={addNewFlashcardSet}>Add New Flashcard Set</button>
+                </div>
+            </div>
+            <div className="cardSet">
+                {flashcardSets.map((flashcardSet) => (
+                    <Link key={flashcardSet.id} to={`/flashcardSet/${flashcardSet.id}`}>
+                        <CardSetCard name={flashcardSet.name} />
+                    </Link>
+                ))}
+                {adminSets.map((adminSet) => (
+                    <Link key={adminSet.id} to={`/flashcardSet/${adminSet.id}`}>
+                        <CardSetCard name={adminSet.name} />
+                    </Link>
+                ))}
+            </div>
+            <div className="button-group">
+                <button>Previous</button>
+                <button>Next</button>
+            </div>
         </div>
-        <div className="cardSet">
-          {flashcardSets.map((flashcardSet) => (
-              <Link key={flashcardSet.id} to={`/flashcardSet/${flashcardSet.id}`}>
-                <CardSetCard name={flashcardSet.name} />
-              </Link>
-          ))}
-        </div>
-        <div className="button-group">
-          <button>Previous</button>
-          <button>Next</button>
-        </div>
-      </div>
-  );
+    );
 };
