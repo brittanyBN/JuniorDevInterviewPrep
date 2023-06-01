@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 class UserService {
   constructor(db) {
     this.client = db.sequelize;
@@ -12,7 +13,7 @@ class UserService {
 
   async getOne(email) {
     return this.User.findOne({
-      where: { email: email },
+      where: {email: email},
     });
   }
 
@@ -29,6 +30,16 @@ class UserService {
       role: role,
     });
   }
+
+  async update(email, encryptedPassword, salt) {
+    const user = await this.get(email);
+    user.email = email;
+    user.encryptedPassword = encryptedPassword;
+    user.salt = salt;
+    await user.save();
+    return user;
+  }
+
 }
 
 module.exports = UserService;

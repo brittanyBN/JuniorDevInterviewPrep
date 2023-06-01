@@ -11,7 +11,7 @@ export const HintButton = ({ hint }) => {
         <div className="Main-hint-wrapper" onClick={handleFlip}>
             <div>
                 <div className={isFlipped ? "card flipped" : "card"}>
-                    <button className="front">{isFlipped ? hint : "Hint"}</button>
+                    <button style={{padding: 15}} className="front">{isFlipped ? hint : "Hint"}</button>
                 </div>
             </div>
         </div>

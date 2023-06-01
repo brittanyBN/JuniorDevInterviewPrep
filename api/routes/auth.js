@@ -8,6 +8,8 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const jwt = require("jsonwebtoken");
 const authentication = require("../middleware/authentication");
+const forgotPassword = require("../util/forgotPassword");
+const resetPassword = require("../util/resetPassword");
 
 router.get("/users", async (req, res, next) => {
   try {
@@ -110,6 +112,9 @@ router.post("/signup", async (req, res, next) => {
   );
   console.log(req.body);
 });
+
+router.post("/forgotPassword", forgotPassword);
+router.put("/resetPassword/:resetToken", resetPassword);
 
 router.post("/logout", authentication, async (req, res, next) => {
   const { email } = req.body;

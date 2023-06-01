@@ -1,9 +1,11 @@
 import { useState } from "react";
 import "./Login.css";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [OTP, setOTP] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +27,10 @@ const Login = () => {
       console.error("Authentication failed");
     }
   };
+
+    const forgotPassword = () => {
+      window.location.href = "/forgotPassword";
+    }
 
   const handleSignup = () => {
     window.location.href = "/signup";
@@ -58,6 +64,9 @@ const Login = () => {
           Login
         </button>
       </form>
+      <button id="forgot-password" onClick={forgotPassword}>
+        Forgot Password
+      </button>
       <div className="register-link">
         Don't have an account?{" "}
         <a href="/signup" onClick={handleSignup}>

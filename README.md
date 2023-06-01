@@ -42,3 +42,4 @@ their own.
 - React: https://react.dev/learn/describing-the-ui
 - Frontend Login/Signup: https://www.youtube.com/watch?v=brcHK3P6ChQ&t=0s full tutorial
 - IDE implementation: https://www.youtube.com/watch?v=wcVxX7lu2d4
+- Forgot/Reset password: https://medium.com/geekculture/forgot-password-in-signup-application-with-nodejs-and-mongodb-part-4-51378dddd716
