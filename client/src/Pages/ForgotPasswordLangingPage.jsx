@@ -3,18 +3,30 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export const PasswordResetLandingPage = () => {
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [isFailure, setIsFailure] = useState(false);
     const [passwordValue, setPasswordValue] = useState('');
     const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
+    const [resetTokenData, setResetTokenData] = useState({});
     const { resetToken } = useParams();
+
+    useEffect(() => {
+        fetchResetTokenData(resetToken).then(r => console.log('Reset token data fetched'));
+    }, [resetToken]);
+
+    const fetchResetTokenData = async (resetToken) => {
+        try {
+            const response = await axios.get(`/resetPassword/${resetToken}`);
+            setResetTokenData(response.data);
+        } catch (error) {
+            console.error('Error fetching reset token data:', error);
+            }
+    };
 
     const onResetClicked = async () => {
         try {
-            await axios.put(`resetPassword/${resetToken}`, { newPassword: passwordValue });
-            setIsSuccess(true);
-        } catch (e) {
-            setIsFailure(true);
+            await axios.put(`/resetPassword/${resetToken}`, { newPassword: passwordValue });
+            window.location.href = '/login';
+        } catch (error) {
+            console.error('Error resetting password:', error);
         }
     }
 
@@ -26,18 +38,21 @@ export const PasswordResetLandingPage = () => {
                 type='password'
                 value={passwordValue}
                 onChange={e => setPasswordValue(e.target.value)}
-                placeholder="Password" />
+                placeholder="Password"
+            />
             <input
                 type='password'
                 value={confirmPasswordValue}
                 onChange={e => setConfirmPasswordValue(e.target.value)}
-                placeholder="Confirm Password" />
+                placeholder="Confirm Password"
+            />
             <button
                 disabled={!passwordValue || !confirmPasswordValue || passwordValue !== confirmPasswordValue}
                 onClick={onResetClicked}
             >
                 Reset Password
             </button>
+            {<p>Failed to reset password.</p>}
         </div>
     );
 }

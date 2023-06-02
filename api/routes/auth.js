@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 const authentication = require("../middleware/authentication");
 const forgotPassword = require("../util/forgotPassword");
 const resetPassword = require("../util/resetPassword");
+const path = require("path");
 
 router.get("/users", async (req, res, next) => {
   try {
@@ -114,6 +115,21 @@ router.post("/signup", async (req, res, next) => {
 });
 
 router.post("/forgotPassword", forgotPassword);
+
+router.get("/resetPassword/:resetToken", async (req, res, next) => {
+const resetToken = req.params.resetToken;
+    try {
+        const resetToken = req.params.resetToken;
+        console.log(resetToken);
+        res.status(200).json({
+            message: "Successfully used reset link",
+            data: resetToken,
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.put("/resetPassword/:resetToken", resetPassword);
 
 router.post("/logout", authentication, async (req, res, next) => {

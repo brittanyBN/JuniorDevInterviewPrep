@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import axios from 'axios';
+import './ForgotPassword.css';
 
 export const ForgotPasswordPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [email, setEmail] = useState('');
+    const [resetToken, setResetToken] = useState('');
 
     const resetPassword = async () => {
         try {
-            await axios.post('/forgotPassword', { email });
+            const response = await axios.post('/forgotPassword', { email });
             setSuccess(true);
+            setResetToken(response.data.data);
         } catch (error) {
             setErrorMessage(error.response.data.message);
         }
@@ -27,8 +30,9 @@ export const ForgotPasswordPage = () => {
             {errorMessage && <div className="fail">{errorMessage}</div>}
             <input
                 value={email}
+                id="email"
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="someone@gmail.com"
+                placeholder="email@gmail.com"
             />
             <button
                 disabled={!email}

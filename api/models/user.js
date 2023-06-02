@@ -27,6 +27,10 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       defaultValue: "member",
     },
+    resetToken: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: true,
+    }
   });
 
   User.associate = function (models) {

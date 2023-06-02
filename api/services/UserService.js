@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 class UserService {
   constructor(db) {
     this.client = db.sequelize;
@@ -32,12 +31,24 @@ class UserService {
   }
 
   async update(email, encryptedPassword, salt) {
-    const user = await this.get(email);
-    user.email = email;
+    const user = await this.getOne(email);
     user.encryptedPassword = encryptedPassword;
     user.salt = salt;
     await user.save();
     return user;
+  }
+
+  async resetToken(email, resetToken) {
+    const user = await this.getOne(email);
+    user.resetToken = resetToken;
+    await user.save();
+    return user;
+  }
+
+  async getOneByResetToken(resetToken) {
+    return this.User.findOne({
+      where: {resetToken: resetToken},
+    });
   }
 
 }

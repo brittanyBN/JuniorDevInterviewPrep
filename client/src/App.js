@@ -15,11 +15,26 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="home" element={<HomePage></HomePage>} />
-        <Route path="login" element={<LoginPage></LoginPage>} />
-        <Route path="signup" element={<SignupPage></SignupPage>} />
-        <Route path="/forgotPassword" element={<ForgotPasswordPage></ForgotPasswordPage>} />
-        <Route exact path="/resetPassword/:resetToken" element={<PasswordResetLandingPage></PasswordResetLandingPage>} />
+        <Route
+            path="home"
+            element={<HomePage></HomePage>}
+        />
+        <Route
+            path="login"
+            element={<LoginPage></LoginPage>}
+        />
+        <Route
+            path="signup"
+            element={<SignupPage></SignupPage>}
+        />
+        <Route
+            path="/forgotPassword"
+            element={<ForgotPasswordPage></ForgotPasswordPage>}
+        />
+        <Route
+            path="/resetPassword/:resetToken"
+            element={<PasswordResetLandingPage></PasswordResetLandingPage>}
+        />
         <Route
           path="flashcardSet"
           element={<FlashcardSetPage></FlashcardSetPage>}

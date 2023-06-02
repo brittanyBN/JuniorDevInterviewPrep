@@ -11,11 +11,10 @@ const forgotPassword = async (req, res) => {
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
-    let resetToken = crypto.randomBytes(20).toString("hex");
-        resetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    await userService.resetToken(req.body.email, resetToken);
 
-
-    const resetUrl = `http://localhost:3001/resetPassword/${resetToken}`;
+    const resetUrl = `http://localhost:3000/resetPassword/${resetToken}`;
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please create a new password ${resetUrl}`;
 
     try {
@@ -30,7 +29,7 @@ const forgotPassword = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Email could not be sent"});
+        return res.status(500).json({ message: "Email could not be sent" });
     }
 };
 
