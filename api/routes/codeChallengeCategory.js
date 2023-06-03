@@ -8,10 +8,13 @@ const userService = new UserService(db);
 const authentication = require("../middleware/authentication");
 const Joi = require("joi");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
+const { getPagination } = require("../utils/getPagination");
 
 router.get("/", async (req, res, next) => {
   try {
-    const codeChallengeCategories = await codeChallengeCategoryService.getAll();
+    const { page, size } = req.query;
+    const pagination = getPagination(page, size);
+    const codeChallengeCategories = await codeChallengeCategoryService.getAll(pagination);
     res.status(200).json({
       message: "Successfully fetched all code challenge categories",
       data: codeChallengeCategories,

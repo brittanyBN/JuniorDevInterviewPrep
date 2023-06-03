@@ -51,6 +51,15 @@ class UserService {
     });
   }
 
+  async delete(id) {
+    const user = await this.User.findOne({ where: { id: id } });
+    if (!user) {
+      return null;
+    }
+    await user.destroy();
+    return user;
+  }
+
 }
 
 module.exports = UserService;

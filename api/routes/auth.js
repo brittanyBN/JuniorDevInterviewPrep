@@ -8,8 +8,8 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const jwt = require("jsonwebtoken");
 const authentication = require("../middleware/authentication");
-const forgotPassword = require("../util/forgotPassword");
-const resetPassword = require("../util/resetPassword");
+const forgotPassword = require("../utils/forgotPassword");
+const resetPassword = require("../utils/resetPassword");
 const path = require("path");
 
 router.get("/users", async (req, res, next) => {
@@ -57,7 +57,7 @@ router.post("/login", jsonParser, async (req, res, next) => {
           token = jwt.sign(
             { id: data.id, email: data.email, role: data.role },
             process.env.TOKEN_SECRET,
-            { expiresIn: "1h" }
+            { expiresIn: "1 hr" }
           );
           return res
             .status(200)
@@ -142,6 +142,21 @@ router.post("/logout", authentication, async (req, res, next) => {
     return res.status(400).json({ message: "Provided email is not in use." });
   }
   res.status(200).json({ message: "Successfully logged out" });
+});
+
+router.delete("/:id", async (req, res, next) => {
+    try {
+        const user = await userService.delete(req.params.id);
+        if (user === null) {
+            return res.status(400).json({ message: "User does not exist." });
+        }
+        res.status(200).json({
+            message: "Successfully deleted user",
+            data: user,
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;

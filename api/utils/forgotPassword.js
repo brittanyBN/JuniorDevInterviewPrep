@@ -4,7 +4,7 @@ const db = require("../models");
 const crypto = require("crypto");
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
-const sendEmail  = require("../util/sendEmail");
+const sendEmail  = require(".//sendEmail");
 
 const forgotPassword = async (req, res) => {
     const user = await userService.getOne(req.body.email);

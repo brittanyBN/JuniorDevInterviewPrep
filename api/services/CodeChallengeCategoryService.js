@@ -4,8 +4,11 @@ class CodeChallengeCategoryService {
     this.CodeChallengeCategory = db.CodeChallengeCategory;
   }
 
-  async getAll() {
-    return this.CodeChallengeCategory.findAll();
+  async getAll(pagination) {
+    return this.CodeChallengeCategory.findAll({
+      limit: pagination.limit,
+      offset: pagination.offset,
+    });
   }
 
   async getOne(id) {

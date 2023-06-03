@@ -1,3 +1,5 @@
+const {where} = require("sequelize");
+
 class FlashcardSetService {
   constructor(db) {
     this.client = db.sequelize;
@@ -26,15 +28,16 @@ class FlashcardSetService {
     });
   }
 
-  async getAll() {
-    return this.FlashcardSet.findAll();
-  }
-
-  async getAllAdmin() {
+  async getAll(pagination) {
     return this.FlashcardSet.findAll({
-      where: {
-        UserId: "50f048e8-b9d9-4625-890d-d551b0df9dd0"
-      }
+      limit: pagination.limit,
+      offset: pagination.offset,
+      include: [
+        {
+          model: this.User,
+          attributes: ['role']
+        }
+      ]
     });
   }
 
@@ -57,25 +60,6 @@ class FlashcardSetService {
     await this.FlashcardSet.destroy({ where: { id: id } });
     return flashcardSet;
   }
-
-  //
-  // async addUsersToFlashcardSet(flashcardSetId, userId){
-  //   const t = await this.sequelize.transaction();
-  //   try {
-  //     const flashcardSet = await this.FlashcardSet.findOne({ where: { id: flashcardSetId } });
-  //       if (!flashcardSet) {
-  //         return null;
-  //       }
-  //       const user = await this.User.findOne({ where: { id: userId } });
-  //       if (!user) {
-  //           return null;
-  //       }
-  //       await this.UserFlashcardSet.create({ userId: userId, flashcardSetId: flashcardSetId }, { transaction: t });
-  //   } catch (error) {
-  //       await t.rollback();
-  //       throw error;
-  //   }
-  // }
 
 }
 

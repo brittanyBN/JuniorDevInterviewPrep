@@ -8,10 +8,13 @@ const UserService = require("../services/UserService");
 const userService = new UserService(db);
 const Joi = require("joi");
 const flashcardSetSchema = require("../schemas/flashcardSet.schema");
+const { getPagination } = require("../utils/getPagination");
 
 router.get("/", async (req, res, next) => {
   try {
-    const flashcardSets = await flashcardSetService.getAll();
+    const { page, size } = req.query;
+    const pagination = getPagination(page, size);
+    const flashcardSets = await flashcardSetService.getAll(pagination);
     res.status(200).json({
       message: "Successfully fetched all flashcardSets",
       data: flashcardSets,
@@ -21,19 +24,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/admin", async (req, res, next) => {
-    try {
-        const flashcardSets = await flashcardSetService.getAllAdmin();
-        res.status(200).json({
-        message: "Successfully fetched all flashcardSets",
-        data: flashcardSets,
-        });
-    } catch (err) {
-        next(err);
-    }
-});
-
-router.get("/:id", authentication, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.getOne(req.params.id);
     if (flashcardSet === null) {
@@ -94,20 +85,6 @@ router.put("/:id", authentication, async (req, res, next) => {
     next(err);
   }
 });
-
-// router.post("/saveSet", authentication, async (req, res, next) => {
-// const { flashcardId, userId } = req.body;
-// try {
-//   const flashcardSet = await flashcardSetService.addUsersToFlashcardSet(flashcardId, userId);
-//   res.status(200).json({
-//     message: "Successfully saved flashcardSet",
-//     data: flashcardSet,
-//   });
-// } catch (err) {
-//   next(err);
-// }
-// });
-
 
 router.delete("/:id", authentication, async (req, res, next) => {
   try {

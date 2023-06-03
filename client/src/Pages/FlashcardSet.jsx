@@ -7,35 +7,29 @@ import { Link } from "react-router-dom";
 
 export const FlashcardSetPage = () => {
     const [flashcardSets, setFlashcardSets] = useState([]);
-    const [adminSets, setAdminSets] = useState([]);
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [id, setId] = useState(localStorage.getItem("id"));
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const itemsPerPage = 8;
 
     useEffect(() => {
-        if (token && id) {
-            fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
-        }
-        fetchAdminSets().then(() => console.log("Admin sets fetched"));
-    }, [token, id]);
+        fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
+    }, [token, id, currentPage]);
 
     async function fetchFlashcardSets() {
-        try {
-            const response = await axios.get("/flashcardSet");
-            const userSets = response.data.data.filter(
-                (flashcardSet) => flashcardSet.UserId === id
-            );
-            setFlashcardSets(userSets);
-        } catch (error) {
-            console.error("Error fetching user flashcard sets:", error);
+        if (!token) {
+            alert("You must be logged in to add a new flashcard set");
+            return;
         }
-    }
-
-    async function fetchAdminSets() {
         try {
-            const response = await axios.get("/flashcardSet/admin");
-            setAdminSets(response.data.data);
+            const response = await axios.get(`/flashcardSet`, {
+                params: { page: currentPage, size: itemsPerPage },
+            });
+            setFlashcardSets(response.data.data);
+            setTotalPages(response.data.pagination.totalPages);
         } catch (error) {
-            console.error("Error fetching admin flashcard sets:", error);
+            console.error("Error fetching flashcard sets:", error);
         }
     }
 
@@ -68,30 +62,48 @@ export const FlashcardSetPage = () => {
         }
     }
 
+    function handlePreviousPage() {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+
+    function handleNextPage() {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    }
+
     return (
         <div className="Main-flashcardSet-wrapper">
             <NavigationBar />
             <div className="header">
                 <h1>Flashcard Set</h1>
                 <div id="add">
-                    <button onClick={addNewFlashcardSet}>Add New Flashcard Set</button>
+                    <button onClick={addNewFlashcardSet} id="newFlashcard">
+                        Add New Flashcard Set
+                    </button>
                 </div>
             </div>
             <div className="cardSet">
                 {flashcardSets.map((flashcardSet) => (
-                    <Link key={flashcardSet.id} to={`/flashcardSet/${flashcardSet.id}`}>
+                    <Link
+                        className="link"
+                        key={flashcardSet.id}
+                        to={`/flashcardSet/${flashcardSet.id}`}
+                    >
                         <CardSetCard name={flashcardSet.name} />
-                    </Link>
-                ))}
-                {adminSets.map((adminSet) => (
-                    <Link key={adminSet.id} to={`/flashcardSet/${adminSet.id}`}>
-                        <CardSetCard name={adminSet.name} />
                     </Link>
                 ))}
             </div>
             <div className="button-group">
-                <button>Previous</button>
-                <button>Next</button>
+                <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                    Previous
+                </button>
+                <button>{`${currentPage}/${totalPages}`}</button>
+                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                    Next
+                </button>
             </div>
         </div>
     );
