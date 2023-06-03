@@ -17,15 +17,15 @@ export const FlashcardsListPage = () => {
 
   const fetchFlashcards = async (flashcardId) => {
     try {
-      const response = await axios.get(`/flashcardSet/${flashcardId}`, {
+      const response = await axios.get(`/flashcardSet/list/${flashcardId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const flashcardsData = response.data.data.Flashcards;
-      const creatorId = response.data.data.UserId;
-      setCreatorId(creatorId);
-      setFlashcards(flashcardsData);
+      const { Flashcards, UserId } = response.data.data;
+      setCreatorId(UserId);
+      setFlashcards(Flashcards);
+      return response;
     } catch (error) {
       console.error("Error fetching flashcards:", error);
     }

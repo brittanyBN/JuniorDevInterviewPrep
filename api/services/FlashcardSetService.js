@@ -1,5 +1,3 @@
-const {where} = require("sequelize");
-
 class FlashcardSetService {
   constructor(db) {
     this.client = db.sequelize;
@@ -28,18 +26,21 @@ class FlashcardSetService {
     });
   }
 
-  async getAll(pagination) {
+  async getAll(pagination, condition) {
+    const { UserId } = condition;
     return this.FlashcardSet.findAll({
+      where: condition,
       limit: pagination.limit,
       offset: pagination.offset,
       include: [
         {
           model: this.User,
-          attributes: ['role']
-        }
-      ]
+          attributes: ['role'],
+        },
+      ],
     });
   }
+
 
   async update(id, name, userId) {
     const flashcardSet = await this.getOne(id);

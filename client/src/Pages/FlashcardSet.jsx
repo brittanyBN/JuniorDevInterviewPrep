@@ -23,11 +23,16 @@ export const FlashcardSetPage = () => {
             return;
         }
         try {
-            const response = await axios.get(`/flashcardSet`, {
-                params: { page: currentPage, size: itemsPerPage },
+            const response = await axios.get(`/flashcardSet/set/${id}`, {
+                params: { page: currentPage, size: itemsPerPage, UserId: id },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'X-User-Role': 'admin',
+                },
             });
-            setFlashcardSets(response.data.data);
-            setTotalPages(response.data.pagination.totalPages);
+            const { data, pagination } = response.data;
+            setFlashcardSets(data);
+            setTotalPages(pagination.totalPages);
         } catch (error) {
             console.error("Error fetching flashcard sets:", error);
         }

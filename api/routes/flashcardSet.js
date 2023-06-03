@@ -9,12 +9,20 @@ const userService = new UserService(db);
 const Joi = require("joi");
 const flashcardSetSchema = require("../schemas/flashcardSet.schema");
 const { getPagination } = require("../utils/getPagination");
+const { Op } = require("sequelize");
 
-router.get("/", async (req, res, next) => {
+router.get("/set/:UserId", async (req, res, next) => {
   try {
     const { page, size } = req.query;
+    const { UserId } = req.params;
     const pagination = getPagination(page, size);
-    const flashcardSets = await flashcardSetService.getAll(pagination);
+    const condition = {
+      [Op.or]: [
+        { '$User.role$': 'admin' },
+        { UserId: UserId },
+      ],
+    };
+    const flashcardSets = await flashcardSetService.getAll(pagination, condition);
     res.status(200).json({
       message: "Successfully fetched all flashcardSets",
       data: flashcardSets,
@@ -24,7 +32,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+
+router.get("/list/:id", async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.getOne(req.params.id);
     if (flashcardSet === null) {
