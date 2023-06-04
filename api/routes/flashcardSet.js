@@ -18,19 +18,25 @@ router.get("/set/:UserId", async (req, res, next) => {
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [
-        { '$User.role$': 'admin' },
+        { "$User.role$": "admin" },
         { UserId: UserId },
       ],
     };
     const flashcardSets = await flashcardSetService.getAll(pagination, condition);
+
+    const totalCount = await flashcardSetService.countAll(condition);
+    pagination.totalPages = Math.ceil(totalCount / pagination.limit);
+
     res.status(200).json({
       message: "Successfully fetched all flashcardSets",
       data: flashcardSets,
+      pagination: pagination,
     });
   } catch (err) {
     next(err);
   }
 });
+
 
 
 router.get("/list/:id", async (req, res, next) => {

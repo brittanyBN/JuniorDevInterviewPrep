@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
@@ -12,15 +12,13 @@ import { BetterSolutionButton } from "../Components/BetterSolutionButton";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
-  const [codeChallenge, setCodeChallenge] = useState("");
+  const [token] = useState(localStorage.getItem("token"));
+  const [userId] = useState(localStorage.getItem("id"));
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");
   const [editor, setEditor] = useState("");
   const [codeChallenges, setCodeChallenges] = useState([]);
-  const [isFlippedHint, setIsFlippedHint] = useState(false);
 
   useEffect(() => {
     fetchCodeChallenge().then(() => console.log(" "));
@@ -62,7 +60,8 @@ export const CodeChallengePage = () => {
       setConsoleOutput("");
       setError("");
 
-      eval(code);
+      const executeCode = Function(code);
+      executeCode();
     } catch (error) {
       setError("Error: " + error.message);
     }
@@ -105,46 +104,47 @@ export const CodeChallengePage = () => {
           </div>
         )}
         <textarea ref={editorRef}></textarea>
-        <button onClick={runCode} className="run-button">Run Code</button>
+        <button onClick={runCode} className="run-button">
+          Run Code
+        </button>
         {error && <pre>{error}</pre>}
         {consoleOutput && <pre>{consoleOutput}</pre>}
       </div>
       <div className="help-buttons">
         <div className="hint-button">
-      {codeChallenges.length > 0 ? (
-          <HintButton
-              hint={codeChallenges[currentCodeChallengeIndex].hint}
-          />
-      ) : (
-          <div className="no-hint">
-            <h2>No hint :(</h2>
-          </div>
-      )}
+          {codeChallenges.length > 0 ? (
+            <HintButton hint={codeChallenges[currentCodeChallengeIndex].hint} />
+          ) : (
+            <div className="no-hint">
+              <h2>No hint :(</h2>
+            </div>
+          )}
         </div>
         <div className="solution-button">
-      {codeChallenges.length > 0 ? (
-          <SolutionButton
+          {codeChallenges.length > 0 ? (
+            <SolutionButton
               solution={codeChallenges[currentCodeChallengeIndex].solution}
-          />
-      ) : (
-          <div className="no-solution">
-            <h2>No solution :(</h2>
-          </div>
-      )}
+            />
+          ) : (
+            <div className="no-solution">
+              <h2>No solution :(</h2>
+            </div>
+          )}
         </div>
         <div className="better-solution-button">
-
-      {codeChallenges.length > 0 ? (
-          <BetterSolutionButton
-              betterSolution={codeChallenges[currentCodeChallengeIndex].betterSolution}
-          />
-      ) : (
-          <div className="no-better-solution">
-            <h2>No better solution :(</h2>
-          </div>
-      )}
+          {codeChallenges.length > 0 ? (
+            <BetterSolutionButton
+              betterSolution={
+                codeChallenges[currentCodeChallengeIndex].betterSolution
+              }
+            />
+          ) : (
+            <div className="no-better-solution">
+              <h2>No better solution :(</h2>
+            </div>
+          )}
         </div>
-        </div>
+      </div>
       <div className="button-group">
         <button className="action-button" onClick={handlePreviousCodeChallenge}>
           Previous

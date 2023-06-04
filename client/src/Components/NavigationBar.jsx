@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./NavigationBar.css";
-import axios from "axios";
 
 export const NavigationBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   const handleLogout = () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
     setIsLoggedIn(false);
     window.location.href = "/login";
   };

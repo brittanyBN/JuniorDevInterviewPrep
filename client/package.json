@@ -11,7 +11,6 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "codemirror": "^5.57.0",
-    "dotenv": "^16.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
@@ -43,5 +42,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "path-browserify": "^1.0.1",
+    "prettier": "2.8.8",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2"
   }
 }

@@ -27,7 +27,6 @@ class FlashcardSetService {
   }
 
   async getAll(pagination, condition) {
-    const { UserId } = condition;
     return this.FlashcardSet.findAll({
       where: condition,
       limit: pagination.limit,
@@ -38,6 +37,18 @@ class FlashcardSetService {
           attributes: ['role'],
         },
       ],
+    });
+  }
+
+async countAll(condition) {
+    return this.FlashcardSet.count({
+      where: condition,
+        include: [
+            {
+            model: this.User,
+            attributes: ['role'],
+            },
+        ],
     });
   }
 

@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import { Card } from "../Components/FlashcardCard";
 import "./practice.css";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export const FlashcardPage = () => {
-  const { id } = useParams();
   const location = useLocation();
   const [flashcards, setFlashcards] = useState([]);
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
@@ -18,7 +17,7 @@ export const FlashcardPage = () => {
       const decodedFlashcards = JSON.parse(decodeURIComponent(flashcardsData));
       setFlashcards(decodedFlashcards);
     }
-  }, [location.search]);
+  }, [location.search, token, userId]);
 
   useEffect(() => {
     setCurrentFlashcardIndex(0);

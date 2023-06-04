@@ -7,8 +7,8 @@ import "./FlashcardsList.css";
 export const FlashcardsListPage = () => {
   const { id } = useParams();
   const [flashcards, setFlashcards] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
+  const [token] = useState(localStorage.getItem("token"));
+  const [userId] = useState(localStorage.getItem("id"));
   const [creatorId, setCreatorId] = useState("");
 
   useEffect(() => {
@@ -54,19 +54,19 @@ export const FlashcardsListPage = () => {
     const answer = prompt("Enter answer");
 
     try {
-      const response = await axios.post(
-          "/flashcard",
-          {
-            question: question,
-            answer: answer,
-            FlashcardSetId: id,
-            UserId: userId,
+      await axios.post(
+        "/flashcard",
+        {
+          question: question,
+          answer: answer,
+          FlashcardSetId: id,
+          UserId: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        }
       );
       const finalResponse = await fetchFlashcards(id);
       setFlashcards(finalResponse.data.data.Flashcards);
@@ -76,32 +76,36 @@ export const FlashcardsListPage = () => {
   };
 
   return (
-      <div className="Main-codeChallengeList-wrapper">
-        <NavigationBar />
-        <div className="buttonLine">
-          <button className="start-practice-button" onClick={practiceFlashcards}>
-            Start Practice
+    <div className="Main-codeChallengeList-wrapper">
+      <NavigationBar />
+      <div className="buttonLine">
+        <button className="start-practice-button" onClick={practiceFlashcards}>
+          Start Practice
+        </button>
+        {userId === creatorId && (
+          <button
+            className="add-new-code-challenge-button"
+            onClick={addFlashcard}
+          >
+            Add New Flashcard
           </button>
-          {userId === creatorId && (
-              <button className="add-new-code-challenge-button" onClick={addFlashcard}>
-                Add New Flashcard
-              </button>
-          )}
-        </div>
-        <div className="code-challenges-container">
-          {flashcards.length === 0 ? (
-              <p id="empty">
-                There are no flashcards in this set yet. Click the button to add one!
-              </p>
-          ) : (
-              flashcards.map((flashcard) => (
-                  <div key={flashcard.id} className="code-challenge">
-                    <div className="question">{flashcard.question}</div>
-                    <div className="solution">{flashcard.answer}</div>
-                  </div>
-              ))
-          )}
-        </div>
+        )}
       </div>
+      <div className="code-challenges-container">
+        {flashcards.length === 0 ? (
+          <p id="empty">
+            There are no flashcards in this set yet. Click the button to add
+            one!
+          </p>
+        ) : (
+          flashcards.map((flashcard) => (
+            <div key={flashcard.id} className="code-challenge">
+              <div className="question">{flashcard.question}</div>
+              <div className="solution">{flashcard.answer}</div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
 };

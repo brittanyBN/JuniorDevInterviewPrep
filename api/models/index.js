@@ -13,7 +13,6 @@ const connection = {
   host: process.env.HOST,
 };
 
-// connect to db
 const sequelize = new Sequelize(connection);
 
 const db = {};

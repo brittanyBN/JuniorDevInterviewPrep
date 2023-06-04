@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import "./CardSetCard.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export const CardSetCard = ({ name }) => {
-  const navigate = useNavigate();
-
   const [flashcard, setFlashcard] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token] = useState(localStorage.getItem("token"));
 
   const fetchCards = async () => {
     if (!token) {

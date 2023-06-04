@@ -78,7 +78,7 @@ router.post("/", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
-        betterSolution,
+      betterSolution,
       UserId,
       CodeChallengeCategoryId
     );
@@ -117,7 +117,7 @@ router.put("/:id", authentication, async (req, res, next) => {
       return res.status(400).json({ message: "User does not exist." });
     }
     const category = await codeChallengeCategoryService.getOne(
-        CodeChallengeCategoryId
+      CodeChallengeCategoryId
     );
     if (category === null) {
       return res
@@ -130,9 +130,9 @@ router.put("/:id", authentication, async (req, res, next) => {
       solution,
       hint,
       progress,
-        betterSolution,
+      betterSolution,
       UserId,
-        CodeChallengeCategoryId
+      CodeChallengeCategoryId
     );
     res.status(200).json({
       message: "Successfully updated code challenge",

@@ -1,11 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { NavigationBar } from "../Components/NavigationBar";
 import "./Home.css";
 
 export const HomePage = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="Main-home-wrapper">
       <NavigationBar />

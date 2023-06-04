@@ -6,110 +6,113 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export const FlashcardSetPage = () => {
-    const [flashcardSets, setFlashcardSets] = useState([]);
-    const [token, setToken] = useState(localStorage.getItem("token"));
-    const [id, setId] = useState(localStorage.getItem("id"));
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const itemsPerPage = 8;
+  const [flashcardSets, setFlashcardSets] = useState([]);
+  const [token] = useState(localStorage.getItem("token"));
+  const [id] = useState(localStorage.getItem("id"));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-    useEffect(() => {
-        fetchFlashcardSets().then(() => console.log("Flashcard sets fetched"));
-    }, [token, id, currentPage]);
+  const itemsPerPage = 8;
 
-    async function fetchFlashcardSets() {
-        if (!token) {
-            alert("You must be logged in to add a new flashcard set");
-            return;
-        }
-        try {
-            const response = await axios.get(`/flashcardSet/set/${id}`, {
-                params: { page: currentPage, size: itemsPerPage, UserId: id },
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'X-User-Role': 'admin',
-                },
-            });
-            const { data, pagination } = response.data;
-            setFlashcardSets(data);
-            setTotalPages(pagination.totalPages);
-        } catch (error) {
-            console.error("Error fetching flashcard sets:", error);
-        }
+  useEffect(() => {
+    fetchFlashcardSets().then(() => {
+      console.log("Flashcard sets fetched");
+    });
+  }, [token, id, currentPage]);
+
+  async function fetchFlashcardSets() {
+    if (!token) {
+      alert("You must be logged in to add a new flashcard set");
+      return;
     }
 
-    async function addNewFlashcardSet() {
-        if (!token) {
-            alert("You must be logged in to add a new flashcard set");
-            return;
+    try {
+      const response = await axios.get(
+        `/flashcardSet/set/${id}?page=${currentPage}&size=${itemsPerPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-User-Role": "admin",
+          },
         }
+      );
+      setFlashcardSets(response.data.data);
+      setTotalPages(response.data.pagination.totalPages);
+    } catch (error) {
+      console.error("Error fetching flashcard sets:", error);
+    }
+  }
 
-        let data = prompt("Enter the name of the new flashcard set");
-        console.log(data);
-        try {
-            const response = await axios.post(
-                "/flashcardSet",
-                {
-                    name: data,
-                    UserId: id,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            const finalResponse = await fetchFlashcardSets();
-            console.log("finalResponse", finalResponse);
-            setFlashcardSets(finalResponse.data.data);
-        } catch (error) {
-            console.error("Error posting new flashcard set:", error);
-        }
+  async function addNewFlashcardSet() {
+    if (!token) {
+      alert("You must be logged in to add a new flashcard set");
+      return;
     }
 
-    function handlePreviousPage() {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+    let data = prompt("Enter the name of the new flashcard set");
+    console.log(data);
+    try {
+      const response = await axios.post(
+        "/flashcardSet",
+        {
+          name: data,
+          UserId: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error posting new flashcard set:", error);
     }
+  }
 
-    function handleNextPage() {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
+  function handlePreviousPage() {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
+  }
 
-    return (
-        <div className="Main-flashcardSet-wrapper">
-            <NavigationBar />
-            <div className="header">
-                <h1>Flashcard Set</h1>
-                <div id="add">
-                    <button onClick={addNewFlashcardSet} id="newFlashcard">
-                        Add New Flashcard Set
-                    </button>
-                </div>
-            </div>
-            <div className="cardSet">
-                {flashcardSets.map((flashcardSet) => (
-                    <Link
-                        className="link"
-                        key={flashcardSet.id}
-                        to={`/flashcardSet/${flashcardSet.id}`}
-                    >
-                        <CardSetCard name={flashcardSet.name} />
-                    </Link>
-                ))}
-            </div>
-            <div className="button-group">
-                <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                    Previous
-                </button>
-                <button>{`${currentPage}/${totalPages}`}</button>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                    Next
-                </button>
-            </div>
+  function handleNextPage() {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  return (
+    <div className="Main-flashcardSet-wrapper">
+      <NavigationBar />
+      <div className="header">
+        <h1>Flashcard Set</h1>
+        <div id="add">
+          <button onClick={addNewFlashcardSet} id="newFlashcard">
+            Add New Flashcard Set
+          </button>
         </div>
-    );
+      </div>
+      <div className="cardSet">
+        {flashcardSets.map((flashcardSet) => (
+          <Link
+            className="link"
+            key={flashcardSet.id}
+            to={`/flashcardSet/${flashcardSet.id}`}
+          >
+            <CardSetCard name={flashcardSet.name} />
+          </Link>
+        ))}
+      </div>
+      <div className="button-group">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <button>{`${currentPage}/${totalPages}`}</button>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
+    </div>
+  );
 };

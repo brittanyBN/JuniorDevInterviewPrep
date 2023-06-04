@@ -15,9 +15,12 @@ router.get("/", async (req, res, next) => {
     const { page, size } = req.query;
     const pagination = getPagination(page, size);
     const codeChallengeCategories = await codeChallengeCategoryService.getAll(pagination);
+    const totalCount = await codeChallengeCategoryService.countAll();
+    pagination.totalPages = Math.ceil(totalCount / pagination.limit);
     res.status(200).json({
       message: "Successfully fetched all code challenge categories",
       data: codeChallengeCategories,
+        pagination: pagination,
     });
   } catch (err) {
     next(err);

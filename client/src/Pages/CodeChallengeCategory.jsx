@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import axios from "axios";
 import "./PracticeSet.css";
@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [id, setId] = useState(localStorage.getItem("id"));
+  const [token] = useState(localStorage.getItem("token"));
+  const [id] = useState(localStorage.getItem("id"));
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
   const itemsPerPage = 8;
 
   useEffect(() => {
@@ -20,10 +21,20 @@ export const CodeChallengeCategoryPage = () => {
   }, [token, id, currentPage]);
 
   const fetchCodeChallengeCategories = async () => {
+    if (!token) {
+      alert("You must be logged in to complete code challenges");
+      return;
+    }
+
     try {
-      const response = await axios.get("/codeChallengeCategory", {
-        params: { page: currentPage, size: itemsPerPage },
-      });
+      const response = await axios.get(
+        `/codeChallengeCategory?page=${currentPage}&size=${itemsPerPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setCodeChallengeCategories(response.data.data);
       setTotalPages(response.data.pagination.totalPages);
     } catch (error) {
@@ -31,15 +42,15 @@ export const CodeChallengeCategoryPage = () => {
     }
   };
 
-    function handlePreviousPage() {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
+  function handlePreviousPage() {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
+  }
 
-    function handleNextPage() {
-        setCurrentPage(currentPage + 1);
-    }
+  function handleNextPage() {
+    setCurrentPage(currentPage + 1);
+  }
 
   return (
     <div className="Main-flashcardSet-wrapper">
@@ -49,19 +60,24 @@ export const CodeChallengeCategoryPage = () => {
       </div>
       <div className="cardSet">
         {codeChallengeCategories.map((category) => (
-          <Link key={category.id} to={`/codeChallengeCategory/${category.id}`}>
+          <Link
+            className="link"
+            key={category.id}
+            to={`/codeChallengeCategory/${category.id}`}
+          >
             <CardSetCard name={category.name} />
           </Link>
         ))}
       </div>
-        <div className="button-group">
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Previous
-            </button>
-            <button>{`${currentPage}/${totalPages}`}</button>
-            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Next</button>
-        </div>
+      <div className="button-group">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <button>{`${currentPage}/${totalPages}`}</button>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
     </div>
   );
 };

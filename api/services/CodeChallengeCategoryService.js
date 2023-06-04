@@ -11,6 +11,10 @@ class CodeChallengeCategoryService {
     });
   }
 
+  async countAll() {
+    return this.CodeChallengeCategory.count();
+    }
+
   async getOne(id) {
     return this.CodeChallengeCategory.findOne({
       where: { id: id },

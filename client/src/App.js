@@ -36,7 +36,7 @@ function App() {
             element={<PasswordResetLandingPage></PasswordResetLandingPage>}
         />
         <Route
-          path="flashcardSet"
+          path="/flashcardSet"
           element={<FlashcardSetPage></FlashcardSetPage>}
         />
         <Route
