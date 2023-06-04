@@ -17,6 +17,7 @@ export const CodeChallengePage = () => {
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");
+  const [executedCode, setExecutedCode] = useState(""); // New state for executed code
   const [editor, setEditor] = useState("");
   const [codeChallenges, setCodeChallenges] = useState([]);
 
@@ -54,14 +55,18 @@ export const CodeChallengePage = () => {
     }
   };
 
-  const runCode = () => {
+  const runCode = async () => {
     try {
       const code = editor.getValue();
       setConsoleOutput("");
       setError("");
+      setExecutedCode(""); // Reset executed code
 
-      const executeCode = Function(code);
-      executeCode();
+      const response = await axios.post("/codeChallenge/execute", { code });
+      const { consoleOutput, error, executedCode } = response.data;
+      setConsoleOutput(consoleOutput);
+      setError(error);
+      setExecutedCode(executedCode); // Set executed code in state
     } catch (error) {
       setError("Error: " + error.message);
     }

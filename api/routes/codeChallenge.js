@@ -10,6 +10,7 @@ const codeChallengeSchema = require("../schemas/codeChallenge.schema");
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
 const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryService");
+const { executeCode } = require("../utils/executeCode");
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 
 router.get("/", async (req, res, next) => {
@@ -90,6 +91,8 @@ router.post("/", authentication, async (req, res, next) => {
     next(err);
   }
 });
+
+router.post("/execute", executeCode);
 
 router.put("/:id", authentication, async (req, res, next) => {
   try {
