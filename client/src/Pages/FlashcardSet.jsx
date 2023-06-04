@@ -65,6 +65,8 @@ export const FlashcardSetPage = () => {
         }
       );
       console.log(response);
+      const newResponse = await fetchFlashcardSets();
+      setFlashcardSets(newResponse.data.data);
     } catch (error) {
       console.error("Error posting new flashcard set:", error);
     }

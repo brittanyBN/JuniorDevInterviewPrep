@@ -17,12 +17,12 @@ router.get("/set/:UserId", async (req, res, next) => {
     const { UserId } = req.params;
     const pagination = getPagination(page, size);
     const condition = {
-      [Op.or]: [
-        { "$User.role$": "admin" },
-        { UserId: UserId },
-      ],
+      [Op.or]: [{ "$User.role$": "admin" }, { UserId: UserId }],
     };
-    const flashcardSets = await flashcardSetService.getAll(pagination, condition);
+    const flashcardSets = await flashcardSetService.getAll(
+      pagination,
+      condition
+    );
 
     const totalCount = await flashcardSetService.countAll(condition);
     pagination.totalPages = Math.ceil(totalCount / pagination.limit);
@@ -36,8 +36,6 @@ router.get("/set/:UserId", async (req, res, next) => {
     next(err);
   }
 });
-
-
 
 router.get("/list/:id", async (req, res, next) => {
   try {
@@ -54,7 +52,7 @@ router.get("/list/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { name, UserId } = req.body;
     await flashcardSetSchema.validateAsync({

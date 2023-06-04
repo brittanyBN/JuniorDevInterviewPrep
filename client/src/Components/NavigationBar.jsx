@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./NavigationBar.css";
 
 export const NavigationBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      timerRef.current = setTimeout(handleLogout, 60 * 60 * 1000); // 55 minutes in milliseconds
+    }
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, [isLoggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -11,6 +21,7 @@ export const NavigationBar = () => {
     setIsLoggedIn(false);
     window.location.href = "/login";
   };
+
   return (
     <nav className="Main-navbar-wrapper">
       <Link to="/home" className="active">
