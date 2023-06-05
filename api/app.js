@@ -31,9 +31,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/home", indexRouter);
 app.use("/", authRouter);
-app.use("/codeChallenge", codeChallengeRouter);
-app.use("/codeChallengeCategory", codeChallengeCategoryRouter);
-app.use("/flashcard", flashcardRouter);
-app.use("/flashcardSet", flashcardSetRouter);
+app.use("/codeChallenges", codeChallengeRouter);
+app.use("/codeChallengeCategories", codeChallengeCategoryRouter);
+app.use("/flashcards", flashcardRouter);
+app.use("/flashcardSets", flashcardSetRouter);
 
 module.exports = app;

@@ -17,7 +17,7 @@ export const FlashcardsListPage = () => {
 
   const fetchFlashcards = async (flashcardId) => {
     try {
-      const response = await axios.get(`/flashcardSet/list/${flashcardId}`, {
+      const response = await axios.get(`/flashcardSets/list/${flashcardId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -55,7 +55,7 @@ export const FlashcardsListPage = () => {
 
     try {
       await axios.post(
-        "/flashcard",
+        "/flashcards",
         {
           question: question,
           answer: answer,
@@ -65,6 +65,7 @@ export const FlashcardsListPage = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );

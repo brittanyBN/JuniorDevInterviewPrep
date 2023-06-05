@@ -28,16 +28,18 @@ export const FlashcardSetPage = () => {
 
     try {
       const response = await axios.get(
-        `/flashcardSet/set/${id}?page=${currentPage}&size=${itemsPerPage}`,
+        `/flashcardSets/set/${id}?page=${currentPage}&size=${itemsPerPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "X-User-Role": "admin",
+            "Content-Type": "application/json",
           },
         }
       );
       setFlashcardSets(response.data.data);
       setTotalPages(response.data.pagination.totalPages);
+      return response;
     } catch (error) {
       console.error("Error fetching flashcard sets:", error);
     }
@@ -53,7 +55,7 @@ export const FlashcardSetPage = () => {
     console.log(data);
     try {
       const response = await axios.post(
-        "/flashcardSet",
+        "/flashcardSets",
         {
           name: data,
           UserId: id,
@@ -61,6 +63,7 @@ export const FlashcardSetPage = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );

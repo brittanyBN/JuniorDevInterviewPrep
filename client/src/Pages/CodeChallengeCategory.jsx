@@ -28,10 +28,11 @@ export const CodeChallengeCategoryPage = () => {
 
     try {
       const response = await axios.get(
-        `/codeChallengeCategory?page=${currentPage}&size=${itemsPerPage}`,
+        `/codeChallengeCategories?page=${currentPage}&size=${itemsPerPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );

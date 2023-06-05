@@ -43,7 +43,7 @@ export const CodeChallengePage = () => {
 
   const fetchCodeChallenge = async () => {
     try {
-      const response = await axios.get(`/codeChallengeCategory/${id}`, {
+      const response = await axios.get(`/codeChallengeCategories/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -62,7 +62,13 @@ export const CodeChallengePage = () => {
       setError("");
       setExecutedCode(""); // Reset executed code
 
-      const response = await axios.post("/codeChallenge/execute", { code });
+      const response = await axios.post("/codeChallenges/execute", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        code: code,
+      });
       const { consoleOutput, error, executedCode } = response.data;
       setConsoleOutput(consoleOutput);
       setError(error);
