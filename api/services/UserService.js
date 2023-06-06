@@ -12,7 +12,7 @@ class UserService {
 
   async getOne(email) {
     return this.User.findOne({
-      where: {email: email},
+      where: { email: email },
     });
   }
 
@@ -38,6 +38,26 @@ class UserService {
     return user;
   }
 
+  async refreshToken(email, refreshToken) {
+    const user = await this.getOne(email);
+    user.refreshToken = refreshToken;
+    await user.save();
+    return user;
+  }
+
+  async removeRefreshToken(refreshToken) {
+    const user = await this.findRefreshToken(refreshToken);
+    user.refreshToken = null;
+    await user.save();
+    return user;
+  }
+
+  async findRefreshToken(refreshToken) {
+    return this.User.findOne({
+      where: { refreshToken: refreshToken },
+    });
+  }
+
   async resetToken(email, resetToken) {
     const user = await this.getOne(email);
     user.resetToken = resetToken;
@@ -47,7 +67,7 @@ class UserService {
 
   async getOneByResetToken(resetToken) {
     return this.User.findOne({
-      where: {resetToken: resetToken},
+      where: { resetToken: resetToken },
     });
   }
 
@@ -59,7 +79,6 @@ class UserService {
     await user.destroy();
     return user;
   }
-
 }
 
 module.exports = UserService;

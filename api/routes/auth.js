@@ -11,6 +11,7 @@ const authentication = require("../middleware/authentication");
 const forgotPassword = require("../utils/forgotPassword");
 const resetPassword = require("../utils/resetPassword");
 const path = require("path");
+const { handleRefreshToken } = require("../utils/handleRefreshToken");
 
 router.get("/users", async (req, res, next) => {
   try {
@@ -53,21 +54,34 @@ router.post("/login", jsonParser, async (req, res, next) => {
             .json({ message: "Incorrect email or password" });
         }
         let token;
+        let refreshToken;
+        const user = { id: data.id, email: data.email, role: data.role };
         try {
           token = jwt.sign(
             { id: data.id, email: data.email, role: data.role },
             process.env.TOKEN_SECRET,
-            { expiresIn: "1 hr" }
+            { expiresIn: "15m" }
           );
-          return res
-            .status(200)
-            .json({
-              message: "Successfully logged in",
-              id: data.id,
-              email: data.email,
-              role: data.role,
-              token: token,
-            });
+          refreshToken = jwt.sign(
+            { id: data.id, email: data.email, role: data.role },
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: "1d" }
+          );
+          userService.refreshToken(data.email, refreshToken);
+          res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000,
+          });
+          return res.status(200).json({
+            message: "Successfully logged in",
+            id: data.id,
+            email: data.email,
+            role: data.role,
+            token: token,
+            refreshToken: refreshToken,
+          });
         } catch (err) {
           return res
             .status(500)
@@ -76,6 +90,16 @@ router.post("/login", jsonParser, async (req, res, next) => {
       }
     );
   });
+});
+
+router.get("/refreshToken", handleRefreshToken, (req, res) => {
+  try {
+    const accessToken = req.accessToken;
+    console.log(accessToken);
+    res.status(200).json({ accessToken });
+  } catch (err) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
 });
 
 router.post("/signup", async (req, res, next) => {
@@ -117,46 +141,58 @@ router.post("/signup", async (req, res, next) => {
 router.post("/forgotPassword", forgotPassword);
 
 router.get("/resetPassword/:resetToken", async (req, res, next) => {
-const resetToken = req.params.resetToken;
-    try {
-        const resetToken = req.params.resetToken;
-        console.log(resetToken);
-        res.status(200).json({
-            message: "Successfully used reset link",
-            data: resetToken,
-        });
-    } catch (err) {
-        next(err);
-    }
+  const resetToken = req.params.resetToken;
+  try {
+    const resetToken = req.params.resetToken;
+    console.log(resetToken);
+    res.status(200).json({
+      message: "Successfully used reset link",
+      data: resetToken,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.put("/resetPassword/:resetToken", resetPassword);
 
-router.post("/logout", authentication, async (req, res, next) => {
-  const { email } = req.body;
-  if (email === null) {
-    return res.status(400).json({ message: "Email is required." });
+router.get("/logout", async (req, res, next) => {
+  const cookies = req.cookies;
+  const refreshToken = cookies.refreshToken;
+  if (refreshToken === null) {
+    return res.status(204).json({ message: "User already logged out." });
   }
-  const user = await userService.getOne(email);
+  const user = userService.removeRefreshToken(refreshToken);
   if (user === null) {
-    return res.status(400).json({ message: "Provided email is not in use." });
+    return res.status(400).json({ message: "User does not exist." });
   }
-  res.status(200).json({ message: "Successfully logged out" });
+  res
+    .clearCookie("refreshToken", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    .json({
+      message: "Successfully logged out",
+    });
 });
 
 router.delete("/:id", async (req, res, next) => {
-    try {
-        const user = await userService.delete(req.params.id);
-        if (user === null) {
-            return res.status(400).json({ message: "User does not exist." });
-        }
-        res.status(200).json({
-            message: "Successfully deleted user",
-            data: user,
-        });
-    } catch (err) {
-        next(err);
+  try {
+    const userId = req.params.id;
+    console.log(userId);
+    const user = await userService.delete(userId);
+    if (user === null) {
+      return res.status(400).json({ message: "User does not exist." });
     }
+    res.status(200).json({
+      message: "Successfully deleted user",
+      data: user,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

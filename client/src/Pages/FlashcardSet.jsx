@@ -23,7 +23,7 @@ export const FlashcardSetPage = () => {
   async function fetchFlashcardSets() {
     if (!token) {
       alert("You must be logged in to add a new flashcard set");
-      return;
+      window.location.href = "/login";
     }
 
     try {

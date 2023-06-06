@@ -23,7 +23,7 @@ export const CodeChallengeCategoryPage = () => {
   const fetchCodeChallengeCategories = async () => {
     if (!token) {
       alert("You must be logged in to complete code challenges");
-      return;
+      window.location.href = "/login";
     }
 
     try {

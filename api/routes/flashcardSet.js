@@ -11,7 +11,7 @@ const flashcardSetSchema = require("../schemas/flashcardSet.schema");
 const { getPagination } = require("../utils/getPagination");
 const { Op } = require("sequelize");
 
-router.get("/set/:UserId", async (req, res, next) => {
+router.get("/set/:UserId", authentication, async (req, res, next) => {
   try {
     const { page, size } = req.query;
     const { UserId } = req.params;

@@ -54,3 +54,9 @@ input[type="submit"] {
   cursor: pointer;
   font-size: 18px;
 }
+
+#wrongCredentials {
+  color: red;
+  text-align: center;
+  display: none;
+}

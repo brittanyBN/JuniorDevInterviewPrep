@@ -28,16 +28,20 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: "member",
     },
     resetToken: {
-        type: Sequelize.DataTypes.STRING,
-        allowNull: true,
-    }
+      type: Sequelize.DataTypes.STRING,
+      allowNull: true,
+    },
+    refreshToken: {
+      type: Sequelize.DataTypes.STRING,
+      allowNull: true,
+    },
   });
 
   User.associate = function (models) {
-      User.hasMany(models.FlashcardSet, {
-        foreignKey: { allowNull: false },
-        onDelete: "CASCADE",
-      });
+    User.hasMany(models.FlashcardSet, {
+      foreignKey: { allowNull: false },
+      onDelete: "CASCADE",
+    });
     User.hasMany(models.CodeChallenge, {
       foreignKey: { allowNull: false },
       onDelete: "CASCADE",
