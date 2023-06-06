@@ -13,7 +13,7 @@ const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryS
 const { executeCode } = require("../utils/executeCode");
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 
-router.get("/", async (req, res, next) => {
+router.get("/", authentication, async (req, res, next) => {
   try {
     const codeChallenges = await codeChallengeService.getAll();
     res.status(200).json({
@@ -25,7 +25,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", authentication, async (req, res, next) => {
   try {
     const codeChallenge = await codeChallengeService.getOne(req.params.id);
     if (codeChallenge === null) {

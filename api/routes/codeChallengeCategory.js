@@ -10,7 +10,7 @@ const Joi = require("joi");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
 const { getPagination } = require("../utils/getPagination");
 
-router.get("/", async (req, res, next) => {
+router.get("/", authentication, async (req, res, next) => {
   try {
     const { page, size } = req.query;
     const pagination = getPagination(page, size);
@@ -27,7 +27,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", authentication, async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.getOne(
       req.params.id
@@ -53,14 +53,18 @@ router.post("/", authentication, async (req, res, next) => {
       name,
       UserId,
     });
-    await userService.get(UserId);
-    if (UserId === null) {
-      return res.status(400).json({ message: "User does not exist." });
+    const user = await userService.get(UserId);
+    if (user === null) {
+      return res.status(400).json({
+        data: user,
+        message: "User does not exist."
+      });
     }
     const codeChallengeCategory = await codeChallengeCategoryService.create(
       name,
       UserId
     );
+    console.log("Code Challenge Category: ", codeChallengeCategory);
     res.status(200).json({
       message: "Successfully created code challenge category",
       data: codeChallengeCategory,

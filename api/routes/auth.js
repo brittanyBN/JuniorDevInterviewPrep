@@ -80,7 +80,7 @@ router.post("/login", jsonParser, async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   const { name, email, password } = req.body;
-  const role = "member";
+  const role = "admin";
   if (name === null) {
     return res.status(400).json({ message: "Name is required." });
   }

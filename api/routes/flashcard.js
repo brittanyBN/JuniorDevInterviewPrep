@@ -11,7 +11,7 @@ const userService = new UserService(db);
 const FlashcardSetService = require("../services/FlashcardSetService");
 const flashcardSetService = new FlashcardSetService(db);
 
-router.get("/", async (req, res, next) => {
+router.get("/", authentication, async (req, res, next) => {
   try {
     const flashcards = await flashcardService.getAll();
     res.status(200).json({
