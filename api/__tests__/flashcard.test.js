@@ -1,6 +1,10 @@
 const request = require('supertest');
 const app = require('../app');
 require('dotenv').config();
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 describe('Flashcards: GET, POST, PUT, DELETE', () => {
     let token;

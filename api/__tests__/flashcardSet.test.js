@@ -1,5 +1,9 @@
 const request = require('supertest');
 const app = require('../app');
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 describe('Flashcard Sets: GET, POST, PUT, DELETE', () => {
     let token;

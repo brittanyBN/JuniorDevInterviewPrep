@@ -1,6 +1,10 @@
 const request = require('supertest');
 const app = require('../app');
 require('dotenv').config();
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 describe('Auth: login', () => {
     it('should login a user and return 200', async () => {
