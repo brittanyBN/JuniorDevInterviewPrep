@@ -6,11 +6,12 @@ const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
 const authentication = require("../middleware/authentication");
+const authorization = require("../middleware/authorization");
 const Joi = require("joi");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
 const { getPagination } = require("../utils/getPagination");
 
-router.get("/", authentication, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const { page, size } = req.query;
     const pagination = getPagination(page, size);
@@ -27,7 +28,7 @@ router.get("/", authentication, async (req, res, next) => {
   }
 });
 
-router.get("/:id", authentication, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.getOne(
       req.params.id
@@ -46,7 +47,7 @@ router.get("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", authorization, async (req, res, next) => {
   try {
     const { name, UserId } = req.body;
     await codeChallengeCategorySchema.validateAsync({
@@ -74,7 +75,7 @@ router.post("/", authentication, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authentication, async (req, res, next) => {
+router.put("/:id", authorization, async (req, res, next) => {
   try {
     const { name, UserId } = req.body;
     const id = req.params.id;
@@ -106,7 +107,7 @@ router.put("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authentication, async (req, res, next) => {
+router.delete("/:id", authorization, async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.delete(
       req.params.id

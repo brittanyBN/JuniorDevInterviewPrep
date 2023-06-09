@@ -3,6 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
+const authentication = require('./middleware/authentication')
 
 const indexRouter = require("./routes");
 const authRouter = require("./routes/auth");
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/home", indexRouter);
 app.use("/", authRouter);
 app.use("/codeChallenges", codeChallengeRouter);
+app.use(authentication);
 app.use("/codeChallengeCategories", codeChallengeCategoryRouter);
 app.use("/flashcards", flashcardRouter);
 app.use("/flashcardSets", flashcardSetRouter);

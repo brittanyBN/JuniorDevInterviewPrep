@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { NavigationBar } from "../Components/NavigationBar";
+import React, {useEffect, useState} from "react";
+import {NavigationBar} from "../Components/NavigationBar";
 import axios from "axios";
 import "./PracticeSet.css";
-import { CardSetCard } from "../Components/CardSetCard";
-import { Link } from "react-router-dom";
+import {CardSetCard} from "../Components/CardSetCard";
+import {Link} from "react-router-dom";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
@@ -22,28 +22,29 @@ export const CodeChallengeCategoryPage = () => {
 
   const fetchCodeChallengeCategories = async () => {
     if (!token) {
-      alert("You must be logged in to complete code challenges");
-      return;
-    }
+      alert("You must be logged in to see code challenge categories");
+      window.location.href = "/login";
+    } else {
 
-    try {
-      const response = await axios.get(
-        `/codeChallengeCategories?page=${currentPage}&size=${itemsPerPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setCodeChallengeCategories(response.data.data);
-      setTotalPages(response.data.pagination.totalPages);
-    } catch (error) {
-      console.error("Error fetching code challenge categories:", error);
+      try {
+        const response = await axios.get(
+            `/codeChallengeCategories?page=${currentPage}&size=${itemsPerPage}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+        );
+        setCodeChallengeCategories(response.data.data);
+        setTotalPages(response.data.pagination.totalPages);
+      } catch (error) {
+        console.error("Error fetching code challenge categories:", error);
+      }
     }
-  };
+  }
 
-  function handlePreviousPage() {
+      function handlePreviousPage() {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }

@@ -21,7 +21,7 @@ class CodeChallengeCategoryService {
       include: [
         {
           model: this.client.models.CodeChallenge,
-          attributes: ["id", "question", "solution", "hint", "progress"],
+          attributes: ["id", "question", "solution", "hint"],
         },
       ],
     });

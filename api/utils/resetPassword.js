@@ -12,6 +12,10 @@ const resetPassword = async (req, res, next) => {
         return res.status(404).json({ message: "User not found" });
     }
     const { newPassword } = req.body;
+    const { confirmPassword } = req.body;
+    if(newPassword !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords must match"})
+    }
     const salt = crypto.randomBytes(16);
     const encryptedPassword = await new Promise((resolve, reject) => {
         crypto.pbkdf2(

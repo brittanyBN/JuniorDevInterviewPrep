@@ -1,7 +1,7 @@
-import { NavigationBar } from "../Components/NavigationBar";
-import { useParams } from "react-router-dom";
+import {NavigationBar} from "../Components/NavigationBar";
+import {useParams} from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "./FlashcardsList.css";
 
 export const FlashcardsListPage = () => {
@@ -16,20 +16,25 @@ export const FlashcardsListPage = () => {
   }, [id, token, userId]);
 
   const fetchFlashcards = async (flashcardId) => {
-    try {
-      const response = await axios.get(`/flashcardSets/list/${flashcardId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const { Flashcards, UserId } = response.data.data;
-      setCreatorId(UserId);
-      setFlashcards(Flashcards);
-      return response;
-    } catch (error) {
-      console.error("Error fetching flashcards:", error);
+    if (!token) {
+      alert("You must be logged in to complete code challenges");
+      window.location.href = "/login";
+    } else {
+      try {
+        const response = await axios.get(`/flashcardSets/list/${flashcardId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const {Flashcards, UserId} = response.data.data;
+        setCreatorId(UserId);
+        setFlashcards(Flashcards);
+        return response;
+      } catch (error) {
+        console.error("Error fetching flashcards:", error);
+      }
     }
-  };
+  }
 
   const practiceFlashcards = () => {
     if (flashcards.length === 0) {

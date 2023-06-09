@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { NavigationBar } from "../Components/NavigationBar";
-import { CardSetCard } from "../Components/CardSetCard";
+import React, {useEffect, useState} from "react";
+import {NavigationBar} from "../Components/NavigationBar";
+import {CardSetCard} from "../Components/CardSetCard";
 import "./PracticeSet.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export const FlashcardSetPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
@@ -18,25 +18,27 @@ export const FlashcardSetPage = () => {
     fetchFlashcardSets().then(() => {
       console.log("Flashcard sets fetched");
     });
-  }, [token, id, currentPage]);
+  }, [token, currentPage]);
 
   async function fetchFlashcardSets() {
     if (!token) {
       alert("You must be logged in to add a new flashcard set");
-      return;
+      window.location.href = "/login";
     }
 
     try {
       const response = await axios.get(
-        `/flashcardSets/set/${id}?page=${currentPage}&size=${itemsPerPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "X-User-Role": "admin",
-            "Content-Type": "application/json",
-          },
-        }
+          `/flashcardSets/set?page=${currentPage}&size=${itemsPerPage}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "X-User-Role": "admin",
+              "Content-Type": "application/json",
+            },
+          }
       );
+      // console.log(response);
+      // console.log(response.data.data)
       setFlashcardSets(response.data.data);
       setTotalPages(response.data.pagination.totalPages);
       return response;

@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import axios from "axios";
 import "./CodeChallenge.css";
-import { NavigationBar } from "../Components/NavigationBar";
-import { HintButton } from "../Components/HintButton";
-import { SolutionButton } from "../Components/SolutionButton";
-import { BetterSolutionButton } from "../Components/BetterSolutionButton";
+import {NavigationBar} from "../Components/NavigationBar";
+import {HintButton} from "../Components/HintButton";
+import {SolutionButton} from "../Components/SolutionButton";
+import {BetterSolutionButton} from "../Components/BetterSolutionButton";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
@@ -29,9 +29,9 @@ export const CodeChallengePage = () => {
     setCurrentCodeChallengeIndex(0);
   }, [codeChallenges]);
 
-  const handleNextCodeChallenge = () => {
+  const handleNextCodeChallenge = async () => {
     setCurrentCodeChallengeIndex((prevIndex) =>
-      prevIndex === codeChallenges.length - 1 ? 0 : prevIndex + 1
+        prevIndex === codeChallenges.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -42,18 +42,23 @@ export const CodeChallengePage = () => {
   };
 
   const fetchCodeChallenge = async () => {
-    try {
-      const response = await axios.get(`/codeChallengeCategories/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const codeChallengeData = response.data.data.CodeChallenges;
-      setCodeChallenges(codeChallengeData);
-    } catch (error) {
-      console.error("Error fetching code challenge:", error);
+    if (!token) {
+      alert("You must be logged in to complete code challenges");
+      window.location.href = "/login";
+    } else {
+      try {
+        const response = await axios.get(`/codeChallengeCategories/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const codeChallengeData = response.data.data.CodeChallenges;
+        setCodeChallenges(codeChallengeData);
+      } catch (error) {
+        console.error("Error fetching code challenge:", error);
+      }
     }
-  };
+  }
 
   const runCode = async () => {
     try {

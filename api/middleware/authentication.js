@@ -1,28 +1,26 @@
 const jwt = require("jsonwebtoken");
+require('dotenv').config();
 
-const authentication = (req, res, next) => {
-  const { authorization } = req.headers;
+const authentication = (req, res, next) =>{
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-  if (
-    typeof authorization !== "string" ||
-    !authorization.startsWith("Bearer ")
-  ) {
-    const error = new Error("Invalid authorization header");
-    error.statusCode = 401;
-    return next(error);
+  if(!token)
+  {
+    return res.status(401).json({
+      message: "Error! Token was not provided."
+    });
   }
-
-  const token = authorization.substring(7);
-
-  try {
-    const data = jwt.verify(token, process.env.TOKEN_SECRET);
-    req.userId = data.userId;
+  try{
+    let data = jwt.verify(token, process.env.TOKEN_SECRET );
+    req.userId = data.id;
     return next();
-  } catch (err) {
-    const error = new Error("Token signature verification failed");
-    error.statusCode = 401;
-    return next(error);
   }
-};
+  catch(err){
+    return res.status(400).json({
+      data: err
+    })
+  }
+}
 
 module.exports = authentication;

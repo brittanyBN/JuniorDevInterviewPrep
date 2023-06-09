@@ -17,10 +17,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    progress: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    },
     betterSolution: {
         type: Sequelize.STRING,
         allowNull: true,

@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("../models");
 const FlashcardService = require("../services/FlashcardService");
 const flashcardService = new FlashcardService(db);
-const authentication = require("../middleware/authentication");
 const Joi = require("joi");
 const flashcardSchema = require("../schemas/flashcard.schema");
 const UserService = require("../services/UserService");
@@ -11,7 +10,7 @@ const userService = new UserService(db);
 const FlashcardSetService = require("../services/FlashcardSetService");
 const flashcardSetService = new FlashcardSetService(db);
 
-router.get("/", authentication, async (req, res, next) => {
+router.get("/",  async (req, res, next) => {
   try {
     const flashcards = await flashcardService.getAll();
     res.status(200).json({
@@ -23,7 +22,7 @@ router.get("/", authentication, async (req, res, next) => {
   }
 });
 
-router.get("/:id", authentication, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const flashcard = await flashcardService.getOne(req.params.id);
     if (flashcard === null) {
@@ -38,7 +37,7 @@ router.get("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { question, answer, UserId, FlashcardSetId } = req.body;
     await flashcardSchema.validateAsync({
@@ -70,7 +69,7 @@ router.post("/", authentication, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authentication, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
     const { question, answer, UserId, FlashcardSetId } = req.body;
@@ -108,7 +107,7 @@ router.put("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authentication, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const flashcard = await flashcardService.delete(req.params.id);
     if (!flashcard) {

@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require("../models");
 const CodeChallengeService = require("../services/CodeChallengeService");
 const codeChallengeService = new CodeChallengeService(db);
-const authentication = require("../middleware/authentication");
 const authorization = require("../middleware/authorization");
+const authentication = require("../middleware/authentication");
 const Joi = require("joi");
 const codeChallengeSchema = require("../schemas/codeChallenge.schema");
 const UserService = require("../services/UserService");
@@ -42,13 +42,12 @@ router.get("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", authorization, authentication, async (req, res, next) => {
   try {
     const {
       question,
       solution,
       hint,
-      progress,
       betterSolution,
       UserId,
       CodeChallengeCategoryId,
@@ -57,14 +56,15 @@ router.post("/", authentication, async (req, res, next) => {
       question,
       solution,
       hint,
-      progress,
       betterSolution,
       UserId,
       CodeChallengeCategoryId,
     });
     const user = await userService.get(UserId);
     if (user === null) {
-      return res.status(400).json({ message: "User does not exist." });
+      return res
+          .status(400)
+          .json({ message: "User does not exist." });
     }
     const category = await codeChallengeCategoryService.getOne(
       CodeChallengeCategoryId
@@ -78,7 +78,6 @@ router.post("/", authentication, async (req, res, next) => {
       question,
       solution,
       hint,
-      progress,
       betterSolution,
       UserId,
       CodeChallengeCategoryId
@@ -94,13 +93,12 @@ router.post("/", authentication, async (req, res, next) => {
 
 router.post("/execute", executeCode);
 
-router.put("/:id", authentication, async (req, res, next) => {
+router.put("/:id", authorization, authentication, async (req, res, next) => {
   try {
     const {
       question,
       solution,
       hint,
-      progress,
       betterSolution,
       UserId,
       CodeChallengeCategoryId,
@@ -110,7 +108,6 @@ router.put("/:id", authentication, async (req, res, next) => {
       question,
       solution,
       hint,
-      progress,
       betterSolution,
       UserId,
       CodeChallengeCategoryId,
@@ -132,7 +129,6 @@ router.put("/:id", authentication, async (req, res, next) => {
       question,
       solution,
       hint,
-      progress,
       betterSolution,
       UserId,
       CodeChallengeCategoryId
@@ -146,7 +142,7 @@ router.put("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authentication, async (req, res, next) => {
+router.delete("/:id", authorization, authentication, async (req, res, next) => {
   try {
     const codeChallenge = await codeChallengeService.delete(req.params.id);
     res.status(200).json({

@@ -3,25 +3,30 @@ const router = express.Router();
 const db = require("../models");
 const FlashcardSetService = require("../services/FlashcardSetService");
 const flashcardSetService = new FlashcardSetService(db);
-const authentication = require("../middleware/authentication");
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
 const Joi = require("joi");
 const flashcardSetSchema = require("../schemas/flashcardSet.schema");
 const { getPagination } = require("../utils/getPagination");
 const { Op } = require("sequelize");
+const jwt = require("jsonwebtoken");
 
-router.get("/set/:UserId", authentication, async (req, res, next) => {
+router.get("/set", async (req, res, next) => {
   try {
     const { page, size } = req.query;
-    const { UserId } = req.params;
+    const token = req.headers.authorization.split(' ')[1];
+    console.log(token)
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log(decodedToken);
+    const userId = decodedToken.id
+    console.log(userId);
     const pagination = getPagination(page, size);
     const condition = {
-      [Op.or]: [{ "$User.role$": "admin" }, { UserId: UserId }],
+      [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
     };
     const flashcardSets = await flashcardSetService.getAll(
-      pagination,
-      condition
+        pagination,
+        condition
     );
 
     const totalCount = await flashcardSetService.countAll(condition);
@@ -37,7 +42,7 @@ router.get("/set/:UserId", authentication, async (req, res, next) => {
   }
 });
 
-router.get("/list/:id", authentication, async (req, res, next) => {
+router.get("/list/:id", async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.getOne(req.params.id);
     if (flashcardSet === null) {
@@ -52,7 +57,7 @@ router.get("/list/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { name, UserId } = req.body;
     await flashcardSetSchema.validateAsync({
@@ -73,7 +78,7 @@ router.post("/", authentication, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authentication, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const { name, UserId } = req.body;
     const id = req.params.id;
@@ -99,7 +104,7 @@ router.put("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authentication, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.delete(req.params.id);
     if (flashcardSet === null) {

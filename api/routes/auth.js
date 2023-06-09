@@ -117,7 +117,6 @@ router.post("/signup", async (req, res, next) => {
 router.post("/forgotPassword", forgotPassword);
 
 router.get("/resetPassword/:resetToken", async (req, res, next) => {
-const resetToken = req.params.resetToken;
     try {
         const resetToken = req.params.resetToken;
         console.log(resetToken);
@@ -144,7 +143,7 @@ router.post("/logout", authentication, async (req, res, next) => {
   res.status(200).json({ message: "Successfully logged out" });
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", authentication, async (req, res, next) => {
     try {
         const user = await userService.delete(req.params.id);
         if (user === null) {

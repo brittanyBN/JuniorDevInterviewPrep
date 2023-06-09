@@ -15,21 +15,34 @@ const executeCode = (req, res) => {
 const runCode = (code) => {
   const sandbox = {
     console: {
-      log: (message) => {
-        console.log("message", message);
-        sandbox.console.log = message;
+      log: (...args) => {
+        console.log(...args);
+        sandbox.console.logOutput.push(args.map(String).join(" "));
       },
+      error: (message) => {
+        console.error("error", message);
+        sandbox.console.error = message;
+      },
+      logOutput: [],
     },
     executedCode: code,
+    myFunction: () => {
+      console.log("Executing myFunction");
+    },
   };
 
-  const script = new Script(code);
-  const context = new createContext(sandbox);
-  script.runInContext(context);
+  try {
+    const script = new Script(code);
+    const context = new createContext(sandbox);
+    script.runInContext(context);
+  } catch (error) {
+    console.error("Error during code execution:", error);
+    throw error;
+  }
 
   return {
     executedCode: sandbox.executedCode,
-    consoleOutput: sandbox.console.log,
+    consoleOutput: sandbox.console.logOutput,
   };
 };
 

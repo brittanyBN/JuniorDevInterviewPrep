@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import "./Login.css";
 import axios from "axios";
 
@@ -14,16 +14,13 @@ const Login = () => {
 
       if (response.status === 200) {
         const { token, id } = response.data;
-        const expiresIn = 60;
-        const expirationDate = new Date(Date.now() + expiresIn * 1000);
 
         const tokenData = {
           token,
           id,
-          expirationDate,
         };
 
-        localStorage.setItem("token", JSON.stringify(tokenData));
+        localStorage.setItem("token", token);
         localStorage.setItem("id", id);
         localStorage.setItem("role", response.data.role);
         window.location.href = "/home";
@@ -36,25 +33,6 @@ const Login = () => {
     }
   };
 
-  const checkTokenExpiration = () => {
-    const tokenDataString = localStorage.getItem("token");
-
-    if (tokenDataString) {
-      const tokenData = JSON.parse(tokenDataString);
-      const expirationDate = new Date(tokenData.expirationDate);
-
-      const remainingTime = expirationDate.getTime() - Date.now();
-      const expiresInMinutes = Math.floor(remainingTime / 1000 / 60);
-
-      if (expiresInMinutes <= 60 && expiresInMinutes > 0) {
-      } else if (expiresInMinutes <= 0) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        window.location.href = "/login";
-      }
-    }
-  };
-
   const forgotPassword = () => {
     window.location.href = "/forgotPassword";
   };
@@ -62,10 +40,6 @@ const Login = () => {
   const handleSignup = () => {
     window.location.href = "/signup";
   };
-
-  useEffect(() => {
-    checkTokenExpiration();
-  }, []);
 
   return (
       <div className="container">
