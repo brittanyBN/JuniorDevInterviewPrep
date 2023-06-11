@@ -19,7 +19,8 @@ their own.
 - cd /client
 - `npm start` in the api folder and the client folder.
 - The client and api must run on different ports
-- Test with Jest before inserting data into the database.
+- Use the .env-example as a template for your own .env file
+- Test with Jest before inserting data into the database. (npm test)
 - After testing, create your first user, which will be your admin user.
 - After creating your admin user, update the user role in /api/routes/auth on at line
 83 from "admin" to "member."
@@ -50,5 +51,6 @@ their own.
 - Frontend Login/Signup: https://www.youtube.com/watch?v=brcHK3P6ChQ&t=0s full tutorial
 - IDE implementation: https://www.youtube.com/watch?v=wcVxX7lu2d4
 - Forgot/Reset password: https://medium.com/geekculture/forgot-password-in-signup-application-with-nodejs-and-mongodb-part-4-51378dddd716
+- Technology documentation used for guidance
 - chatGPT to optimize code and help with client side code
 - Dennis and Daniel helped debug and gave tips for how to continue with the project
