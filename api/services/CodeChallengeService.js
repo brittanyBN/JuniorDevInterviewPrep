@@ -26,9 +26,6 @@ class CodeChallengeService {
     const codeChallenge = await this.CodeChallenge.findOne({
       where: { id },
     });
-    if (!codeChallenge) {
-      return "Code Challenge not found";
-    }
     return codeChallenge;
   }
 
