@@ -52,5 +52,3 @@ their own.
 - IDE implementation: https://www.youtube.com/watch?v=wcVxX7lu2d4
 - Forgot/Reset password: https://medium.com/geekculture/forgot-password-in-signup-application-with-nodejs-and-mongodb-part-4-51378dddd716
 - Technology documentation used for guidance
-- chatGPT to optimize code and help with client side code
-- Dennis and Daniel helped debug and gave tips for how to continue with the project
