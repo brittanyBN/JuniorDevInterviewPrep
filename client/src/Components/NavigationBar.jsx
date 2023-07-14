@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import {Link} from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
 import "./NavigationBar.css";
 
 export const NavigationBar = () => {
@@ -23,7 +23,7 @@ export const NavigationBar = () => {
   };
 
   return (
-    <nav className="Main-navbar-wrapper">
+    <nav className="Main-navbar-wrapper" aria-labelledby="mainnavheader">
       <Link to="/home" className="active">
         Home
       </Link>

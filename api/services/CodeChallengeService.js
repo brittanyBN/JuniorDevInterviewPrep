@@ -9,7 +9,6 @@ class CodeChallengeService {
     solution,
     hint,
     betterSolution,
-    UserId,
     CodeChallengeCategoryId
   ) {
     return this.CodeChallenge.create({
@@ -17,7 +16,6 @@ class CodeChallengeService {
       solution: solution,
       hint: hint,
       betterSolution: betterSolution,
-      UserId: UserId,
       CodeChallengeCategoryId: CodeChallengeCategoryId,
     });
   }
@@ -42,7 +40,6 @@ class CodeChallengeService {
     solution,
     hint,
     betterSolution,
-    UserId,
     CodeChallengeCategoryId
   ) {
     const codeChallenge = await this.getOne(id);
@@ -50,7 +47,6 @@ class CodeChallengeService {
     codeChallenge.solution = solution;
     codeChallenge.hint = hint;
     codeChallenge.betterSolution = betterSolution;
-    codeChallenge.UserId = UserId;
     codeChallenge.CodeChallengeCategoryId = CodeChallengeCategoryId;
     await codeChallenge.save();
     return codeChallenge;

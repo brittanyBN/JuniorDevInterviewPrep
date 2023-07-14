@@ -18,20 +18,13 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
     betterSolution: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    }
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
   });
 
   CodeChallenge.associate = function (models) {
     CodeChallenge.belongsTo(models.CodeChallengeCategory, {
-      foreignKey: {
-        allowNull: false,
-      },
-      onDelete: "CASCADE",
-    });
-
-    CodeChallenge.belongsTo(models.User, {
       foreignKey: {
         allowNull: false,
       },

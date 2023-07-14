@@ -7,8 +7,6 @@ const authorization = require("../middleware/authorization");
 const authentication = require("../middleware/authentication");
 const Joi = require("joi");
 const codeChallengeSchema = require("../schemas/codeChallenge.schema");
-const UserService = require("../services/UserService");
-const userService = new UserService(db);
 const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryService");
 const { executeCode } = require("../utils/executeCode");
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
@@ -49,7 +47,6 @@ router.post("/", authorization, authentication, async (req, res, next) => {
       solution,
       hint,
       betterSolution,
-      UserId,
       CodeChallengeCategoryId,
     } = req.body;
     await codeChallengeSchema.validateAsync({
@@ -57,15 +54,8 @@ router.post("/", authorization, authentication, async (req, res, next) => {
       solution,
       hint,
       betterSolution,
-      UserId,
       CodeChallengeCategoryId,
     });
-    const user = await userService.get(UserId);
-    if (user === null) {
-      return res
-          .status(400)
-          .json({ message: "User does not exist." });
-    }
     const category = await codeChallengeCategoryService.getOne(
       CodeChallengeCategoryId
     );
@@ -79,7 +69,6 @@ router.post("/", authorization, authentication, async (req, res, next) => {
       solution,
       hint,
       betterSolution,
-      UserId,
       CodeChallengeCategoryId
     );
     res.status(200).json({
@@ -100,7 +89,6 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
       solution,
       hint,
       betterSolution,
-      UserId,
       CodeChallengeCategoryId,
     } = req.body;
     const id = req.params.id;
@@ -109,13 +97,8 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
       solution,
       hint,
       betterSolution,
-      UserId,
       CodeChallengeCategoryId,
     });
-    const user = await userService.get(UserId);
-    if (user === null) {
-      return res.status(400).json({ message: "User does not exist." });
-    }
     const category = await codeChallengeCategoryService.getOne(
       CodeChallengeCategoryId
     );
@@ -130,7 +113,6 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
       solution,
       hint,
       betterSolution,
-      UserId,
       CodeChallengeCategoryId
     );
     res.status(200).json({

@@ -68,6 +68,11 @@ router.post("/", async (req, res, next) => {
     if (validateUser === null) {
       return res.status(400).json({ message: "User does not exist." });
     }
+    const checkDuplicateName = await flashcardSetService.getByName(name);
+    console.log(checkDuplicateName);
+    if (checkDuplicateName !== null) {
+      return res.status(400).json({ message: "Flashcard Set already exists"});
+    }
     const flashcardSet = await flashcardSetService.create(name, UserId);
     res.status(200).json({
       message: "Successfully created code challenge category",

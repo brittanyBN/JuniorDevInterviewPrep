@@ -73,6 +73,9 @@ async countAll(condition) {
     return flashcardSet;
   }
 
+    async getByName(name) {
+      return this.FlashcardSet.findOne({where: {name: name}});
+    }
 }
 
 module.exports = FlashcardSetService;
