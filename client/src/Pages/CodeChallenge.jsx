@@ -50,7 +50,6 @@ export const CodeChallengePage = () => {
   }, [id, token, userId, selectedLanguage]);
 
   useEffect(() => {
-    console.log("selectedLanguage:", selectedLanguage);
     const codeMirrorEditor = CodeMirror.fromTextArea(editorRef.current, {
       mode:
           selectedLanguage === "5e5d8c79-ffdf-4365-85fb-c35d613a0272"
@@ -93,11 +92,11 @@ export const CodeChallengePage = () => {
       let endpoint;
 
       if (selectedLanguage === "5e5d8c79-ffdf-4365-85fb-c35d613a0272") {
-        endpoint = "/codeChallenges/executeJava"; // Endpoint for Java
+        endpoint = "/codeChallenges/executeJava";
       } else if (selectedLanguage === "404c0329-7085-42dd-a41f-563ba877e981") {
-        endpoint = "/codeChallenges/executeCSharp"; // Endpoint for C#
+        endpoint = "/codeChallenges/executeCSharp";
       } else if (selectedLanguage === "e46faef5-16cb-4a9f-a3a4-10b3ea325ca6") {
-        endpoint = "/codeChallenges/executeJavascript"; // Endpoint for JavaScript
+        endpoint = "/codeChallenges/executeJavascript";
       }
 
       const response = await axios.post(

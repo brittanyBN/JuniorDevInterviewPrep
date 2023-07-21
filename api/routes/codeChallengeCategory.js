@@ -5,9 +5,7 @@ const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryS
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
-const authentication = require("../middleware/authentication");
 const authorization = require("../middleware/authorization");
-const Joi = require("joi");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
 const { getPagination } = require("../utils/getPagination");
 
@@ -85,7 +83,6 @@ router.post("/", authorization, async (req, res, next) => {
       UserId,
         ProgramLanguageId
     );
-    console.log("Code Challenge Category: ", codeChallengeCategory);
     res.status(200).json({
       message: "Successfully created code challenge category",
       data: codeChallengeCategory,

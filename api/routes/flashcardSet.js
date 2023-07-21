@@ -5,22 +5,17 @@ const FlashcardSetService = require("../services/FlashcardSetService");
 const flashcardSetService = new FlashcardSetService(db);
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
-const Joi = require("joi");
 const flashcardSetSchema = require("../schemas/flashcardSet.schema");
 const { getPagination } = require("../utils/getPagination");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
-const extractUserId = require("../middleware/extractUserId");
 
 router.get("/set", async (req, res, next) => {
   try {
     const { page, size } = req.query;
     const token = req.headers.authorization.split(' ')[1];
-    console.log(token)
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    console.log(decodedToken);
     const userId = decodedToken.id
-    console.log(userId);
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
@@ -47,20 +42,14 @@ router.get("/language/:programLanguageId", async (req, res, next) => {
   try {
     const { page, size } = req.query;
     const token = req.headers.authorization.split(' ')[1];
-    console.log("TOKEN", token);
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    console.log("DECODED TOKEN", decodedToken);
     const userId = decodedToken.id
-    console.log(userId);
     const pagination = getPagination(page, size);
     const condition = {
-      [Op.or]: [{ "$User.role$": "admin" }, { UserId: req.userId }],
+      [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
     };
     const programLanguageId = req.params.programLanguageId;
-    console.log("LANGUAGE ID", programLanguageId);
-
     const flashcardSets = await flashcardSetService.getByLanguage(pagination, condition, programLanguageId);
-    console.log(flashcardSets);
 
     const totalCount = await flashcardSetService.countAll(condition);
     pagination.totalPages = Math.ceil(totalCount / pagination.limit);
@@ -108,7 +97,6 @@ router.post("/", async (req, res, next) => {
       return res.status(400).json({ message: "User does not exist." });
     }
     const checkDuplicateName = await flashcardSetService.getByName(name);
-    console.log(checkDuplicateName);
     if (checkDuplicateName !== null) {
       return res.status(400).json({ message: "Flashcard Set already exists"});
     }

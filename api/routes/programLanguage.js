@@ -2,10 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const ProgramLanguageService = require("../services/ProgramLanguageService");
-const authentication = require("../middleware/authentication");
-const authorization = require("../middleware/authorization");
-const codeChallengeSchema = require("../schemas/codeChallenge.schema");
-const {executeCode} = require("../utils/executeJavascript");
 const programLanguageService = new ProgramLanguageService(db);
 
 router.get("/", async (req, res, next) => {
