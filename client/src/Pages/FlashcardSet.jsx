@@ -3,7 +3,7 @@ import {NavigationBar} from '../Components/NavigationBar';
 import {CardSetCard} from '../Components/CardSetCard';
 import './PracticeSet.css';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 
 export const FlashcardSetPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
@@ -11,14 +11,15 @@ export const FlashcardSetPage = () => {
   const [id] = useState(localStorage.getItem('id'));
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { selectedLanguage } = useParams(); // Get the selectedLanguage from the URL params
 
   const itemsPerPage = 8;
 
   useEffect(() => {
-    fetchFlashcardSets().then(() => {
+     fetchFlashcardSets().then(() => {
       console.log('Flashcard sets fetched');
     });
-  }, [token, currentPage]);
+  }, [token, currentPage, selectedLanguage]);
 
   async function fetchFlashcardSets() {
     if (!token) {
@@ -27,20 +28,35 @@ export const FlashcardSetPage = () => {
     }
 
     try {
-      const response = await axios.get(`/flashcardSets/set?page=${currentPage}&size=${itemsPerPage}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'X-User-Role': 'admin',
-          'Content-Type': 'application/json',
-        },
-      });
-      setFlashcardSets(response.data.data);
-      setTotalPages(response.data.pagination.totalPages);
-      return response;
+      if (selectedLanguage !== undefined) {
+        console.log("selected LANGUAGE", selectedLanguage);
+        const response = await axios.get(`/flashcardSets/language/${selectedLanguage}?page=${currentPage}&size=${itemsPerPage}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'X-User-Role': 'admin',
+            'Content-type': 'application/json',
+          },
+        });
+        setFlashcardSets(response.data.data);
+        setTotalPages(response.data.pagination.totalPages);
+        return response;
+      } else {
+        const response = await axios.get(`/flashcardSets/set?page=${currentPage}&size=${itemsPerPage}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'X-User-Role': 'admin',
+            'Content-Type': 'application/json',
+          },
+        });
+        setFlashcardSets(response.data.data);
+        setTotalPages(response.data.pagination.totalPages);
+        return response;
+      }
     } catch (error) {
       console.error('Error fetching flashcard sets:', error);
     }
   }
+
 
   async function addNewFlashcardSet() {
     if (!token) {
@@ -49,13 +65,13 @@ export const FlashcardSetPage = () => {
     }
 
     let data = prompt('Enter the name of the new flashcard set');
-    console.log(data);
     try {
       const response = await axios.post(
           '/flashcardSets',
           {
             name: data,
             UserId: id,
+            ProgramLanguageId: selectedLanguage
           },
           {
             headers: {
@@ -64,7 +80,6 @@ export const FlashcardSetPage = () => {
             },
           }
       );
-      console.log(response);
       const newResponse = await fetchFlashcardSets();
       setFlashcardSets(newResponse.data.data);
     } catch (error) {

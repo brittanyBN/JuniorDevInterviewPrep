@@ -28,6 +28,24 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/language/:programLanguageId", async (req, res, next) => {
+  try {
+    const { page, size } = req.query;
+    const pagination = getPagination(page, size);
+    const programLanguageId = req.params.programLanguageId;
+    const codeChallengeCategories = await codeChallengeCategoryService.getByLanguage(pagination, programLanguageId);
+    const totalCount = await codeChallengeCategoryService.countAll();
+    pagination.totalPages = Math.ceil(totalCount / pagination.limit);
+    res.status(200).json({
+      message: "Successfully fetched all code challenge categories",
+      data: codeChallengeCategories,
+      pagination: pagination,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.getOne(
@@ -49,10 +67,11 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", authorization, async (req, res, next) => {
   try {
-    const { name, UserId } = req.body;
+    const { name, UserId, ProgramLanguageId } = req.body;
     await codeChallengeCategorySchema.validateAsync({
       name,
       UserId,
+      ProgramLanguageId
     });
     const user = await userService.get(UserId);
     if (user === null) {
@@ -63,7 +82,8 @@ router.post("/", authorization, async (req, res, next) => {
     }
     const codeChallengeCategory = await codeChallengeCategoryService.create(
       name,
-      UserId
+      UserId,
+        ProgramLanguageId
     );
     console.log("Code Challenge Category: ", codeChallengeCategory);
     res.status(200).json({
@@ -77,11 +97,12 @@ router.post("/", authorization, async (req, res, next) => {
 
 router.put("/:id", authorization, async (req, res, next) => {
   try {
-    const { name, UserId } = req.body;
+    const { name, UserId, ProgramLanguageId } = req.body;
     const id = req.params.id;
     await codeChallengeCategorySchema.validateAsync({
       name,
       UserId,
+      ProgramLanguageId
     });
     const user = await userService.get(UserId);
     if (user === null) {
@@ -96,7 +117,8 @@ router.put("/:id", authorization, async (req, res, next) => {
     const codeChallengeCategory = await codeChallengeCategoryService.update(
       id,
       name,
-      UserId
+      UserId,
+        ProgramLanguageId
     );
     res.status(200).json({
       message: "Successfully updated code challenge category",

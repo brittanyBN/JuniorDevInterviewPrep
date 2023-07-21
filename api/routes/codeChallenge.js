@@ -8,7 +8,10 @@ const authentication = require("../middleware/authentication");
 const Joi = require("joi");
 const codeChallengeSchema = require("../schemas/codeChallenge.schema");
 const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryService");
-const { executeCode } = require("../utils/executeCode");
+// const {executeCode} = require("../utils/executeCode");
+const {executeJava} = require("../utils/executeJava");
+const {executeCSharp} = require("../utils/executeCSharp");
+const {executeJavascript} = require("../utils/executeJavascript");
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 
 router.get("/", authentication, async (req, res, next) => {
@@ -80,7 +83,10 @@ router.post("/", authorization, authentication, async (req, res, next) => {
   }
 });
 
-router.post("/execute", executeCode);
+router.post("/executeJavaScript", executeJavascript);
+router.post("/executeJava", executeJava);
+router.post("/executeCSharp", executeCSharp);
+// router.post("language/:selectedLanguage", executeCode);
 
 router.put("/:id", authorization, authentication, async (req, res, next) => {
   try {

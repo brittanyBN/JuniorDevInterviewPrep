@@ -19,6 +19,10 @@ module.exports = (sequelize, Sequelize) => {
       foreignKey: { allowNull: false },
       onDelete: "CASCADE",
     });
+    CodeChallengeCategory.belongsTo(models.ProgramLanguage, {
+      foreignKey: { allowNull: false },
+      onDelete: "CASCADE"
+    });
   };
   return CodeChallengeCategory;
 };

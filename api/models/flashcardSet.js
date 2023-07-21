@@ -20,6 +20,10 @@ module.exports = (sequelize, Sequelize) => {
       onDelete: "CASCADE",
       attributes: ['id', 'name', 'email', 'role']
     });
+    FlashcardSet.belongsTo(models.ProgramLanguage, {
+      foreignKey: { allowNull: false },
+      onDelete: "CASCADE"
+    });
 
   };
   return FlashcardSet;

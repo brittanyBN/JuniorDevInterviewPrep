@@ -1,16 +1,17 @@
+const {Op} = require("sequelize");
+
 class FlashcardSetService {
   constructor(db) {
     this.client = db.sequelize;
     this.FlashcardSet = db.FlashcardSet;
     this.User = db.User;
-    this.UserFlashcardSet = db.UserFlashcardSet;
-    this.sequelize = db.sequelize;
   }
 
-  async create(name, userId) {
+  async create(name, userId, programLanguageId) {
     return this.FlashcardSet.create({
       name: name,
       UserId: userId,
+      ProgramLanguageId: programLanguageId
     });
   }
 
@@ -25,6 +26,26 @@ class FlashcardSetService {
       ],
     });
   }
+
+  async getByLanguage(pagination, condition, programLanguageId) {
+    return this.FlashcardSet.findAll({
+      where: {
+        [Op.and]: [
+          condition,
+          programLanguageId ? { programLanguageId } : {},
+        ],
+      },
+      limit: pagination.limit,
+      offset: pagination.offset,
+      include: [
+        {
+          model: this.User,
+          attributes: ['role'],
+        },
+      ],
+    });
+  }
+
 
   async getAll(pagination, condition) {
     return this.FlashcardSet.findAll({
@@ -53,13 +74,14 @@ async countAll(condition) {
   }
 
 
-  async update(id, name, userId) {
+  async update(id, name, userId, programLanguageId) {
     const flashcardSet = await this.getOne(id);
     if (!flashcardSet) {
       return null;
     }
     flashcardSet.name = name;
     flashcardSet.UserId = userId;
+    flashcardSet.ProgramLanguageId = programLanguageId;
     await flashcardSet.save();
     return flashcardSet;
   }

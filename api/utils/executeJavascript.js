@@ -1,6 +1,6 @@
 const { createContext, Script } = require("vm");
 
-const executeCode = (req, res) => {
+const executeJavascript = (req, res) => {
   const { code } = req.body;
 
   try {
@@ -46,4 +46,4 @@ const runCode = (code) => {
   };
 };
 
-module.exports = { executeCode };
+module.exports = { executeJavascript };

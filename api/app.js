@@ -11,6 +11,7 @@ const codeChallengeRouter = require("./routes/codeChallenge");
 const codeChallengeCategoryRouter = require("./routes/codeChallengeCategory");
 const flashcardRouter = require("./routes/flashcard");
 const flashcardSetRouter = require("./routes/flashcardSet");
+const programLanguageRouter = require("./routes/programLanguage");
 
 require("dotenv").config();
 const db = require("./models");
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/home", indexRouter);
 app.use("/", authRouter);
 app.use("/codeChallenges", codeChallengeRouter);
+app.use("/programLanguage", programLanguageRouter);
 app.use(authentication);
 app.use("/codeChallengeCategories", codeChallengeCategoryRouter);
 app.use("/flashcards", flashcardRouter);
