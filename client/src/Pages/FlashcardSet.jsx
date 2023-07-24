@@ -11,7 +11,7 @@ export const FlashcardSetPage = () => {
   const [id] = useState(localStorage.getItem('id'));
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const { selectedLanguage } = useParams(); // Get the selectedLanguage from the URL params
+  const { selectedLanguage } = useParams();
 
   const itemsPerPage = 8;
 
@@ -77,10 +77,8 @@ export const FlashcardSetPage = () => {
     } else if (selectedLanguage === "404c0329-7085-42dd-a41f-563ba877e981") {
       selectedLanguageId = "404c0329-7085-42dd-a41f-563ba877e981";
     } else {
-      // The selectedLanguage is undefined or not one of the predefined languages
       const userInput = prompt("Please select the desired programming language: Java, JavaScript, or C#");
       if (userInput) {
-        // Normalize the user input to lowercase and check for supported languages
         const normalizedInput = userInput.toLowerCase();
         if (normalizedInput === "javascript") {
           selectedLanguageId = "e46faef5-16cb-4a9f-a3a4-10b3ea325ca6";
@@ -93,7 +91,7 @@ export const FlashcardSetPage = () => {
           return;
         }
       } else {
-        return; // User canceled, do nothing
+        return;
       }
     }
 

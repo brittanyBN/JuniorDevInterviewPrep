@@ -25,8 +25,3 @@ const executeJava = (req, res) => {
 
 module.exports = { executeJava };
 
-// class ExecuteCode {
-//     public static void main(String[] args) {
-//     System.out.println("Hello, World!");
-//      }
-// }

@@ -51,7 +51,6 @@ export const NavigationBar = () => {
                 <Link to="/login">Login</Link>
             )}
 
-            {/* Flashcard Set Dropdown */}
             <div
                 className={`Dropdown ${isFlashcardSetDropdownOpen ? "open" : ""}`}
                 onMouseEnter={handleFlashcardSetDropdownToggle}
@@ -75,7 +74,6 @@ export const NavigationBar = () => {
                 )}
             </div>
 
-            {/* Code Challenge Category Dropdown */}
             <div
                 className={`DropdownCCC ${
                     isCodeChallengeCategoryDropdownOpen ? "open" : ""

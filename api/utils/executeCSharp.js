@@ -22,7 +22,3 @@ const executeCSharp = (req, res) => {
 };
 
 module.exports = { executeCSharp };
-
-// using System;
-//
-// Console.WriteLine("Hello World");
