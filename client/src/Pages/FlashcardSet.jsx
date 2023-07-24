@@ -66,7 +66,7 @@ export const FlashcardSetPage = () => {
 
     let data = prompt('Enter the name of the new flashcard set');
     if (!data) {
-      return; // User canceled, do nothing
+      return;
     }
 
     let selectedLanguageId;
