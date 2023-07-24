@@ -95,6 +95,10 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
       CodeChallengeCategoryId,
     } = req.body;
     const id = req.params.id;
+    const codeId = await codeChallengeService.getOne(id);
+    if (codeId === null) {
+      return res.status(400).json({ message: "Code challenge does not exist"});
+    }
     await codeChallengeSchema.validateAsync({
       question,
       solution,
@@ -129,7 +133,14 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
 
 router.delete("/:id", authorization, authentication, async (req, res, next) => {
   try {
-    const codeChallenge = await codeChallengeService.delete(req.params.id);
+    const id = req.params.id;
+    const challengeExists = await codeChallengeService.getOne(id);
+    if (challengeExists === null) {
+      return res
+          .status(400)
+          .json({ message: "Code challenge category does not exist." });
+    }
+    const codeChallenge = await codeChallengeService.delete(id);
     res.status(200).json({
       message: "Successfully deleted code challenge",
       data: codeChallenge,

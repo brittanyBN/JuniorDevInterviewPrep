@@ -27,10 +27,10 @@ router.get("/users", async (req, res, next) => {
 
 router.post("/login", jsonParser, async (req, res, next) => {
   const { email, password } = req.body;
-  if (email === null) {
+  if (email === null || typeof email !== 'string') {
     return res.status(400).json({ message: "Email is required." });
   }
-  if (password === null) {
+  if (password === null || typeof password !== 'string') {
     return res.status(400).json({ message: "Password is required." });
   }
   userService.getOne(email).then((data) => {
@@ -81,13 +81,13 @@ router.post("/login", jsonParser, async (req, res, next) => {
 router.post("/signup", async (req, res, next) => {
   const { name, email, password } = req.body;
   const role = "admin";
-  if (name === null) {
+  if (name === null || typeof name !== 'string') {
     return res.status(400).json({ message: "Name is required." });
   }
-  if (email === null) {
+  if (email === null || typeof email !== 'string') {
     return res.status(400).json({ message: "Email is required." });
   }
-  if (password === null) {
+  if (password === null || typeof password !== 'string') {
     return res.status(400).json({ message: "Password is required." });
   }
   const user = await userService.getOne(email);
