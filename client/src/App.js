@@ -1,13 +1,13 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React from "react";
-import { FlashcardSetPage } from "./Pages/FlashcardSet";
-import { CodeChallengeCategoryPage } from "./Pages/CodeChallengeCategory";
-import { CodeChallengePage } from "./Pages/CodeChallenge";
-import { FlashcardPage } from "./Pages/Flashcard";
-import { HomePage } from "./Pages/Home";
-import { LoginPage } from "./Pages/Login";
-import { SignupPage } from "./Pages/Signup";
-import { FlashcardsListPage } from "./Pages/FlashcardsList";
+import {FlashcardSetPage} from "./Pages/FlashcardSet";
+import {CodeChallengeCategoryPage} from "./Pages/CodeChallengeCategory";
+import {CodeChallengePage} from "./Pages/CodeChallenge";
+import {FlashcardPage} from "./Pages/Flashcard";
+import {HomePage} from "./Pages/Home";
+import {LoginPage} from "./Pages/Login";
+import {SignupPage} from "./Pages/Signup";
+import {FlashcardsListPage} from "./Pages/FlashcardsList";
 import {ForgotPasswordPage} from "./Pages/ForgotPassword";
 import {PasswordResetLandingPage} from "./Pages/ForgotPasswordLangingPage";
 
@@ -40,12 +40,20 @@ function App() {
           element={<FlashcardSetPage></FlashcardSetPage>}
         />
         <Route
+            path="/flashcardSet/language/:selectedLanguage"
+            element={<FlashcardSetPage></FlashcardSetPage>}
+        />
+        <Route
           path="flashcardSet/:id"
           element={<FlashcardsListPage></FlashcardsListPage>}
         />
         <Route
-          path="codeChallengeCategory"
+          path="codeChallengeCategory/language/:selectedLanguage"
           element={<CodeChallengeCategoryPage></CodeChallengeCategoryPage>}
+        />
+        <Route
+            path="codeChallengeCategory"
+            element={<CodeChallengeCategoryPage></CodeChallengeCategoryPage>}
         />
         <Route
           path="codeChallengeCategory/:id"

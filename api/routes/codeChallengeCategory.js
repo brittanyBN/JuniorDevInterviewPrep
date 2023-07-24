@@ -5,8 +5,7 @@ const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryS
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
-const authentication = require("../middleware/authentication");
-const Joi = require("joi");
+const authorization = require("../middleware/authorization");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
 const { getPagination } = require("../utils/getPagination");
 
@@ -21,6 +20,24 @@ router.get("/", async (req, res, next) => {
       message: "Successfully fetched all code challenge categories",
       data: codeChallengeCategories,
         pagination: pagination,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/language/:programLanguageId", async (req, res, next) => {
+  try {
+    const { page, size } = req.query;
+    const pagination = getPagination(page, size);
+    const programLanguageId = req.params.programLanguageId;
+    const codeChallengeCategories = await codeChallengeCategoryService.getByLanguage(pagination, programLanguageId);
+    const totalCount = await codeChallengeCategoryService.countAll();
+    pagination.totalPages = Math.ceil(totalCount / pagination.limit);
+    res.status(200).json({
+      message: "Successfully fetched all code challenge categories",
+      data: codeChallengeCategories,
+      pagination: pagination,
     });
   } catch (err) {
     next(err);
@@ -46,20 +63,25 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", authorization, async (req, res, next) => {
   try {
-    const { name, UserId } = req.body;
+    const { name, UserId, ProgramLanguageId } = req.body;
     await codeChallengeCategorySchema.validateAsync({
       name,
       UserId,
+      ProgramLanguageId
     });
-    await userService.get(UserId);
-    if (UserId === null) {
-      return res.status(400).json({ message: "User does not exist." });
+    const user = await userService.get(UserId);
+    if (user === null) {
+      return res.status(400).json({
+        data: user,
+        message: "User does not exist."
+      });
     }
     const codeChallengeCategory = await codeChallengeCategoryService.create(
       name,
-      UserId
+      UserId,
+        ProgramLanguageId
     );
     res.status(200).json({
       message: "Successfully created code challenge category",
@@ -70,13 +92,14 @@ router.post("/", authentication, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authentication, async (req, res, next) => {
+router.put("/:id", authorization, async (req, res, next) => {
   try {
-    const { name, UserId } = req.body;
+    const { name, UserId, ProgramLanguageId } = req.body;
     const id = req.params.id;
     await codeChallengeCategorySchema.validateAsync({
       name,
       UserId,
+      ProgramLanguageId
     });
     const user = await userService.get(UserId);
     if (user === null) {
@@ -91,7 +114,8 @@ router.put("/:id", authentication, async (req, res, next) => {
     const codeChallengeCategory = await codeChallengeCategoryService.update(
       id,
       name,
-      UserId
+      UserId,
+        ProgramLanguageId
     );
     res.status(200).json({
       message: "Successfully updated code challenge category",
@@ -102,7 +126,7 @@ router.put("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authentication, async (req, res, next) => {
+router.delete("/:id", authorization, async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.delete(
       req.params.id

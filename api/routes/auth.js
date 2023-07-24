@@ -28,10 +28,10 @@ router.get("/users", async (req, res, next) => {
 
 router.post("/login", jsonParser, async (req, res, next) => {
   const { email, password } = req.body;
-  if (email === null) {
+  if (email === null || typeof email !== 'string') {
     return res.status(400).json({ message: "Email is required." });
   }
-  if (password === null) {
+  if (password === null || typeof password !== 'string') {
     return res.status(400).json({ message: "Password is required." });
   }
   userService.getOne(email).then((data) => {
@@ -104,14 +104,14 @@ router.get("/refreshToken", handleRefreshToken, (req, res) => {
 
 router.post("/signup", async (req, res, next) => {
   const { name, email, password } = req.body;
-  const role = "member";
-  if (name === null) {
+  const role = "admin";
+  if (name === null || typeof name !== 'string') {
     return res.status(400).json({ message: "Name is required." });
   }
-  if (email === null) {
+  if (email === null || typeof email !== 'string') {
     return res.status(400).json({ message: "Email is required." });
   }
-  if (password === null) {
+  if (password === null || typeof password !== 'string') {
     return res.status(400).json({ message: "Password is required." });
   }
   const user = await userService.getOne(email);
@@ -141,6 +141,7 @@ router.post("/signup", async (req, res, next) => {
 router.post("/forgotPassword", forgotPassword);
 
 router.get("/resetPassword/:resetToken", async (req, res, next) => {
+<<<<<<< HEAD
   const resetToken = req.params.resetToken;
   try {
     const resetToken = req.params.resetToken;
@@ -152,6 +153,18 @@ router.get("/resetPassword/:resetToken", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+=======
+    try {
+        const resetToken = req.params.resetToken;
+        console.log(resetToken);
+        res.status(200).json({
+            message: "Successfully used reset link",
+            data: resetToken,
+        });
+    } catch (err) {
+        next(err);
+    }
+>>>>>>> dev
 });
 
 router.put("/resetPassword/:resetToken", resetPassword);
@@ -178,6 +191,7 @@ router.get("/logout", async (req, res, next) => {
     });
 });
 
+<<<<<<< HEAD
 router.delete("/:id", async (req, res, next) => {
   try {
     const userId = req.params.id;
@@ -185,6 +199,20 @@ router.delete("/:id", async (req, res, next) => {
     const user = await userService.delete(userId);
     if (user === null) {
       return res.status(400).json({ message: "User does not exist." });
+=======
+router.delete("/:id", authentication, async (req, res, next) => {
+    try {
+        const user = await userService.delete(req.params.id);
+        if (user === null) {
+            return res.status(400).json({ message: "User does not exist." });
+        }
+        res.status(200).json({
+            message: "Successfully deleted user",
+            data: user,
+        });
+    } catch (err) {
+        next(err);
+>>>>>>> dev
     }
     res.status(200).json({
       message: "Successfully deleted user",

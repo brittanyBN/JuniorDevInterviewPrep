@@ -8,18 +8,14 @@ class CodeChallengeService {
     question,
     solution,
     hint,
-    progress,
     betterSolution,
-    UserId,
     CodeChallengeCategoryId
   ) {
     return this.CodeChallenge.create({
       question: question,
       solution: solution,
       hint: hint,
-      progress: progress,
       betterSolution: betterSolution,
-      UserId: UserId,
       CodeChallengeCategoryId: CodeChallengeCategoryId,
     });
   }
@@ -28,9 +24,6 @@ class CodeChallengeService {
     const codeChallenge = await this.CodeChallenge.findOne({
       where: { id },
     });
-    if (!codeChallenge) {
-      return "Code Challenge not found";
-    }
     return codeChallenge;
   }
 
@@ -43,18 +36,14 @@ class CodeChallengeService {
     question,
     solution,
     hint,
-    progress,
     betterSolution,
-    UserId,
     CodeChallengeCategoryId
   ) {
     const codeChallenge = await this.getOne(id);
     codeChallenge.question = question;
     codeChallenge.solution = solution;
     codeChallenge.hint = hint;
-    codeChallenge.progress = progress;
     codeChallenge.betterSolution = betterSolution;
-    codeChallenge.UserId = UserId;
     codeChallenge.CodeChallengeCategoryId = CodeChallengeCategoryId;
     await codeChallenge.save();
     return codeChallenge;

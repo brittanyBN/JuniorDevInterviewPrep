@@ -19,12 +19,6 @@ module.exports = (sequelize, Sequelize) => {
       foreignKey: { allowNull: false },
       onDelete: "CASCADE",
     });
-
-    Flashcard.belongsTo(models.User, {
-      foreignKey: { allowNull: false },
-      attributes: ['id', 'name', 'email', 'role'],
-      onDelete: "CASCADE",
-    });
   };
   return Flashcard;
 };

@@ -3,7 +3,8 @@ import { NavigationBar } from "../Components/NavigationBar";
 import axios from "axios";
 import "./PracticeSet.css";
 import { CardSetCard } from "../Components/CardSetCard";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useSelectedLanguage } from "../Components/SelectedLanguageProvider";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
@@ -11,6 +12,8 @@ export const CodeChallengeCategoryPage = () => {
   const [id] = useState(localStorage.getItem("id"));
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { selectedLanguage } = useParams(); // Get the selectedLanguage from the URL params
+  const { setSelectedLanguage } = useSelectedLanguage();
 
   const itemsPerPage = 8;
 
@@ -18,28 +21,48 @@ export const CodeChallengeCategoryPage = () => {
     fetchCodeChallengeCategories().then((r) =>
       console.log("Code challenge categories fetched")
     );
-  }, [token, id, currentPage]);
+  }, [token, id, currentPage, selectedLanguage]);
+
+  useEffect(() => {
+    setSelectedLanguage(selectedLanguage); // Set the selectedLanguage to context
+  }, [selectedLanguage, setSelectedLanguage]);
 
   const fetchCodeChallengeCategories = async () => {
     if (!token) {
-      alert("You must be logged in to complete code challenges");
+      alert("You must be logged in to see code challenge categories");
       window.location.href = "/login";
-    }
+    } else {
+      try {
+        if (selectedLanguage !== undefined) {
+          console.log("selected LANGUAGE", selectedLanguage);
 
-    try {
-      const response = await axios.get(
-        `/codeChallengeCategories?page=${currentPage}&size=${itemsPerPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          const response = await axios.get(
+            `/codeChallengeCategories/language/${selectedLanguage}?page=${currentPage}&size=${itemsPerPage}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setCodeChallengeCategories(response.data.data);
+          setTotalPages(response.data.pagination.totalPages);
+        } else {
+          const response = await axios.get(
+            `/codeChallengeCategories?page=${currentPage}&size=${itemsPerPage}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setCodeChallengeCategories(response.data.data);
+          setTotalPages(response.data.pagination.totalPages);
         }
-      );
-      setCodeChallengeCategories(response.data.data);
-      setTotalPages(response.data.pagination.totalPages);
-    } catch (error) {
-      console.error("Error fetching code challenge categories:", error);
+      } catch (error) {
+        console.error("Error fetching code challenge categories:", error);
+      }
     }
   };
 
@@ -64,7 +87,7 @@ export const CodeChallengeCategoryPage = () => {
           <Link
             className="link"
             key={category.id}
-            to={`/codeChallengeCategory/${category.id}`}
+            to={`/codeChallengeCategory/${category.id}?selectedLanguage=${selectedLanguage}`}
           >
             <CardSetCard name={category.name} />
           </Link>

@@ -1,5 +1,3 @@
-const express = require("express");
-const router = express.Router();
 const db = require("../models");
 const crypto = require("crypto");
 const UserService = require("../services/UserService");
@@ -15,8 +13,8 @@ const forgotPassword = async (req, res) => {
   const resetToken = crypto.randomBytes(20).toString("hex");
   await userService.resetToken(req.body.email, resetToken);
 
-  const resetUrl = `process.env.CLIENT/resetPassword/${resetToken}`;
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please create a new password ${resetUrl}`;
+  const resetUrl = `${process.env.CLIENT}/resetPassword/${resetToken}`;
+  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please create a new password at:\n \n ${resetUrl}`;
 
   try {
     await sendEmail({

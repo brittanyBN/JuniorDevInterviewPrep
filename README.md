@@ -14,9 +14,16 @@ their own.
 # Installation
 
 - Clone the repo
+- cd /api
 - `npm install` to install dependencies
+- cd /client
 - `npm start` in the api folder and the client folder.
-- The client will run on localhost:3000, and the api will run on localhost:3001
+- The client and api must run on different ports
+- Use the .env-example as a template for your own .env file
+- Test with Jest before inserting data into the database. (npm test)
+- After testing, create your first user, which will be your admin user.
+- After creating your admin user, update the user role in /api/routes/auth on at line
+83 from "admin" to "member."
 
 # Technologies
 
@@ -29,6 +36,7 @@ their own.
 - Joi
 - JWT
 - CodeMirror
+- nodeMailer
 
 # Testing
 
@@ -43,3 +51,4 @@ their own.
 - Frontend Login/Signup: https://www.youtube.com/watch?v=brcHK3P6ChQ&t=0s full tutorial
 - IDE implementation: https://www.youtube.com/watch?v=wcVxX7lu2d4
 - Forgot/Reset password: https://medium.com/geekculture/forgot-password-in-signup-application-with-nodejs-and-mongodb-part-4-51378dddd716
+- Technology documentation used for guidance

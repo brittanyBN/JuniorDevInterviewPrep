@@ -3,11 +3,7 @@ const router = express.Router();
 const db = require("../models");
 const FlashcardService = require("../services/FlashcardService");
 const flashcardService = new FlashcardService(db);
-const authentication = require("../middleware/authentication");
-const Joi = require("joi");
 const flashcardSchema = require("../schemas/flashcard.schema");
-const UserService = require("../services/UserService");
-const userService = new UserService(db);
 const FlashcardSetService = require("../services/FlashcardSetService");
 const flashcardSetService = new FlashcardSetService(db);
 
@@ -23,7 +19,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", authentication, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const flashcard = await flashcardService.getOne(req.params.id);
     if (flashcard === null) {
@@ -38,19 +34,14 @@ router.get("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.post("/", authentication, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
-    const { question, answer, UserId, FlashcardSetId } = req.body;
+    const { question, answer, FlashcardSetId } = req.body;
     await flashcardSchema.validateAsync({
       question,
       answer,
-      UserId,
       FlashcardSetId,
     });
-    const user = await userService.get(UserId);
-    if (user === null) {
-      return res.status(400).json({ message: "User does not exist." });
-    }
     const flashcardSet = await flashcardSetService.getOne(FlashcardSetId);
     if (flashcardSet === null) {
       return res.status(400).json({ message: "Flashcard set does not exist." });
@@ -58,8 +49,7 @@ router.post("/", authentication, async (req, res, next) => {
     const flashcard = await flashcardService.create(
       question,
       answer,
-      UserId,
-        FlashcardSetId
+      FlashcardSetId
     );
     res.status(200).json({
       message: "Successfully created flashcard",
@@ -70,23 +60,18 @@ router.post("/", authentication, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authentication, async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { question, answer, UserId, FlashcardSetId } = req.body;
+    const { question, answer, FlashcardSetId } = req.body;
     await flashcardSchema.validateAsync({
       question,
       answer,
-      UserId,
       FlashcardSetId,
     });
     const getFlashcard = await flashcardService.getOne(id);
     if (getFlashcard === null) {
       return res.status(400).json({ message: "Flashcard does not exist." });
-    }
-    const user = await userService.get(UserId);
-    if (user === null) {
-      return res.status(400).json({ message: "User does not exist." });
     }
     const flashcardSet = await flashcardSetService.getOne(FlashcardSetId);
     if (flashcardSet === null) {
@@ -96,8 +81,7 @@ router.put("/:id", authentication, async (req, res, next) => {
       id,
       question,
       answer,
-      UserId,
-        FlashcardSetId
+      FlashcardSetId
     );
     res.status(200).json({
       message: "Successfully updated flashcard",
@@ -108,7 +92,7 @@ router.put("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authentication, async (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     const flashcard = await flashcardService.delete(req.params.id);
     if (!flashcard) {

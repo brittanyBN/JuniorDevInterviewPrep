@@ -17,25 +17,14 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    progress: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    },
     betterSolution: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    }
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
   });
 
   CodeChallenge.associate = function (models) {
     CodeChallenge.belongsTo(models.CodeChallengeCategory, {
-      foreignKey: {
-        allowNull: false,
-      },
-      onDelete: "CASCADE",
-    });
-
-    CodeChallenge.belongsTo(models.User, {
       foreignKey: {
         allowNull: false,
       },

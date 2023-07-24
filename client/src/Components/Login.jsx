@@ -10,21 +10,19 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "/login",
-        { email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            WithCredentials: "true",
-          },
-        }
-      );
+      const response = await axios.post("/login", { email, password });
 
       if (response.status === 200) {
         const { token, id } = response.data;
+
+        const tokenData = {
+          token,
+          id,
+        };
+
         localStorage.setItem("token", token);
         localStorage.setItem("id", id);
+        localStorage.setItem("role", response.data.role);
         window.location.href = "/home";
       } else {
         console.error("Authentication failed");
@@ -33,6 +31,10 @@ const Login = () => {
       console.error("An error occurred:", error);
       document.getElementById("wrongCredentials").style.display = "block";
     }
+  };
+
+  const forgotPassword = () => {
+    window.location.href = "/forgotPassword";
   };
 
   const handleSignup = () => {
@@ -67,6 +69,9 @@ const Login = () => {
           Login
         </button>
       </form>
+      <button id="forgot-password" onClick={forgotPassword}>
+        Forgot Password
+      </button>
       <div className="register-link">
         Don't have an account?{" "}
         <a href="/signup" onClick={handleSignup}>
