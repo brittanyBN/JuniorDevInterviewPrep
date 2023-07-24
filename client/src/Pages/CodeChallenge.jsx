@@ -61,6 +61,18 @@ export const CodeChallengePage = () => {
       lineNumbers: true,
     });
 
+    if(selectedLanguage === "5e5d8c79-ffdf-4365-85fb-c35d613a0272") {
+      const defaultCode = `class ExecuteCode {
+    public static void main(String[] args) {
+      // Your default code here
+    }
+  }`;
+      codeMirrorEditor.setValue(defaultCode); // Set the default code
+    } else if (selectedLanguage === "404c0329-7085-42dd-a41f-563ba877e981") {
+      const defaultCode = `using System;`
+      codeMirrorEditor.setValue(defaultCode);
+    }
+
     setEditor(codeMirrorEditor);
 
     console.log = handleConsoleLog;

@@ -69,7 +69,7 @@ export const NavigationBar = () => {
                             Java
                         </Link>
                         <Link to="/flashcardSet/language/bb0c4491-8a97-441b-bc44-d758bff20a73">
-                            General
+                            C#
                         </Link>
                     </div>
                 )}
