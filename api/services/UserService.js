@@ -38,26 +38,6 @@ class UserService {
     return user;
   }
 
-  async refreshToken(email, refreshToken) {
-    const user = await this.getOne(email);
-    user.refreshToken = refreshToken;
-    await user.save();
-    return user;
-  }
-
-  async removeRefreshToken(refreshToken) {
-    const user = await this.findRefreshToken(refreshToken);
-    user.refreshToken = null;
-    await user.save();
-    return user;
-  }
-
-  async findRefreshToken(refreshToken) {
-    return this.User.findOne({
-      where: { refreshToken: refreshToken },
-    });
-  }
-
   async resetToken(email, resetToken) {
     const user = await this.getOne(email);
     user.resetToken = resetToken;

@@ -53,6 +53,7 @@ export const NavigationBar = () => {
         <Link to="/login">Login</Link>
       )}
 
+      {/* Flashcard Set Dropdown */}
       <div
         className={`Dropdown ${isFlashcardSetDropdownOpen ? "open" : ""}`}
         onMouseEnter={handleFlashcardSetDropdownToggle}
@@ -63,19 +64,20 @@ export const NavigationBar = () => {
         </div>
         {isFlashcardSetDropdownOpen && (
           <div className="Dropdown-content" style={{ fontWeight: "bold" }}>
-            <Link to="/flashcardSet/language/e46faef5-16cb-4a9f-a3a4-10b3ea325ca6">
+            <Link to="/flashcardSet/language/3a4c5926-493e-4023-be3d-3388d2751865">
               JavaScript
             </Link>
-            <Link to="/flashcardSet/language/5e5d8c79-ffdf-4365-85fb-c35d613a0272">
+            <Link to="/flashcardSet/language/54b4000d-0bf7-405c-b233-1513d19e7c7e">
               Java
             </Link>
-            <Link to="/flashcardSet/language/bb0c4491-8a97-441b-bc44-d758bff20a73">
+            <Link to="/flashcardSet/language/0df66f10-e7ff-4356-9613-73c317ded9f1">
               C#
             </Link>
           </div>
         )}
       </div>
 
+      {/* Code Challenge Category Dropdown */}
       <div
         className={`DropdownCCC ${
           isCodeChallengeCategoryDropdownOpen ? "open" : ""
@@ -88,13 +90,13 @@ export const NavigationBar = () => {
         </div>
         {isCodeChallengeCategoryDropdownOpen && (
           <div className="Dropdown-contentCCC" style={{ fontWeight: "bold" }}>
-            <Link to="/codeChallengeCategory/language/e46faef5-16cb-4a9f-a3a4-10b3ea325ca6">
+            <Link to="/codeChallengeCategory/language/3a4c5926-493e-4023-be3d-3388d2751865">
               JavaScript
             </Link>
-            <Link to="/codeChallengeCategory/language/5e5d8c79-ffdf-4365-85fb-c35d613a0272">
+            <Link to="/codeChallengeCategory/language/54b4000d-0bf7-405c-b233-1513d19e7c7e">
               Java
             </Link>
-            <Link to="/codeChallengeCategory/language/404c0329-7085-42dd-a41f-563ba877e981">
+            <Link to="/codeChallengeCategory/language/0df66f10-e7ff-4356-9613-73c317ded9f1">
               C#
             </Link>
           </div>

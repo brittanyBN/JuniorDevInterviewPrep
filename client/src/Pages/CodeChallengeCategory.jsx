@@ -4,7 +4,7 @@ import axios from "axios";
 import "./PracticeSet.css";
 import { CardSetCard } from "../Components/CardSetCard";
 import { Link, useParams } from "react-router-dom";
-import { useSelectedLanguage } from "../Components/SelectedLanguageProvider";
+import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);

@@ -75,24 +75,25 @@ export const FlashcardSetPage = () => {
     }
 
     let selectedLanguageId;
-    if (selectedLanguage === "e46faef5-16cb-4a9f-a3a4-10b3ea325ca6") {
-      selectedLanguageId = "e46faef5-16cb-4a9f-a3a4-10b3ea325ca6";
-    } else if (selectedLanguage === "5e5d8c79-ffdf-4365-85fb-c35d613a0272") {
-      selectedLanguageId = "5e5d8c79-ffdf-4365-85fb-c35d613a0272";
-    } else if (selectedLanguage === "404c0329-7085-42dd-a41f-563ba877e981") {
-      selectedLanguageId = "404c0329-7085-42dd-a41f-563ba877e981";
+    if (selectedLanguage === "3a4c5926-493e-4023-be3d-3388d2751865") {
+      selectedLanguageId = "3a4c5926-493e-4023-be3d-3388d2751865";
+    } else if (selectedLanguage === "54b4000d-0bf7-405c-b233-1513d19e7c7e") {
+      selectedLanguageId = "54b4000d-0bf7-405c-b233-1513d19e7c7e";
+    } else if (selectedLanguage === "0df66f10-e7ff-4356-9613-73c317ded9f1") {
+      selectedLanguageId = "0df66f10-e7ff-4356-9613-73c317ded9f1";
     } else {
       const userInput = prompt(
         "Please select the desired programming language: Java, JavaScript, or C#"
       );
       if (userInput) {
+        // Normalize the user input to lowercase and check for supported languages
         const normalizedInput = userInput.toLowerCase();
         if (normalizedInput === "javascript") {
-          selectedLanguageId = "e46faef5-16cb-4a9f-a3a4-10b3ea325ca6";
+          selectedLanguageId = "3a4c5926-493e-4023-be3d-3388d2751865";
         } else if (normalizedInput === "java") {
-          selectedLanguageId = "5e5d8c79-ffdf-4365-85fb-c35d613a0272";
+          selectedLanguageId = "54b4000d-0bf7-405c-b233-1513d19e7c7e";
         } else if (normalizedInput === "c#") {
-          selectedLanguageId = "404c0329-7085-42dd-a41f-563ba877e981";
+          selectedLanguageId = "0df66f10-e7ff-4356-9613-73c317ded9f1";
         } else {
           alert(
             "Unsupported language. Please select from Java, JavaScript, or C#."
@@ -100,7 +101,7 @@ export const FlashcardSetPage = () => {
           return;
         }
       } else {
-        return;
+        return; // User canceled, do nothing
       }
     }
 

@@ -10,23 +10,19 @@ const { getPagination } = require("../utils/getPagination");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 
-<<<<<<< HEAD
-router.get("/set/:UserId", authentication, async (req, res, next) => {
-=======
 router.get("/set", async (req, res, next) => {
->>>>>>> dev
   try {
     const { page, size } = req.query;
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decodedToken.id
+    const userId = decodedToken.id;
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
     };
     const flashcardSets = await flashcardSetService.getAll(
-        pagination,
-        condition
+      pagination,
+      condition
     );
 
     const totalCount = await flashcardSetService.countAll(condition);
@@ -45,21 +41,29 @@ router.get("/set", async (req, res, next) => {
 router.get("/language/:programLanguageId", async (req, res, next) => {
   try {
     const { page, size } = req.query;
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decodedToken.id
+    const userId = decodedToken.id;
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
     };
     const programLanguageId = req.params.programLanguageId;
-    const flashcardSets = await flashcardSetService.getByLanguage(pagination, condition, programLanguageId);
+    const flashcardSets = await flashcardSetService.getByLanguage(
+      pagination,
+      condition,
+      programLanguageId
+    );
 
     const totalCount = await flashcardSetService.countAll(condition);
     pagination.totalPages = Math.ceil(totalCount / pagination.limit);
 
     if (flashcardSets.length === 0) {
-      return res.status(400).json({ message: "No flashcard sets found for the specified language." });
+      return res
+        .status(400)
+        .json({
+          message: "No flashcard sets found for the specified language.",
+        });
     }
 
     res.status(200).json({
@@ -71,7 +75,6 @@ router.get("/language/:programLanguageId", async (req, res, next) => {
     next(err);
   }
 });
-
 
 router.get("/list/:id", async (req, res, next) => {
   try {
@@ -94,7 +97,7 @@ router.post("/", async (req, res, next) => {
     await flashcardSetSchema.validateAsync({
       name,
       UserId,
-      ProgramLanguageId
+      ProgramLanguageId,
     });
     const validateUser = await userService.get(UserId);
     if (validateUser === null) {
@@ -102,9 +105,13 @@ router.post("/", async (req, res, next) => {
     }
     const checkDuplicateName = await flashcardSetService.getByName(name);
     if (checkDuplicateName !== null) {
-      return res.status(400).json({ message: "Flashcard Set already exists"});
+      return res.status(400).json({ message: "Flashcard Set already exists" });
     }
-    const flashcardSet = await flashcardSetService.create(name, UserId, ProgramLanguageId);
+    const flashcardSet = await flashcardSetService.create(
+      name,
+      UserId,
+      ProgramLanguageId
+    );
     res.status(200).json({
       message: "Successfully created code challenge category",
       data: flashcardSet,
@@ -121,7 +128,7 @@ router.put("/:id", async (req, res, next) => {
     await flashcardSetSchema.validateAsync({
       name,
       UserId,
-      ProgramLanguageId
+      ProgramLanguageId,
     });
     const flashcardSetCheck = await flashcardSetService.getOne(id);
     if (flashcardSetCheck === null) {
@@ -131,7 +138,12 @@ router.put("/:id", async (req, res, next) => {
     if (validateUser === null) {
       return res.status(400).json({ message: "User does not exist." });
     }
-    const flashcardSet = await flashcardSetService.update(id, name, UserId, ProgramLanguageId);
+    const flashcardSet = await flashcardSetService.update(
+      id,
+      name,
+      UserId,
+      ProgramLanguageId
+    );
     res.status(200).json({
       message: "Successfully updated flashcardSet",
       data: flashcardSet,

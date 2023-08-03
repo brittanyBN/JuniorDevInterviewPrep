@@ -21,10 +21,9 @@ class CodeChallengeService {
   }
 
   async getOne(id) {
-    const codeChallenge = await this.CodeChallenge.findOne({
+    return this.CodeChallenge.findOne({
       where: { id },
     });
-    return codeChallenge;
   }
 
   async getAll() {
