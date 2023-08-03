@@ -12,7 +12,7 @@ class UserService {
 
   async getOne(email) {
     return this.User.findOne({
-      where: {email: email},
+      where: { email: email },
     });
   }
 
@@ -47,7 +47,7 @@ class UserService {
 
   async getOneByResetToken(resetToken) {
     return this.User.findOne({
-      where: {resetToken: resetToken},
+      where: { resetToken: resetToken },
     });
   }
 
@@ -59,7 +59,6 @@ class UserService {
     await user.destroy();
     return user;
   }
-
 }
 
 module.exports = UserService;

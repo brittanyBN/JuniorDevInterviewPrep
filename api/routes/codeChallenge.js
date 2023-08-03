@@ -7,9 +7,9 @@ const authorization = require("../middleware/authorization");
 const authentication = require("../middleware/authentication");
 const codeChallengeSchema = require("../schemas/codeChallenge.schema");
 const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryService");
-const {executeJava} = require("../utils/executeJava");
-const {executeCSharp} = require("../utils/executeCSharp");
-const {executeJavascript} = require("../utils/executeJavascript");
+const { executeJava } = require("../utils/executeJava");
+const { executeCSharp } = require("../utils/executeCSharp");
+const { executeJavascript } = require("../utils/executeJavascript");
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 
 router.get("/", authentication, async (req, res, next) => {
@@ -97,7 +97,7 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
     const id = req.params.id;
     const codeId = await codeChallengeService.getOne(id);
     if (codeId === null) {
-      return res.status(400).json({ message: "Code challenge does not exist"});
+      return res.status(400).json({ message: "Code challenge does not exist" });
     }
     await codeChallengeSchema.validateAsync({
       question,
@@ -137,8 +137,8 @@ router.delete("/:id", authorization, authentication, async (req, res, next) => {
     const challengeExists = await codeChallengeService.getOne(id);
     if (challengeExists === null) {
       return res
-          .status(400)
-          .json({ message: "Code challenge category does not exist." });
+        .status(400)
+        .json({ message: "Code challenge category does not exist." });
     }
     const codeChallenge = await codeChallengeService.delete(id);
     res.status(200).json({

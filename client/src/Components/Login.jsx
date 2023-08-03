@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import "./Login.css";
 import axios from "axios";
 
@@ -42,44 +42,44 @@ const Login = () => {
   };
 
   return (
-      <div className="container">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-          </div>
-          <button id="login" type="submit">
-            Login
-          </button>
-        </form>
-        <button id="forgot-password" onClick={forgotPassword}>
-          Forgot Password
-        </button>
-        <div className="register-link">
-          Don't have an account?{" "}
-          <a href="/signup" onClick={handleSignup}>
-            Sign up
-          </a>
+    <div className="container">
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
-        <p id="wrongCredentials">Wrong email or password</p>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button id="login" type="submit">
+          Login
+        </button>
+      </form>
+      <button id="forgot-password" onClick={forgotPassword}>
+        Forgot Password
+      </button>
+      <div className="register-link">
+        Don't have an account?{" "}
+        <a href="/signup" onClick={handleSignup}>
+          Sign up
+        </a>
       </div>
+      <p id="wrongCredentials">Wrong email or password</p>
+    </div>
   );
 };
 
