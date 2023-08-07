@@ -1,8 +1,9 @@
-import {NavigationBar} from "../Components/NavigationBar";
-import {useParams} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavigationBar } from "../Components/NavigationBar";
 import axios from "axios";
-import {useEffect, useState} from "react";
-import "./FlashcardsList.css";
+import { useParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import "../CSS Styles/FlashcardList.css";
 
 export const FlashcardsListPage = () => {
   const { id } = useParams();
@@ -26,7 +27,7 @@ export const FlashcardsListPage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        const {Flashcards, UserId} = response.data.data;
+        const { Flashcards, UserId } = response.data.data;
         setCreatorId(UserId);
         setFlashcards(Flashcards);
         return response;
@@ -34,7 +35,7 @@ export const FlashcardsListPage = () => {
         console.error("Error fetching flashcards:", error);
       }
     }
-  }
+  };
 
   const practiceFlashcards = () => {
     if (flashcards.length === 0) {
@@ -84,30 +85,42 @@ export const FlashcardsListPage = () => {
   return (
     <div className="Main-codeChallengeList-wrapper">
       <NavigationBar />
-      <div className="buttonLine">
-        <button className="start-practice-button" onClick={practiceFlashcards}>
+      <div className="d-flex justify-content-between buttonLine">
+        <Button
+          className="start-practice-button"
+          onClick={practiceFlashcards}
+          variant="secondary"
+        >
           Start Practice
-        </button>
+        </Button>
         {userId === creatorId && (
-          <button
+          <Button
             className="add-new-code-challenge-button"
             onClick={addFlashcard}
+            variant="secondary"
           >
             Add New Flashcard
-          </button>
+          </Button>
         )}
       </div>
-      <div className="code-challenges-container">
+      <div className="code-challenges-container border border-secondary mt-4 p-3 mx-auto w-80">
         {flashcards.length === 0 ? (
-          <p id="empty">
+          <p
+            id="empty"
+            className="d-flex justify-content-center align-items-center h-100"
+          >
             There are no flashcards in this set yet. Click the button to add
             one!
           </p>
         ) : (
           flashcards.map((flashcard) => (
-            <div key={flashcard.id} className="code-challenge">
-              <div className="question">{flashcard.question}</div>
-              <div className="solution">{flashcard.answer}</div>
+            <div key={flashcard.id} className="code-challenge d-flex">
+              <div className="question w-100 p-3 border border-secondary fs-5 m-0">
+                {flashcard.question}
+              </div>
+              <div className="solution w-100 p-3 border border-secondary fs-5 m-0">
+                {flashcard.answer}
+              </div>
             </div>
           ))
         )}

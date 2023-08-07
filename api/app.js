@@ -5,7 +5,6 @@ const logger = require("morgan");
 const cors = require("cors");
 const authentication = require("./middleware/authentication");
 
-const indexRouter = require("./routes");
 const authRouter = require("./routes/auth");
 const codeChallengeRouter = require("./routes/codeChallenge");
 const codeChallengeCategoryRouter = require("./routes/codeChallengeCategory");
@@ -31,7 +30,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/home", indexRouter);
 app.use("/", authRouter);
 app.use("/codeChallenges", codeChallengeRouter);
 app.use("/programLanguage", programLanguageRouter);

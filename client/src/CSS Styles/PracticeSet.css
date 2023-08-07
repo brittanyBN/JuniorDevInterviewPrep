@@ -1,0 +1,58 @@
+.Main-flashcardSet-wrapper {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    margin-bottom: 0;
+    margin-left: 15px;
+}
+
+.cardSet {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: 5px;
+    margin: 10px 10px 10px 10px;
+}
+
+.link {
+    color: black;
+}
+
+.link:hover {
+    color: black;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #afbce9;
+}
+
+#add {
+    margin-right: 10px;
+    margin-top: 15px;
+}

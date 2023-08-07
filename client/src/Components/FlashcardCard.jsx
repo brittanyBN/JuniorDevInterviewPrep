@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./Card.css";
+import "../CSS Styles/Card.css";
 
-export const Card = ({ question, answer }) => {
+export const FlashcardCard = ({ question, answer }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleFlip = () => {

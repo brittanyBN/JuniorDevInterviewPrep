@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import { Card } from "../Components/FlashcardCard";
-import "./practice.css";
 import { useLocation } from "react-router-dom";
+import Pagination from "react-bootstrap/Pagination";
+import { FlashcardCard } from "../Components/FlashcardCard"; // Import Bootstrap Pagination component
+import "../CSS Styles/Practice.css";
 
 export const FlashcardPage = () => {
   const location = useLocation();
   const [flashcards, setFlashcards] = useState([]);
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
 
   useEffect(() => {
     const flashcardsData = location.search.split("=")[1];
@@ -17,7 +16,7 @@ export const FlashcardPage = () => {
       const decodedFlashcards = JSON.parse(decodeURIComponent(flashcardsData));
       setFlashcards(decodedFlashcards);
     }
-  }, [location.search, token, userId]);
+  }, [location.search]);
 
   useEffect(() => {
     setCurrentFlashcardIndex(0);
@@ -43,7 +42,7 @@ export const FlashcardPage = () => {
       <div className="page-style">
         <h1>Flashcard</h1>
         {flashcards.length > 0 ? (
-          <Card
+          <FlashcardCard
             question={flashcards[currentFlashcardIndex].question}
             answer={flashcards[currentFlashcardIndex].answer}
           />
@@ -53,13 +52,19 @@ export const FlashcardPage = () => {
           </div>
         )}
         <div className="button-group">
-          <button className="action-button" onClick={handlePreviousFlashcard}>
-            Previous
-          </button>
-          <button>{`${currentFlashcardIndex + 1}/${flashcards.length}`}</button>
-          <button className="action-button" onClick={handleNextFlashcard}>
-            Next
-          </button>
+          <Pagination>
+            <Pagination.Prev
+              onClick={handlePreviousFlashcard}
+              disabled={currentFlashcardIndex === 0} // Adjust the index
+            />
+            <Pagination.Item disabled>{`${currentFlashcardIndex + 1}/${
+              flashcards.length
+            }`}</Pagination.Item>
+            <Pagination.Next
+              onClick={handleNextFlashcard}
+              disabled={currentFlashcardIndex === flashcards.length - 1} // Adjust the index
+            />
+          </Pagination>
         </div>
       </div>
     </div>

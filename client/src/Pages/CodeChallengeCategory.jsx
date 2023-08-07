@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import axios from "axios";
-import "./PracticeSet.css";
+import "../CSS Styles/PracticeSet.css";
 import { CardSetCard } from "../Components/CardSetCard";
 import { Link, useParams } from "react-router-dom";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";

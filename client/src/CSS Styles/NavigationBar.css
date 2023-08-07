@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", sans-serif;
+}
+
+.Main-navbar-wrapper {
+    background-color: #c1cefe;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.Main-navbar-wrapper a {
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    float: right;
+}
+
+.Main-navbar-wrapper a:hover {
+    background-color: #afbce9;
+    color: black;
+    float: right;
+    border-radius: 4px;
+}
+
+.Main-navbar-wrapper a.active {
+    background-color: #758ecd;
+    color: black;
+    float: left;
+    border-radius: 4px;
+    padding: 14px 20px;
+}
+
+.active a:hover {
+    background-color: #afbce9;
+    color: black;
+    float: left;
+}
+
+.FlashcardSet {
+    float: right;
+    position: relative;
+}
+
+.FlashcardSet .Dropdown {
+    float: right;
+    position: relative;
+}
+
+.FlashcardSet .Dropdown-content {
+    display: none;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    top: 100%;
+    left: 0;
+}
+
+.FlashcardSet .Dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.FlashcardSet .Dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.FlashcardSet .Dropdown.open .Dropdown-content {
+    display: block;
+}
+
+.CodeChallengeCategory {
+    float: right;
+    position: relative;
+}
+
+.CodeChallengeCategory .DropdownCCC {
+    float: right;
+    position: relative;
+}
+
+.CodeChallengeCategory .Dropdown-contentCCC {
+    display: none;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    top: 100%;
+    left: 0;
+}
+
+.CodeChallengeCategory .Dropdown-contentCCC a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.CodeChallengeCategory .Dropdown-contentCCC a:hover {
+    background-color: #f1f1f1;
+}
+
+.CodeChallengeCategory .DropdownCCC.open .Dropdown-contentCCC {
+    display: block;
+}

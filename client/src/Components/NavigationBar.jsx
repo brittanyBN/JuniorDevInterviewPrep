@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import "./NavigationBar.css";
+import "../CSS Styles/NavigationBar.css";
+import axios from "axios";
 
 export const NavigationBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const timerRef = useRef(null);
+  const [programLanguages, setProgramLanguages] = useState([]);
 
   useEffect(() => {
     if (isLoggedIn) {
-      timerRef.current = setTimeout(handleLogout, 60 * 60 * 1000); // 55 minutes in milliseconds
+      timerRef.current = setTimeout(handleLogout, 60 * 60 * 1000);
     }
     return () => {
       clearTimeout(timerRef.current);
@@ -21,6 +23,19 @@ export const NavigationBar = () => {
     setIsLoggedIn(false);
     window.location.href = "/login";
   };
+
+  const fetchProgrammingLanguages = async () => {
+    try {
+      const response = await axios.get(`/programLanguage`);
+      setProgramLanguages(response.data.data);
+    } catch (error) {
+      console.error("Error fetching programming languages:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProgrammingLanguages().then(() => console.log(" "));
+  }, []);
 
   const [isFlashcardSetDropdownOpen, setIsFlashcardSetDropdownOpen] =
     useState(false);
@@ -61,40 +76,16 @@ export const NavigationBar = () => {
         <div className="FlashcardSet">
           <Link to="/flashcardSet">Flashcard Set</Link>
         </div>
-        {isFlashcardSetDropdownOpen && (
+        {programLanguages.length > 0 && isFlashcardSetDropdownOpen && (
           <div className="Dropdown-content" style={{ fontWeight: "bold" }}>
-            <Link to="/flashcardSet/language/3a4c5926-493e-4023-be3d-3388d2751865">
-              JavaScript
-            </Link>
-            <Link to="/flashcardSet/language/54b4000d-0bf7-405c-b233-1513d19e7c7e">
-              Java
-            </Link>
-            <Link to="/flashcardSet/language/0df66f10-e7ff-4356-9613-73c317ded9f1">
-              C#
-            </Link>
-          </div>
-        )}
-      </div>
-
-      <div
-        className={`Dropdown ${isFlashcardSetDropdownOpen ? "open" : ""}`}
-        onMouseEnter={handleFlashcardSetDropdownToggle}
-        onMouseLeave={handleFlashcardSetDropdownToggle}
-      >
-        <div className="FlashcardSet">
-          <Link to="/flashcardSet">Flashcard Set</Link>
-        </div>
-        {isFlashcardSetDropdownOpen && (
-          <div className="Dropdown-content" style={{ fontWeight: "bold" }}>
-            <Link to="/flashcardSet/language/e46faef5-16cb-4a9f-a3a4-10b3ea325ca6">
-              JavaScript
-            </Link>
-            <Link to="/flashcardSet/language/5e5d8c79-ffdf-4365-85fb-c35d613a0272">
-              Java
-            </Link>
-            <Link to="/flashcardSet/language/bb0c4491-8a97-441b-bc44-d758bff20a73">
-              C#
-            </Link>
+            {programLanguages.map((language) => (
+              <Link
+                key={language.id}
+                to={`/flashcardSet/language/${language.id}`}
+              >
+                {language.language}
+              </Link>
+            ))}
           </div>
         )}
       </div>
@@ -109,17 +100,16 @@ export const NavigationBar = () => {
         <div className="CodeChallengeCategory">
           <Link to="/codeChallengeCategory">Code Challenge Category</Link>
         </div>
-        {isCodeChallengeCategoryDropdownOpen && (
+        {programLanguages.length > 0 && isCodeChallengeCategoryDropdownOpen && (
           <div className="Dropdown-contentCCC" style={{ fontWeight: "bold" }}>
-            <Link to="/codeChallengeCategory/language/3a4c5926-493e-4023-be3d-3388d2751865">
-              JavaScript
-            </Link>
-            <Link to="/codeChallengeCategory/language/54b4000d-0bf7-405c-b233-1513d19e7c7e">
-              Java
-            </Link>
-            <Link to="/codeChallengeCategory/language/0df66f10-e7ff-4356-9613-73c317ded9f1">
-              C#
-            </Link>
+            {programLanguages.map((language) => (
+              <Link
+                key={language.id}
+                to={`/codeChallengeCategory/language/${language.id}`}
+              >
+                {language.language}
+              </Link>
+            ))}
           </div>
         )}
       </div>

@@ -1,6 +1,6 @@
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
-import "./ForgotPassword.css";
+import "../CSS Styles/ForgotPassword.css";
 
 export const ForgotPasswordPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -8,21 +8,20 @@ export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [resetToken, setResetToken] = useState("");
 
-    const resetPassword = async () => {
-        try {
-            const response = await axios.post("/forgotPassword", {
-                email,
-            });
-            setSuccess(true);
-            console.log(response.data);
-            setResetToken(response.data.data);
-        } catch (error) {
-            setErrorMessage(error.response.data.message);
-        }
-    };
+  const resetPassword = async () => {
+    try {
+      const response = await axios.post("/forgotPassword", {
+        email,
+      });
+      setSuccess(true);
+      console.log(response.data);
+      setResetToken(response.data.data);
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
+  };
 
-
-    return success ? (
+  return success ? (
     <div className="content-container">
       <h1>Success</h1>
       <p>

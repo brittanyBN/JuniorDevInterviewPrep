@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import "./Home.css";
+import "../CSS Styles/Home.css";
 
 export const HomePage = () => {
   return (

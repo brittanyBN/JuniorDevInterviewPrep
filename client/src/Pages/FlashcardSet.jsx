@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
 import { CardSetCard } from "../Components/CardSetCard";
-import "./PracticeSet.css";
+import "../CSS Styles/PracticeSet.css";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { csharp, java, javascript } from "../Components/programLanguages";
 
 export const FlashcardSetPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
@@ -75,32 +76,22 @@ export const FlashcardSetPage = () => {
     }
 
     let selectedLanguageId;
-    if (selectedLanguage === "3a4c5926-493e-4023-be3d-3388d2751865") {
-      selectedLanguageId = "3a4c5926-493e-4023-be3d-3388d2751865";
-    } else if (selectedLanguage === "54b4000d-0bf7-405c-b233-1513d19e7c7e") {
-      selectedLanguageId = "54b4000d-0bf7-405c-b233-1513d19e7c7e";
-    } else if (selectedLanguage === "0df66f10-e7ff-4356-9613-73c317ded9f1") {
-      selectedLanguageId = "0df66f10-e7ff-4356-9613-73c317ded9f1";
-    } else {
-      const userInput = prompt(
-        "Please select the desired programming language: Java, JavaScript, or C#"
-      );
-      if (userInput) {
-        const normalizedInput = userInput.toLowerCase();
-        if (normalizedInput === "javascript") {
-          selectedLanguageId = "3a4c5926-493e-4023-be3d-3388d2751865";
-        } else if (normalizedInput === "java") {
-          selectedLanguageId = "54b4000d-0bf7-405c-b233-1513d19e7c7e";
-        } else if (normalizedInput === "c#") {
-          selectedLanguageId = "0df66f10-e7ff-4356-9613-73c317ded9f1";
-        } else {
-          alert(
-            "Unsupported language. Please select from Java, JavaScript, or C#."
-          );
-          return;
-        }
+
+    const userInput = prompt(
+      "Please select the desired programming language: Java, JavaScript, or C#"
+    );
+    if (userInput) {
+      const normalizedInput = userInput.toLowerCase();
+      if (normalizedInput === "java") {
+        selectedLanguageId = java;
+      } else if (normalizedInput === "javascript") {
+        selectedLanguageId = javascript;
+      } else if (normalizedInput === "c#" || "csharp") {
+        selectedLanguageId = csharp;
       } else {
-        return;
+        alert(
+          "Unsupported language. Please select from Java, JavaScript, or C#."
+        );
       }
     }
 

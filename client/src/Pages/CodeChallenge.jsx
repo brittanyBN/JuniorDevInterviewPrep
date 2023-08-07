@@ -5,12 +5,13 @@ import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/clike/clike";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import "./CodeChallenge.css";
+import "../CSS Styles/CodeChallenge.css";
 import { NavigationBar } from "../Components/NavigationBar";
 import { HintButton } from "../Components/HintButton";
 import { SolutionButton } from "../Components/SolutionButton";
 import { BetterSolutionButton } from "../Components/BetterSolutionButton";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
+import { csharp, java, javascript } from "../Components/programLanguages";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
@@ -51,23 +52,23 @@ export const CodeChallengePage = () => {
   useEffect(() => {
     const codeMirrorEditor = CodeMirror.fromTextArea(editorRef.current, {
       mode:
-        selectedLanguage === "54b4000d-0bf7-405c-b233-1513d19e7c7e"
+        selectedLanguage === java
           ? "text/x-java"
-          : selectedLanguage === "0df66f10-e7ff-4356-9613-73c317ded9f1"
+          : selectedLanguage === csharp
           ? "text/x-csharp"
           : "javascript",
       theme: "default",
       lineNumbers: true,
     });
 
-    if (selectedLanguage === "54b4000d-0bf7-405c-b233-1513d19e7c7e") {
+    if (selectedLanguage === java) {
       const defaultCode = `class ExecuteCode {
     public static void main(String[] args) {
       // System.out.println("Hello, World!"); 
     }
   }`;
-      codeMirrorEditor.setValue(defaultCode); // Set the default code
-    } else if (selectedLanguage === "0df66f10-e7ff-4356-9613-73c317ded9f1") {
+      codeMirrorEditor.setValue(defaultCode);
+    } else if (selectedLanguage === csharp) {
       const defaultCode = `using System;`;
       codeMirrorEditor.setValue(defaultCode);
     }
@@ -102,11 +103,11 @@ export const CodeChallengePage = () => {
 
       let endpoint;
 
-      if (selectedLanguage === "54b4000d-0bf7-405c-b233-1513d19e7c7e") {
+      if (selectedLanguage === java) {
         endpoint = "/codeChallenges/executeJava";
-      } else if (selectedLanguage === "0df66f10-e7ff-4356-9613-73c317ded9f1") {
+      } else if (selectedLanguage === csharp) {
         endpoint = "/codeChallenges/executeCSharp";
-      } else if (selectedLanguage === "3a4c5926-493e-4023-be3d-3388d2751865") {
+      } else if (selectedLanguage === javascript) {
         endpoint = "/codeChallenges/executeJavascript";
       }
 
@@ -142,9 +143,9 @@ export const CodeChallengePage = () => {
         <NavigationBar />
       </div>
       <h1>
-        {selectedLanguage === "54b4000d-0bf7-405c-b233-1513d19e7c7e"
+        {selectedLanguage === java
           ? "Java"
-          : selectedLanguage === "0df66f10-e7ff-4356-9613-73c317ded9f1"
+          : selectedLanguage === csharp
           ? "C#"
           : "JavaScript"}{" "}
         Coding Playground
