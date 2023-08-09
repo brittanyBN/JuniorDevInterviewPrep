@@ -10,7 +10,7 @@ import { NavigationBar } from "../Components/NavigationBar";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { csharp, java, javascript } from "../Components/programLanguages";
 import { ButtonGroup } from "../Components/Common/ButtonGroup";
-import { CodeChallengeButton } from "../Components/CodeChallengeButton";
+import { HelpButtons } from "../Components/HelpButtons";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
@@ -19,11 +19,14 @@ export const CodeChallengePage = () => {
   const [token] = useState(localStorage.getItem("token"));
   const [userId] = useState(localStorage.getItem("id"));
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");
   const [executedCode, setExecutedCode] = useState(""); // New state for executed code
   const [editor, setEditor] = useState("");
   const [codeChallenges, setCodeChallenges] = useState([]);
+  const editorRef = useRef();
 
   const fetchCodeChallenge = async () => {
     if (!token) {
@@ -122,8 +125,6 @@ export const CodeChallengePage = () => {
     setConsoleOutput((prevOutput) => prevOutput + message + "\n");
   };
 
-  const editorRef = useRef();
-
   return (
     <div>
       <div className="nav">
@@ -137,7 +138,6 @@ export const CodeChallengePage = () => {
           : "JavaScript"}{" "}
         Coding Playground
       </h1>
-
       <div className="challengeContainer">
         {codeChallenges.length > 0 ? (
           <h1>{codeChallenges[currentCodeChallengeIndex].question}</h1>
@@ -153,44 +153,15 @@ export const CodeChallengePage = () => {
         {error && <pre>{error}</pre>}
         {consoleOutput && <pre>{consoleOutput}</pre>}
       </div>
-      <div className="help-buttons">
-        <div className="button">
-          {codeChallenges.length > 0 ? (
-            <CodeChallengeButton
-              hint={codeChallenges[currentCodeChallengeIndex].hint}
-            >
-              Hint
-            </CodeChallengeButton>
-          ) : (
-            <h2>No hint :(</h2>
-          )}
-        </div>
-        <div className="button">
-          {codeChallenges.length > 0 ? (
-            <CodeChallengeButton
-              solution={codeChallenges[currentCodeChallengeIndex].solution}
-            >
-              Solution
-            </CodeChallengeButton>
-          ) : (
-            <h2>No solution :(</h2>
-          )}
-        </div>
-        <div className="button">
-          {codeChallenges.length > 0 ? (
-            <CodeChallengeButton
-              betterSolution={
-                codeChallenges[currentCodeChallengeIndex].betterSolution
-              }
-            >
-              Best Solution
-            </CodeChallengeButton>
-          ) : (
-            <h2>No better solution :(</h2>
-          )}
-        </div>
-      </div>
-      <ButtonGroup />
+      <HelpButtons
+        codeChallenges={codeChallenges}
+        currentCodeChallengeIndex={currentCodeChallengeIndex}
+      />
+      <ButtonGroup
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

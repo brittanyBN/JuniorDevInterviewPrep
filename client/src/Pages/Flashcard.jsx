@@ -9,6 +9,8 @@ export const FlashcardPage = () => {
   const location = useLocation();
   const [flashcards, setFlashcards] = useState([]);
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const flashcardsData = location.search.split("=")[1];
