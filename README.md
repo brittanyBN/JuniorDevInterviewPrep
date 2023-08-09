@@ -1,6 +1,9 @@
 # JuniorDevInterviewPrep
 
 **IN PROGRESS**
+# Current Security threats:
+I am aware I should not save the users token in localstorage. This is a temporary fix. I will also be using two factor
+authentication. The code editors have security flaws, and these will also be addressed. 
 
 # Description
 
