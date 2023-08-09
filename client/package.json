@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "path-browserify": "^1.0.1",
     "prettier": "2.8.8",
     "util": "^0.12.5"

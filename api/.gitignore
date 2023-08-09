@@ -3,3 +3,4 @@ package-lock.json
 .env
 api/.env
 api/node_modules
+node_modules/

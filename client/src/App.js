@@ -9,7 +9,7 @@ import { LoginPage } from "./Pages/Login";
 import { SignupPage } from "./Pages/Signup";
 import { FlashcardsListPage } from "./Pages/FlashcardsList";
 import { ForgotPasswordPage } from "./Pages/ForgotPassword";
-import { PasswordResetLandingPage } from "./Pages/ForgotPasswordLangingPage";
+import { PasswordResetLandingPage } from "./Pages/PasswordResetLandingPage";
 
 function App() {
   return (

@@ -12,7 +12,7 @@ import {
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-export const PasswordResetLandingPage = () => {
+export const PasswordResetLanding = () => {
   const [newPassword, setPasswordValue] = useState("");
   const [validatePassword, setValidatePassword] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
