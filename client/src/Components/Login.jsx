@@ -23,6 +23,10 @@ export const Login = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("id", id);
         localStorage.setItem("role", response.data.role);
+        document.cookie = `token=${token}; expires=60*60 domain=localhost:3000`;
+        document.cookie = `id=${id}; expires=60*60 domain=localhost:3000`;
+        document.cookie = `role=${response.data.role}; expires=60*60 domain=localhost:3000`;
+
         window.location.href = "/home";
       } else {
         console.error("Authentication failed");

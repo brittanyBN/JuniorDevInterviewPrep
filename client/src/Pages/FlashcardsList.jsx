@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import axios from "axios";
 import { useParams } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import "../CSS Styles/FlashcardList.css";
 
 export const FlashcardsListPage = () => {
@@ -85,42 +84,30 @@ export const FlashcardsListPage = () => {
   return (
     <div className="Main-codeChallengeList-wrapper">
       <NavigationBar />
-      <div className="d-flex justify-content-between buttonLine">
-        <Button
-          className="start-practice-button"
-          onClick={practiceFlashcards}
-          variant="secondary"
-        >
+      <div className="buttonLine">
+        <button className="start-practice-button" onClick={practiceFlashcards}>
           Start Practice
-        </Button>
+        </button>
         {userId === creatorId && (
-          <Button
+          <button
             className="add-new-code-challenge-button"
             onClick={addFlashcard}
-            variant="secondary"
           >
             Add New Flashcard
-          </Button>
+          </button>
         )}
       </div>
-      <div className="code-challenges-container border border-secondary mt-4 p-3 mx-auto w-80">
+      <div className="code-challenges-container">
         {flashcards.length === 0 ? (
-          <p
-            id="empty"
-            className="d-flex justify-content-center align-items-center h-100"
-          >
+          <p id="empty">
             There are no flashcards in this set yet. Click the button to add
             one!
           </p>
         ) : (
           flashcards.map((flashcard) => (
-            <div key={flashcard.id} className="code-challenge d-flex">
-              <div className="question w-100 p-3 border border-secondary fs-5 m-0">
-                {flashcard.question}
-              </div>
-              <div className="solution w-100 p-3 border border-secondary fs-5 m-0">
-                {flashcard.answer}
-              </div>
+            <div key={flashcard.id} className="code-challenge">
+              <div className="question">{flashcard.question}</div>
+              <div className="solution">{flashcard.answer}</div>
             </div>
           ))
         )}

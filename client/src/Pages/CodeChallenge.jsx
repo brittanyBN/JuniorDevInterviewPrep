@@ -7,11 +7,10 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../CSS Styles/CodeChallenge.css";
 import { NavigationBar } from "../Components/NavigationBar";
-import { HintButton } from "../Components/HintButton";
-import { SolutionButton } from "../Components/SolutionButton";
-import { BetterSolutionButton } from "../Components/BetterSolutionButton";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { csharp, java, javascript } from "../Components/programLanguages";
+import { ButtonGroup } from "../Components/Common/ButtonGroup";
+import { CodeChallengeButton } from "../Components/CodeChallengeButton";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
@@ -81,18 +80,6 @@ export const CodeChallengePage = () => {
       codeMirrorEditor.toTextArea();
     };
   }, [selectedLanguage]);
-
-  const handleNextCodeChallenge = async () => {
-    setCurrentCodeChallengeIndex((prevIndex) =>
-      prevIndex === codeChallenges.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const handlePreviousCodeChallenge = () => {
-    setCurrentCodeChallengeIndex((prevIndex) =>
-      prevIndex === 0 ? codeChallenges.length - 1 : prevIndex - 1
-    );
-  };
 
   const runCode = async () => {
     try {
@@ -167,51 +154,43 @@ export const CodeChallengePage = () => {
         {consoleOutput && <pre>{consoleOutput}</pre>}
       </div>
       <div className="help-buttons">
-        <div className="hint-button">
+        <div className="button">
           {codeChallenges.length > 0 ? (
-            <HintButton hint={codeChallenges[currentCodeChallengeIndex].hint} />
+            <CodeChallengeButton
+              hint={codeChallenges[currentCodeChallengeIndex].hint}
+            >
+              Hint
+            </CodeChallengeButton>
           ) : (
-            <div className="no-hint">
-              <h2>No hint :(</h2>
-            </div>
+            <h2>No hint :(</h2>
           )}
         </div>
-        <div className="solution-button">
+        <div className="button">
           {codeChallenges.length > 0 ? (
-            <SolutionButton
+            <CodeChallengeButton
               solution={codeChallenges[currentCodeChallengeIndex].solution}
-            />
+            >
+              Solution
+            </CodeChallengeButton>
           ) : (
-            <div className="no-solution">
-              <h2>No solution :(</h2>
-            </div>
+            <h2>No solution :(</h2>
           )}
         </div>
-        <div className="better-solution-button">
+        <div className="button">
           {codeChallenges.length > 0 ? (
-            <BetterSolutionButton
+            <CodeChallengeButton
               betterSolution={
                 codeChallenges[currentCodeChallengeIndex].betterSolution
               }
-            />
+            >
+              Best Solution
+            </CodeChallengeButton>
           ) : (
-            <div className="no-better-solution">
-              <h2>No better solution :(</h2>
-            </div>
+            <h2>No better solution :(</h2>
           )}
         </div>
       </div>
-      <div className="button-group">
-        <button className="action-button" onClick={handlePreviousCodeChallenge}>
-          Previous
-        </button>
-        <button>{`${currentCodeChallengeIndex + 1}/${
-          codeChallenges.length
-        }`}</button>
-        <button className="action-button" onClick={handleNextCodeChallenge}>
-          Next
-        </button>
-      </div>
+      <ButtonGroup />
     </div>
   );
 };

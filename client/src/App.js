@@ -15,42 +15,33 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="home" element={<HomePage></HomePage>} />
-        <Route path="login" element={<LoginPage></LoginPage>} />
-        <Route path="signup" element={<SignupPage></SignupPage>} />
-        <Route
-          path="/forgotPassword"
-          element={<ForgotPasswordPage></ForgotPasswordPage>}
-        />
+        <Route path="home" element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
+        <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
         <Route
           path="/resetPassword/:resetToken"
-          element={<PasswordResetLandingPage></PasswordResetLandingPage>}
+          element={<PasswordResetLandingPage />}
         />
-        <Route
-          path="/flashcardSet"
-          element={<FlashcardSetPage></FlashcardSetPage>}
-        />
+        <Route path="/flashcardSet" element={<FlashcardSetPage />} />
         <Route
           path="/flashcardSet/language/:selectedLanguage"
-          element={<FlashcardSetPage></FlashcardSetPage>}
+          element={<FlashcardSetPage />}
         />
-        <Route
-          path="flashcardSet/:id"
-          element={<FlashcardsListPage></FlashcardsListPage>}
-        />
+        <Route path="flashcardSet/:id" element={<FlashcardsListPage />} />
         <Route
           path="codeChallengeCategory/language/:selectedLanguage"
-          element={<CodeChallengeCategoryPage></CodeChallengeCategoryPage>}
+          element={<CodeChallengeCategoryPage />}
         />
         <Route
           path="codeChallengeCategory"
-          element={<CodeChallengeCategoryPage></CodeChallengeCategoryPage>}
+          element={<CodeChallengeCategoryPage />}
         />
         <Route
           path="codeChallengeCategory/:id"
-          element={<CodeChallengePage></CodeChallengePage>}
+          element={<CodeChallengePage />}
         />
-        <Route path="flashcard/:id" element={<FlashcardPage></FlashcardPage>} />
+        <Route path="flashcard/:id" element={<FlashcardPage />} />
       </Routes>
     </BrowserRouter>
   );

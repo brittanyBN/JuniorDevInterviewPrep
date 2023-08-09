@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import axios from "axios";
 import "../CSS Styles/PracticeSet.css";
-import { CardSetCard } from "../Components/CardSetCard";
+import { CardSetCard } from "../Components/Common/CardSetCard";
 import { Link, useParams } from "react-router-dom";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
+import { ButtonGroup } from "../Components/Common/ButtonGroup";
+import { fetchCodeChallengeCategories } from "../API/FetchCodeChallengeCategories";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
@@ -18,63 +19,19 @@ export const CodeChallengeCategoryPage = () => {
   const itemsPerPage = 8;
 
   useEffect(() => {
-    fetchCodeChallengeCategories().then((r) =>
-      console.log("Code challenge categories fetched")
-    );
-  }, [token, id, currentPage, selectedLanguage]);
-
-  useEffect(() => {
-    setSelectedLanguage(selectedLanguage); // Set the selectedLanguage to context
-  }, [selectedLanguage, setSelectedLanguage]);
-
-  const fetchCodeChallengeCategories = async () => {
-    if (!token) {
-      alert("You must be logged in to see code challenge categories");
-      window.location.href = "/login";
-    } else {
-      try {
-        if (selectedLanguage !== undefined) {
-          console.log("selected LANGUAGE", selectedLanguage);
-
-          const response = await axios.get(
-            `/codeChallengeCategories/language/${selectedLanguage}?page=${currentPage}&size=${itemsPerPage}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          setCodeChallengeCategories(response.data.data);
-          setTotalPages(response.data.pagination.totalPages);
-        } else {
-          const response = await axios.get(
-            `/codeChallengeCategories?page=${currentPage}&size=${itemsPerPage}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          setCodeChallengeCategories(response.data.data);
-          setTotalPages(response.data.pagination.totalPages);
-        }
-      } catch (error) {
-        console.error("Error fetching code challenge categories:", error);
+    fetchCodeChallengeCategories(
+      token,
+      selectedLanguage,
+      currentPage,
+      itemsPerPage
+    ).then((response) => {
+      if (response !== undefined) {
+        setCodeChallengeCategories(response.data.data);
+        setTotalPages(response.data.pagination.totalPages);
       }
-    }
-  };
-
-  function handlePreviousPage() {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  function handleNextPage() {
-    setCurrentPage(currentPage + 1);
-  }
+    });
+    setSelectedLanguage(selectedLanguage);
+  }, [token, id, currentPage, selectedLanguage, setSelectedLanguage]);
 
   return (
     <div className="Main-flashcardSet-wrapper">
@@ -93,15 +50,11 @@ export const CodeChallengeCategoryPage = () => {
           </Link>
         ))}
       </div>
-      <div className="button-group">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button>{`${currentPage}/${totalPages}`}</button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
+      <ButtonGroup
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

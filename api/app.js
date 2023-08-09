@@ -3,7 +3,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-const authentication = require("./middleware/authentication");
 
 const authRouter = require("./routes/auth");
 const codeChallengeRouter = require("./routes/codeChallenge");
@@ -14,6 +13,7 @@ const programLanguageRouter = require("./routes/programLanguage");
 
 require("dotenv").config();
 const db = require("./models");
+const authentication = require("./middleware/authentication");
 db.sequelize.sync({ force: false });
 
 const app = express();

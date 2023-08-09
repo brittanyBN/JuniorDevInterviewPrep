@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavigationBar } from "../Components/NavigationBar";
-import { CardSetCard } from "../Components/CardSetCard";
+import { CardSetCard } from "../Components/Common/CardSetCard";
 import "../CSS Styles/PracticeSet.css";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import { csharp, java, javascript } from "../Components/programLanguages";
+import { fetchFlashcardSets } from "../API/FetchFlashcardSets";
+import { ButtonGroup } from "../Components/Common/ButtonGroup";
+import { addNewFlashcardSet } from "../API/AddNewFlashcardSet";
 
 export const FlashcardSetPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
@@ -17,125 +18,15 @@ export const FlashcardSetPage = () => {
   const itemsPerPage = 8;
 
   useEffect(() => {
-    fetchFlashcardSets().then(() => {
-      console.log("Flashcard sets fetched");
-    });
-  }, [token, currentPage, selectedLanguage]);
-
-  async function fetchFlashcardSets() {
-    if (!token) {
-      alert("You must be logged in to add a new flashcard set");
-      window.location.href = "/login";
-    }
-
-    try {
-      if (selectedLanguage !== undefined) {
-        console.log("selected LANGUAGE", selectedLanguage);
-        const response = await axios.get(
-          `/flashcardSets/language/${selectedLanguage}?page=${currentPage}&size=${itemsPerPage}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "X-User-Role": "admin",
-              "Content-type": "application/json",
-            },
-          }
-        );
-        setFlashcardSets(response.data.data);
-        setTotalPages(response.data.pagination.totalPages);
-        return response;
-      } else {
-        const response = await axios.get(
-          `/flashcardSets/set?page=${currentPage}&size=${itemsPerPage}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "X-User-Role": "admin",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        setFlashcardSets(response.data.data);
-        setTotalPages(response.data.pagination.totalPages);
-        return response;
-      }
-    } catch (error) {
-      console.error("Error fetching flashcard sets:", error);
-    }
-  }
-
-  async function addNewFlashcardSet() {
-    if (!token) {
-      alert("You must be logged in to add a new flashcard set");
-      return;
-    }
-
-    let data = prompt("Enter the name of the new flashcard set");
-    if (!data) {
-      return;
-    }
-
-    let selectedLanguageId;
-
-    const userInput = prompt(
-      "Please select the desired programming language: Java, JavaScript, or C#"
-    );
-    if (userInput) {
-      const normalizedInput = userInput.toLowerCase();
-      if (normalizedInput === "java") {
-        selectedLanguageId = java;
-      } else if (normalizedInput === "javascript") {
-        selectedLanguageId = javascript;
-      } else if (normalizedInput === "c#" || "csharp") {
-        selectedLanguageId = csharp;
-      } else {
-        alert(
-          "Unsupported language. Please select from Java, JavaScript, or C#."
-        );
-      }
-    }
-
-    try {
-      const response = await axios.post(
-        "/flashcardSets",
-        {
-          name: data,
-          UserId: id,
-          ProgramLanguageId: selectedLanguageId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+    fetchFlashcardSets(selectedLanguage, token, currentPage, itemsPerPage).then(
+      (response) => {
+        if (response !== undefined) {
+          setFlashcardSets(response.data.data);
+          setTotalPages(response.data.pagination.totalPages);
         }
-      );
-      const newResponse = await fetchFlashcardSets();
-      setFlashcardSets(newResponse.data.data);
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status === 400 &&
-        error.response.data.message === "Flashcard Set already exists"
-      ) {
-        alert("The flashcard set already exists");
-      } else {
-        console.error("Error posting new flashcard set:", error);
       }
-    }
-  }
-
-  function handlePreviousPage() {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  function handleNextPage() {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
+    );
+  }, [id, token, currentPage, selectedLanguage]);
 
   return (
     <div className="Main-flashcardSet-wrapper">
@@ -144,7 +35,7 @@ export const FlashcardSetPage = () => {
         <h1>Flashcard Set</h1>
         <div id="add">
           <button
-            onClick={addNewFlashcardSet}
+            onClick={() => addNewFlashcardSet(id, token)}
             id="newFlashcard"
             aria-label="Add New Flashcard Set"
           >
@@ -163,17 +54,11 @@ export const FlashcardSetPage = () => {
           </Link>
         ))}
       </div>
-      <div className="button-group">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button aria-label={`Page ${currentPage} of ${totalPages}`} disabled>
-          {`${currentPage}/${totalPages}`}
-        </button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
+      <ButtonGroup
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };
