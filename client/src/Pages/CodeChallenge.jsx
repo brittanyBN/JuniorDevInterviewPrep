@@ -157,7 +157,7 @@ export const CodeChallengePage = () => {
       />
       <PracticeButtonGroup
         currentIndex={currentCodeChallengeIndex}
-        setCurrentIndex={setCurrentCodeChallengeIndex()}
+        setCurrentIndex={setCurrentCodeChallengeIndex}
         set={codeChallenges}
       />
     </div>
