@@ -3,20 +3,21 @@ import { NavigationBar } from "../Components/NavigationBar";
 import { useLocation } from "react-router-dom";
 import { FlashcardCard } from "../Components/FlashcardCard";
 import "../CSS Styles/Practice.css";
-import { ButtonGroup } from "../Components/Common/ButtonGroup";
+import { PracticeButtonGroup } from "../Components/Common/PracticeButtonGroup";
 
 export const FlashcardPage = () => {
   const location = useLocation();
   const [flashcards, setFlashcards] = useState([]);
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const flashcardsData = location.search.split("=")[1];
     if (flashcardsData) {
+      console.log("data", flashcardsData);
       const decodedFlashcards = JSON.parse(decodeURIComponent(flashcardsData));
+      console.log("dec", decodedFlashcards);
       setFlashcards(decodedFlashcards);
+      console.log(flashcards);
       setCurrentFlashcardIndex(0);
     }
   }, [location.search]);
@@ -38,10 +39,10 @@ export const FlashcardPage = () => {
             <h2>No flashcards to practice</h2>
           </div>
         )}
-        <ButtonGroup
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setCurrentPage={setCurrentPage}
+        <PracticeButtonGroup
+          currentIndex={currentFlashcardIndex}
+          setCurrentIndex={setCurrentFlashcardIndex}
+          set={flashcards}
         />
       </div>
     </div>

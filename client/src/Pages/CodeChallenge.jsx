@@ -9,8 +9,8 @@ import "../CSS Styles/CodeChallenge.css";
 import { NavigationBar } from "../Components/NavigationBar";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { csharp, java, javascript } from "../Components/programLanguages";
-import { ButtonGroup } from "../Components/Common/ButtonGroup";
 import { HelpButtons } from "../Components/HelpButtons";
+import { PracticeButtonGroup } from "../Components/Common/PracticeButtonGroup";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
@@ -19,8 +19,6 @@ export const CodeChallengePage = () => {
   const [token] = useState(localStorage.getItem("token"));
   const [userId] = useState(localStorage.getItem("id"));
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");
   const [executedCode, setExecutedCode] = useState(""); // New state for executed code
@@ -157,10 +155,10 @@ export const CodeChallengePage = () => {
         codeChallenges={codeChallenges}
         currentCodeChallengeIndex={currentCodeChallengeIndex}
       />
-      <ButtonGroup
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
+      <PracticeButtonGroup
+        currentIndex={currentCodeChallengeIndex}
+        setCurrentIndex={setCurrentCodeChallengeIndex()}
+        set={codeChallenges}
       />
     </div>
   );

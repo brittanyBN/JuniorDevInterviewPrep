@@ -1,8 +1,10 @@
 import { NavigationBar } from "../Components/NavigationBar";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import "../CSS Styles/FlashcardList.css";
+import { fetchFlashcards } from "../API/FetchFlashcards";
+import { practiceFlashcards } from "../Components/PracticeFlashcards";
+import { addFlashcard } from "../API/AddFlashcard";
 
 export const FlashcardsListPage = () => {
   const { id } = useParams();
@@ -12,86 +14,34 @@ export const FlashcardsListPage = () => {
   const [creatorId, setCreatorId] = useState("");
 
   useEffect(() => {
-    fetchFlashcards(id).then(() => console.log("Flashcards fetched"));
+    fetchFlashcards(id, token, setCreatorId, setFlashcards).then(() =>
+      console.log(flashcards)
+    );
   }, [id, token, userId]);
-
-  const fetchFlashcards = async (flashcardId) => {
-    if (!token) {
-      alert("You must be logged in to complete code challenges");
-      window.location.href = "/login";
-    } else {
-      try {
-        const response = await axios.get(`/flashcardSets/list/${flashcardId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const { Flashcards, UserId } = response.data.data;
-        setCreatorId(UserId);
-        setFlashcards(Flashcards);
-        return response;
-      } catch (error) {
-        console.error("Error fetching flashcards:", error);
-      }
-    }
-  };
-
-  const practiceFlashcards = () => {
-    if (flashcards.length === 0) {
-      alert("You must add flashcards to this set before you can practice them");
-    } else {
-      const flashcardsData = encodeURIComponent(JSON.stringify(flashcards));
-      window.location.href = `/flashcard/${id}?flashcards=${flashcardsData}`;
-    }
-  };
-
-  const addFlashcard = async () => {
-    if (!token) {
-      alert("You must be logged in to add a new flashcard");
-      return;
-    }
-
-    if (userId !== creatorId) {
-      return;
-    }
-
-    const question = prompt("Enter question");
-    const answer = prompt("Enter answer");
-
-    try {
-      await axios.post(
-        "/flashcards",
-        {
-          question: question,
-          answer: answer,
-          FlashcardSetId: id,
-          UserId: userId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const finalResponse = await fetchFlashcards(id);
-      setFlashcards(finalResponse.data.data.Flashcards);
-    } catch (error) {
-      console.error("Error adding flashcard:", error);
-    }
-  };
 
   return (
     <div className="Main-codeChallengeList-wrapper">
       <NavigationBar />
       <div className="buttonLine">
-        <button className="start-practice-button" onClick={practiceFlashcards}>
+        <button
+          className="start-practice-button"
+          onClick={() => practiceFlashcards(flashcards, id)}
+        >
           Start Practice
         </button>
         {userId === creatorId && (
           <button
             className="add-new-code-challenge-button"
-            onClick={addFlashcard}
+            onClick={() =>
+              addFlashcard(
+                token,
+                userId,
+                id,
+                flashcards,
+                setFlashcards,
+                creatorId
+              )
+            }
           >
             Add New Flashcard
           </button>
