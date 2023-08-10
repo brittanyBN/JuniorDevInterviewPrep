@@ -11,7 +11,6 @@ export const fetchCodeChallengeCategories = async (
     window.location.href = "/login";
   } else {
     try {
-      console.log(token);
       if (selectedLanguage !== undefined) {
         return await axios.get(
           `/codeChallengeCategories/language/${selectedLanguage}`,

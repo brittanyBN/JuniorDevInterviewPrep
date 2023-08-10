@@ -1,4 +1,4 @@
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 
 class CodeChallengeCategoryService {
   constructor(db) {
@@ -16,9 +16,7 @@ class CodeChallengeCategoryService {
   async getByLanguage(pagination, programLanguageId) {
     return this.CodeChallengeCategory.findAll({
       where: {
-        [Op.and]: [
-          programLanguageId ? { programLanguageId } : {},
-        ],
+        [Op.and]: [programLanguageId ? { programLanguageId } : {}],
       },
       limit: pagination.limit,
       offset: pagination.offset,
@@ -27,7 +25,7 @@ class CodeChallengeCategoryService {
 
   async countAll() {
     return this.CodeChallengeCategory.count();
-    }
+  }
 
   async getOne(id) {
     return this.CodeChallengeCategory.findOne({
@@ -35,7 +33,7 @@ class CodeChallengeCategoryService {
       include: [
         {
           model: this.client.models.CodeChallenge,
-          attributes: ["id", "question", "solution", "hint"],
+          attributes: ["id", "question", "solution", "hint", "betterSolution"],
         },
       ],
     });
@@ -45,7 +43,7 @@ class CodeChallengeCategoryService {
     return this.CodeChallengeCategory.create({
       name: name,
       UserId: userId,
-      ProgramLanguageId: programLanguageId
+      ProgramLanguageId: programLanguageId,
     });
   }
 

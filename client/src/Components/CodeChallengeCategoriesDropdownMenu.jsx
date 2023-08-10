@@ -22,7 +22,7 @@ export const CodeChallengeCategoriesDropdownMenu = ({ programLanguages }) => {
       onMouseLeave={handleCodeChallengeCategoryDropdownToggle}
     >
       <div className="CodeChallengeCategory">
-        <Link to="/codeChallengeCategory">Code Challenge Category</Link>
+        <Link>Code Challenge Category</Link>
       </div>
       {programLanguages.length > 0 && isCodeChallengeCategoryDropdownOpen && (
         <div className="Dropdown-contentCCC" style={{ fontWeight: "bold" }}>

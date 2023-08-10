@@ -16,10 +16,11 @@ export const FlashcardSetsDropdownMenu = ({ programLanguages }) => {
       onMouseLeave={handleFlashcardSetDropdownToggle}
     >
       <div className="FlashcardSet">
-        <Link to="/flashcardSet">Flashcard Set</Link>
+        <Link>Flashcard Set</Link>
       </div>
       {programLanguages.length > 0 && isFlashcardSetDropdownOpen && (
         <div className="Dropdown-content" style={{ fontWeight: "bold" }}>
+          <Link to="/flashcardSet">All</Link>
           {programLanguages.map((language) => (
             <Link
               key={language.id}
