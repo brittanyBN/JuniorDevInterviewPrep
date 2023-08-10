@@ -1,4 +1,4 @@
-import { NavigationBar } from "../Components/NavigationBar";
+import { NavigationBar } from "../Components/Common/NavigationBar";
 import { PasswordResetLanding } from "../Components/PasswordResetLandingPage";
 
 export const PasswordResetLandingPage = () => {

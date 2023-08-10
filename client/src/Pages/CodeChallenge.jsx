@@ -6,7 +6,7 @@ import "codemirror/mode/clike/clike";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../CSS Styles/CodeChallenge.css";
-import { NavigationBar } from "../Components/NavigationBar";
+import { NavigationBar } from "../Components/Common/NavigationBar";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { csharp, java, javascript } from "../Components/programLanguages";
 import { HelpButtons } from "../Components/HelpButtons";
