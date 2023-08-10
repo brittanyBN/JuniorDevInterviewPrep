@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationBar } from "../Components/NavigationBar";
+import { NavigationBar } from "../Components/Common/NavigationBar";
 import "../CSS Styles/Home.css";
 
 export const HomePage = () => {

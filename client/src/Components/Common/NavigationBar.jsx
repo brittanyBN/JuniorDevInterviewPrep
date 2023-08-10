@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import "../CSS Styles/NavigationBar.css";
-import { fetchProgrammingLanguages } from "../API/FetchProgrammingLanguages";
-import { FlashcardSetsDropdownMenu } from "./FlashcardSetsDropdownMenu";
-import { CodeChallengeCategoriesDropdownMenu } from "./CodeChallengeCategoriesDropdownMenu";
+import "../../CSS Styles/NavigationBar.css";
+import { fetchProgrammingLanguages } from "../../API/FetchProgrammingLanguages";
+import { FlashcardSetsDropdownMenu } from "../FlashcardSetsDropdownMenu";
+import { CodeChallengeCategoriesDropdownMenu } from "../CodeChallengeCategoriesDropdownMenu";
 
 export const NavigationBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
@@ -31,7 +31,7 @@ export const NavigationBar = () => {
 
   return (
     <nav className="Main-navbar-wrapper">
-      <Link to="/home" className="active">
+      <Link to="/" className="active">
         Home
       </Link>
       {isLoggedIn ? (

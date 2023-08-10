@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavigationBar } from "../Components/NavigationBar";
+import { NavigationBar } from "../Components/Common/NavigationBar";
 import { CardSetCard } from "../Components/Common/CardSetCard";
 import "../CSS Styles/PracticeSet.css";
 import { Link, useParams } from "react-router-dom";

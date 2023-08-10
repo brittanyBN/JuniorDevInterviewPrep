@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavigationBar } from "../Components/NavigationBar";
+import { NavigationBar } from "../Components/Common/NavigationBar";
 import { useLocation } from "react-router-dom";
 import { FlashcardCard } from "../Components/FlashcardCard";
 import "../CSS Styles/Practice.css";
