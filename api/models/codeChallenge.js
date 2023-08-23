@@ -6,19 +6,19 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.UUIDV4,
     },
     question: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(750),
       allowNull: false,
     },
     solution: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(3000),
       allowNull: false,
     },
     hint: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(500),
       allowNull: false,
     },
     betterSolution: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(3000),
       allowNull: true,
     },
   });

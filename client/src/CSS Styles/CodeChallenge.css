@@ -12,6 +12,10 @@ h1 {
     flex-direction: column;
 }
 
+h2 {
+    font-size: 20px;
+}
+
 .code-mirror-wrapper .CodeMirror {
     font-size: 20px;
     height: 400px;

@@ -1,5 +1,10 @@
-import { csharp, java, javascript } from "../Components/programLanguages";
 import axios from "axios";
+import {
+  csharp,
+  general,
+  java,
+  javascript,
+} from "../Components/programLanguages";
 
 export const addNewFlashcardSet = async (id, token) => {
   if (!token) {
@@ -15,21 +20,30 @@ export const addNewFlashcardSet = async (id, token) => {
   let selectedLanguageId;
 
   const userInput = prompt(
-    "Please select the desired programming language: Java, JavaScript, or C#"
+    "Please select the desired programming language: General, Java, JavaScript, or C#"
   );
-  if (userInput) {
-    const normalizedInput = userInput.toLowerCase();
-    if (normalizedInput === "java") {
+  const normalizedInput = userInput.toLowerCase();
+
+  switch (normalizedInput) {
+    case "java":
       selectedLanguageId = java;
-    } else if (normalizedInput === "javascript") {
+      break;
+    case "javascript":
       selectedLanguageId = javascript;
-    } else if (normalizedInput === "c#" || "csharp") {
+      break;
+    case "csharp":
       selectedLanguageId = csharp;
-    } else {
+      break;
+    case "c#":
+      selectedLanguageId = csharp;
+      break;
+    case "general":
+      selectedLanguageId = general;
+      break;
+    default:
       alert(
-        "Unsupported language. Please select from Java, JavaScript, or C#."
+        "Unsupported language. Please select from General, Java, JavaScript, or C#."
       );
-    }
   }
 
   try {

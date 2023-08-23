@@ -138,7 +138,7 @@ export const CodeChallengePage = () => {
       </h1>
       <div className="challengeContainer">
         {codeChallenges.length > 0 ? (
-          <h1>{codeChallenges[currentCodeChallengeIndex].question}</h1>
+          <h2>{codeChallenges[currentCodeChallengeIndex].question}</h2>
         ) : (
           <div className="no-flashcards">
             <h2>No challenges to practice</h2>

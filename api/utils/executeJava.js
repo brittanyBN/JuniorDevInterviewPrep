@@ -1,5 +1,5 @@
-const { execSync } = require("child_process");
-const fs = require("fs");
+const { execSync } = require("child_process"); // Execute shell commands synchronously
+const fs = require("fs"); // used to manipulate files and directories
 const executeJava = (req, res) => {
   const { code } = req.body;
 
@@ -24,3 +24,5 @@ const executeJava = (req, res) => {
 };
 
 module.exports = { executeJava };
+
+// SECURITY ISSUE: Must validate and sanitize user input to avoid code injection

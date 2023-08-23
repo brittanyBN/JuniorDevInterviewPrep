@@ -6,11 +6,11 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.UUIDV4,
     },
     question: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(750),
       allowNull: false,
     },
     answer: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(750),
       allowNull: false,
     },
   });

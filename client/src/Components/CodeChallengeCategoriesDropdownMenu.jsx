@@ -13,6 +13,10 @@ export const CodeChallengeCategoriesDropdownMenu = ({ programLanguages }) => {
     );
   };
 
+  const filteredLanguages = programLanguages.filter(
+    (language) => language.language !== "General"
+  );
+
   return (
     <div
       className={`DropdownCCC ${
@@ -24,9 +28,9 @@ export const CodeChallengeCategoriesDropdownMenu = ({ programLanguages }) => {
       <div className="CodeChallengeCategory">
         <Link>Code Challenge Category</Link>
       </div>
-      {programLanguages.length > 0 && isCodeChallengeCategoryDropdownOpen && (
+      {filteredLanguages.length > 0 && isCodeChallengeCategoryDropdownOpen && (
         <div className="Dropdown-contentCCC" style={{ fontWeight: "bold" }}>
-          {programLanguages.map((language) => (
+          {filteredLanguages.map((language) => (
             <Link
               key={language.id}
               to={`/codeChallengeCategory/language/${language.id}`}

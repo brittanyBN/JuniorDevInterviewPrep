@@ -1,3 +1,4 @@
-export const java = "54b4000d-0bf7-405c-b233-1513d19e7c7e";
-export const javascript = "3a4c5926-493e-4023-be3d-3388d2751865";
-export const csharp = "0df66f10-e7ff-4356-9613-73c317ded9f1";
+export const java = "81af9fe5-7b00-47db-835e-889df383bb88";
+export const javascript = "bea7a04e-8c91-4085-a4c8-37a60cd82ddb";
+export const csharp = "f8fece6b-f758-4747-9805-d0261b94eeff";
+export const general = "cc600170-ef11-40f6-8569-5050a4aad217";
