@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { ButtonGroup } from "../Components/Common/ButtonGroup";
 import { fetchCodeChallengeCategories } from "../API/FetchCodeChallengeCategories";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
@@ -15,6 +16,7 @@ export const CodeChallengeCategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { selectedLanguage } = useParams();
+  const { setSelectedLanguage } = useSelectedLanguage();
 
   const itemsPerPage = 8;
 
@@ -28,9 +30,10 @@ export const CodeChallengeCategoryPage = () => {
       if (response !== undefined) {
         setCodeChallengeCategories(response.data.data);
         setTotalPages(response.data.pagination.totalPages);
+        setSelectedLanguage(selectedLanguage);
       }
     });
-  }, [token, id, currentPage, selectedLanguage]);
+  }, [id, token, currentPage, selectedLanguage]);
 
   return (
     <div className="Main-flashcardSet-wrapper">
