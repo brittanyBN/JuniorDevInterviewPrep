@@ -6,16 +6,6 @@
     margin: 0;
 }
 
-.button-group {
-    display: flex;
-    justify-content: center;
-    margin-top: 265px;
-}
-
-button {
-    margin: 0 10px;
-}
-
 .nav {
     margin: 0;
     padding: 0;
