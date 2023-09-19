@@ -5,9 +5,10 @@ const FlashcardService = require("../services/FlashcardService");
 const flashcardService = new FlashcardService(db);
 const flashcardSchema = require("../schemas/flashcard.schema");
 const FlashcardSetService = require("../services/FlashcardSetService");
+const { requiresAuth } = require("express-openid-connect");
 const flashcardSetService = new FlashcardSetService(db);
 
-router.get("/", async (req, res, next) => {
+router.get("/", requiresAuth(), async (req, res, next) => {
   try {
     const flashcards = await flashcardService.getAll();
     res.status(200).json({
@@ -19,7 +20,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const flashcard = await flashcardService.getOne(req.params.id);
     if (flashcard === null) {
@@ -34,7 +35,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", requiresAuth(), async (req, res, next) => {
   try {
     const { question, answer, FlashcardSetId } = req.body;
     await flashcardSchema.validateAsync({
@@ -60,7 +61,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const id = req.params.id;
     const { question, answer, FlashcardSetId } = req.body;
@@ -92,7 +93,7 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const flashcard = await flashcardService.delete(req.params.id);
     if (!flashcard) {

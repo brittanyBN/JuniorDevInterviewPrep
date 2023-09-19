@@ -5,19 +5,21 @@ import "codemirror/mode/javascript/javascript";
 import "codemirror/mode/clike/clike";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import "../CSS Styles/BottomButtons.css";
 import "../CSS Styles/CodeChallenge.css";
 import { NavigationBar } from "../Components/Common/NavigationBar";
-import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { csharp, java, javascript } from "../Components/programLanguages";
 import { HelpButtons } from "../Components/HelpButtons";
 import { PracticeButtonGroup } from "../Components/Common/PracticeButtonGroup";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchCodeChallenge } from "../API/FetchCodeChallenge";
+import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
   const { selectedLanguage } = useSelectedLanguage();
-
-  const [token] = useState(localStorage.getItem("token"));
-  const [userId] = useState(localStorage.getItem("id"));
+  const { getAccessTokenSilently } = useAuth0();
+  const [token] = useState(getAccessTokenSilently());
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");
@@ -26,30 +28,10 @@ export const CodeChallengePage = () => {
   const [codeChallenges, setCodeChallenges] = useState([]);
   const editorRef = useRef();
 
-  const fetchCodeChallenge = async () => {
-    if (!token) {
-      alert("You must be logged in to complete code challenges");
-      window.location.href = "/login";
-    } else {
-      try {
-        const response = await axios.get(`/codeChallengeCategories/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const codeChallengeData = response.data.data.CodeChallenges;
-        setCodeChallenges(codeChallengeData);
-      } catch (error) {
-        console.error("Error fetching code challenge:", error);
-      }
-    }
-  };
-
   useEffect(() => {
-    fetchCodeChallenge().then(() => console.log(" "));
-  }, [id, token, userId, selectedLanguage]);
-
-  useEffect(() => {
+    fetchCodeChallenge(id, token).then((response) => {
+      setCodeChallenges(response.data.data.CodeChallenges);
+    });
     const codeMirrorEditor = CodeMirror.fromTextArea(editorRef.current, {
       mode:
         selectedLanguage === java
@@ -87,7 +69,7 @@ export const CodeChallengePage = () => {
       const code = editor.getValue();
       setConsoleOutput("");
       setError("");
-      setExecutedCode(""); // Reset executed code
+      setExecutedCode("");
 
       let endpoint;
 
@@ -113,7 +95,7 @@ export const CodeChallengePage = () => {
       const { consoleOutput, error, executedCode } = response.data;
       setConsoleOutput(consoleOutput);
       setError(error);
-      setExecutedCode(executedCode); // Set executed code in state
+      setExecutedCode(executedCode);
     } catch (error) {
       setError("Error: " + error.message);
     }

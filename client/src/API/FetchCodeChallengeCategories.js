@@ -8,7 +8,7 @@ export const fetchCodeChallengeCategories = async (
 ) => {
   if (!token) {
     alert("You must be logged in to see code challenge categories");
-    window.location.href = "/login";
+    window.location.href = "/";
   } else {
     try {
       if (selectedLanguage !== undefined) {

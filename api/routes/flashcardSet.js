@@ -9,13 +9,15 @@ const flashcardSetSchema = require("../schemas/flashcardSet.schema");
 const { getPagination } = require("../utils/getPagination");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
+const { requiresAuth } = require("express-openid-connect");
 
-router.get("/set", async (req, res, next) => {
+router.get("/set", requiresAuth(), async (req, res, next) => {
   try {
     const { page, size } = req.query;
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decodedToken.id;
+    const tokenSet = req.oidc.accessToken;
+    const accessToken = tokenSet.access_token;
+    const userInfo = await req.oidc.fetchUserInfo();
+    const userId = req.oidc.user.sub;
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
@@ -38,45 +40,48 @@ router.get("/set", async (req, res, next) => {
   }
 });
 
-router.get("/language/:programLanguageId", async (req, res, next) => {
-  try {
-    const { page, size } = req.query;
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decodedToken.id;
-    const pagination = getPagination(page, size);
-    const condition = {
-      [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
-    };
-    const programLanguageId = req.params.programLanguageId;
-    const flashcardSets = await flashcardSetService.getByLanguage(
-      pagination,
-      condition,
-      programLanguageId
-    );
+router.get(
+  "/language/:programLanguageId",
+  requiresAuth(),
+  async (req, res, next) => {
+    try {
+      const { page, size } = req.query;
+      const tokenSet = req.oidc.accessToken;
+      const accessToken = tokenSet.access_token;
+      const userInfo = await req.oidc.fetchUserInfo();
+      const userId = req.oidc.user.sub;
+      const pagination = getPagination(page, size);
+      const condition = {
+        [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
+      };
+      const programLanguageId = req.params.programLanguageId;
+      const flashcardSets = await flashcardSetService.getByLanguage(
+        pagination,
+        condition,
+        programLanguageId
+      );
 
-    const totalCount = await flashcardSetService.countAll(condition);
-    pagination.totalPages = Math.ceil(totalCount / pagination.limit);
+      const totalCount = await flashcardSetService.countAll(condition);
+      pagination.totalPages = Math.ceil(totalCount / pagination.limit);
 
-    if (flashcardSets.length === 0) {
-      return res
-        .status(400)
-        .json({
+      if (flashcardSets.length === 0) {
+        return res.status(400).json({
           message: "No flashcard sets found for the specified language.",
         });
+      }
+
+      res.status(200).json({
+        message: "Successfully fetched flashcardSets by language",
+        data: flashcardSets,
+        pagination: pagination,
+      });
+    } catch (err) {
+      next(err);
     }
-
-    res.status(200).json({
-      message: "Successfully fetched flashcardSets by language",
-      data: flashcardSets,
-      pagination: pagination,
-    });
-  } catch (err) {
-    next(err);
   }
-});
+);
 
-router.get("/list/:id", async (req, res, next) => {
+router.get("/list/:id", requiresAuth(), async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.getOne(req.params.id);
     if (flashcardSet === null) {
@@ -91,7 +96,7 @@ router.get("/list/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", requiresAuth(), async (req, res, next) => {
   try {
     const { name, UserId, ProgramLanguageId } = req.body;
     await flashcardSetSchema.validateAsync({
@@ -121,7 +126,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const { name, UserId, ProgramLanguageId } = req.body;
     const id = req.params.id;
@@ -153,7 +158,7 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const flashcardSet = await flashcardSetService.delete(req.params.id);
     if (flashcardSet === null) {

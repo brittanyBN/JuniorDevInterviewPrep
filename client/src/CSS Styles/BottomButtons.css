@@ -1,0 +1,19 @@
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 265px;
+}
+
+button {
+    margin: 0 10px;
+    color: black;
+    background-color: #7286e8;
+    border-radius: 4px;
+    padding: 12px 20px;
+    border: none;
+    font-size: 19px;
+    font-family: "PingFang TC", sans-serif;
+    cursor: pointer;
+    width: 100%;
+
+}

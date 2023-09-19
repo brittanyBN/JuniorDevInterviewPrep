@@ -1,14 +1,14 @@
 import axios from "axios";
 
 export const fetchFlashcardSets = async (
-  selectedLanguage,
   token,
+  selectedLanguage,
   currentPage,
   itemsPerPage
 ) => {
   if (!token) {
     alert("You must be logged in to add a new flashcard set");
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   try {

@@ -3,16 +3,15 @@ const router = express.Router();
 const db = require("../models");
 const CodeChallengeService = require("../services/CodeChallengeService");
 const codeChallengeService = new CodeChallengeService(db);
-const authorization = require("../middleware/authorization");
-const authentication = require("../middleware/authentication");
 const codeChallengeSchema = require("../schemas/codeChallenge.schema");
 const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryService");
 const { executeJava } = require("../utils/executeJava");
 const { executeCSharp } = require("../utils/executeCSharp");
 const { executeJavascript } = require("../utils/executeJavascript");
+const { requiresAuth } = require("express-openid-connect");
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 
-router.get("/", authentication, async (req, res, next) => {
+router.get("/", requiresAuth(), async (req, res, next) => {
   try {
     const codeChallenges = await codeChallengeService.getAll();
     res.status(200).json({
@@ -24,7 +23,7 @@ router.get("/", authentication, async (req, res, next) => {
   }
 });
 
-router.get("/:id", authentication, async (req, res, next) => {
+router.get("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const codeChallenge = await codeChallengeService.getOne(req.params.id);
     if (codeChallenge === null) {
@@ -41,7 +40,7 @@ router.get("/:id", authentication, async (req, res, next) => {
   }
 });
 
-router.post("/", authorization, authentication, async (req, res, next) => {
+router.post("/", requiresAuth(), async (req, res, next) => {
   try {
     const {
       question,
@@ -85,7 +84,7 @@ router.post("/executeJavaScript", executeJavascript);
 router.post("/executeJava", executeJava);
 router.post("/executeCSharp", executeCSharp);
 
-router.put("/:id", authorization, authentication, async (req, res, next) => {
+router.put("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const {
       question,
@@ -131,7 +130,7 @@ router.put("/:id", authorization, authentication, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authorization, authentication, async (req, res, next) => {
+router.delete("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const id = req.params.id;
     const challengeExists = await codeChallengeService.getOne(id);
