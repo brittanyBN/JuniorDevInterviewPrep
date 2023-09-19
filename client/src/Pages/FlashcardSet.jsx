@@ -6,11 +6,13 @@ import { Link, useParams } from "react-router-dom";
 import { fetchFlashcardSets } from "../API/FetchFlashcardSets";
 import { ButtonGroup } from "../Components/Common/ButtonGroup";
 import { addNewFlashcardSet } from "../API/AddNewFlashcardSet";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const FlashcardSetPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
-  const [token] = useState(localStorage.getItem("token"));
-  const [id] = useState(localStorage.getItem("id"));
+  const { user, getAccessTokenSilently } = useAuth0();
+  const token = getAccessTokenSilently();
+  const id = user.sub;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { selectedLanguage } = useParams();
@@ -18,7 +20,7 @@ export const FlashcardSetPage = () => {
   const itemsPerPage = 8;
 
   useEffect(() => {
-    fetchFlashcardSets(selectedLanguage, token, currentPage, itemsPerPage).then(
+    fetchFlashcardSets(token, selectedLanguage, currentPage, itemsPerPage).then(
       (response) => {
         if (response !== undefined) {
           setFlashcardSets(response.data.data);
@@ -26,7 +28,7 @@ export const FlashcardSetPage = () => {
         }
       }
     );
-  }, [id, token, currentPage, selectedLanguage]);
+  }, [token, selectedLanguage, currentPage, itemsPerPage]);
 
   return (
     <div className="Main-flashcardSet-wrapper">

@@ -11,13 +11,13 @@ import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { csharp, java, javascript } from "../Components/programLanguages";
 import { HelpButtons } from "../Components/HelpButtons";
 import { PracticeButtonGroup } from "../Components/Common/PracticeButtonGroup";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const CodeChallengePage = () => {
   const { id } = useParams();
   const { selectedLanguage } = useSelectedLanguage();
-
-  const [token] = useState(localStorage.getItem("token"));
-  const [userId] = useState(localStorage.getItem("id"));
+  const { getAccessTokenSilently } = useAuth0();
+  const token = getAccessTokenSilently();
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ export const CodeChallengePage = () => {
   const fetchCodeChallenge = async () => {
     if (!token) {
       alert("You must be logged in to complete code challenges");
-      window.location.href = "/login";
+      window.location.href = "/";
     } else {
       try {
         const response = await axios.get(`/codeChallengeCategories/${id}`, {
@@ -47,7 +47,7 @@ export const CodeChallengePage = () => {
 
   useEffect(() => {
     fetchCodeChallenge().then(() => console.log(" "));
-  }, [id, token, userId, selectedLanguage]);
+  });
 
   useEffect(() => {
     const codeMirrorEditor = CodeMirror.fromTextArea(editorRef.current, {

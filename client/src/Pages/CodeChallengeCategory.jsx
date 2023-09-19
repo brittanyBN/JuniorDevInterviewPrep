@@ -6,14 +6,16 @@ import { Link, useParams } from "react-router-dom";
 import { useSelectedLanguage } from "../Context/SelectedLanguageProvider";
 import { ButtonGroup } from "../Components/Common/ButtonGroup";
 import { fetchCodeChallengeCategories } from "../API/FetchCodeChallengeCategories";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const CodeChallengeCategoryPage = () => {
   const [codeChallengeCategories, setCodeChallengeCategories] = useState([]);
-  const [token] = useState(localStorage.getItem("token"));
-  const [id] = useState(localStorage.getItem("id"));
+  const { user, getAccessTokenSilently } = useAuth0();
+  const token = getAccessTokenSilently();
+  const id = user.sub;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const { selectedLanguage } = useParams(); // Get the selectedLanguage from the URL params
+  const { selectedLanguage } = useParams();
   const { setSelectedLanguage } = useSelectedLanguage();
 
   const itemsPerPage = 8;

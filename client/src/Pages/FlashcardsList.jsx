@@ -5,19 +5,21 @@ import "../CSS Styles/FlashcardList.css";
 import { fetchFlashcards } from "../API/FetchFlashcards";
 import { practiceFlashcards } from "../Components/PracticeFlashcards";
 import { addFlashcard } from "../API/AddFlashcard";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const FlashcardsListPage = () => {
   const { id } = useParams();
   const [flashcards, setFlashcards] = useState([]);
-  const [token] = useState(localStorage.getItem("token"));
-  const [userId] = useState(localStorage.getItem("id"));
+  const { user, getAccessTokenSilently } = useAuth0();
+  const token = getAccessTokenSilently();
+  const userId = user.sub;
   const [creatorId, setCreatorId] = useState("");
 
   useEffect(() => {
     fetchFlashcards(id, token, setCreatorId, setFlashcards).then(() =>
       console.log(flashcards)
     );
-  }, [id, token, userId]);
+  }, [flashcards, id, token, userId]);
 
   return (
     <div className="Main-codeChallengeList-wrapper">

@@ -8,8 +8,9 @@ const userService = new UserService(db);
 const authorization = require("../middleware/authorization");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
 const { getPagination } = require("../utils/getPagination");
+const { requiresAuth } = require("express-openid-connect");
 
-router.get("/", async (req, res, next) => {
+router.get("/", requiresAuth(), async (req, res, next) => {
   try {
     const { page, size } = req.query;
     const pagination = getPagination(page, size);

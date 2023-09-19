@@ -9,13 +9,15 @@ const flashcardSetSchema = require("../schemas/flashcardSet.schema");
 const { getPagination } = require("../utils/getPagination");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
+const { requiresAuth } = require("express-openid-connect");
 
-router.get("/set", async (req, res, next) => {
+router.get("/set", requiresAuth(), async (req, res, next) => {
   try {
     const { page, size } = req.query;
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decodedToken.id;
+    const tokenSet = req.oidc.accessToken;
+    const accessToken = tokenSet.access_token;
+    const userInfo = await req.oidc.fetchUserInfo();
+    const userId = req.oidc.user.sub;
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
@@ -41,9 +43,10 @@ router.get("/set", async (req, res, next) => {
 router.get("/language/:programLanguageId", async (req, res, next) => {
   try {
     const { page, size } = req.query;
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-    const userId = decodedToken.id;
+    const tokenSet = req.oidc.accessToken;
+    const accessToken = tokenSet.access_token;
+    const userInfo = await req.oidc.fetchUserInfo();
+    const userId = req.oidc.user.sub;
     const pagination = getPagination(page, size);
     const condition = {
       [Op.or]: [{ "$User.role$": "admin" }, { UserId: userId }],
@@ -59,11 +62,9 @@ router.get("/language/:programLanguageId", async (req, res, next) => {
     pagination.totalPages = Math.ceil(totalCount / pagination.limit);
 
     if (flashcardSets.length === 0) {
-      return res
-        .status(400)
-        .json({
-          message: "No flashcard sets found for the specified language.",
-        });
+      return res.status(400).json({
+        message: "No flashcard sets found for the specified language.",
+      });
     }
 
     res.status(200).json({

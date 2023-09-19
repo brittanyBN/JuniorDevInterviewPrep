@@ -8,7 +8,7 @@ export const fetchFlashcards = async (
 ) => {
   if (!token) {
     alert("You must be logged in to complete code challenges");
-    window.location.href = "/login";
+    window.location.href = "/";
   } else {
     try {
       const response = await axios.get(`/flashcardSets/list/${flashcardId}`, {

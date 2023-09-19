@@ -1,45 +1,36 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../../CSS Styles/NavigationBar.css";
 import { fetchProgrammingLanguages } from "../../API/FetchProgrammingLanguages";
 import { FlashcardSetsDropdownMenu } from "../FlashcardSetsDropdownMenu";
 import { CodeChallengeCategoriesDropdownMenu } from "../CodeChallengeCategoriesDropdownMenu";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const NavigationBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
-  const timerRef = useRef(null);
   const [programLanguages, setProgramLanguages] = useState([]);
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     fetchProgrammingLanguages().then((response) =>
       setProgramLanguages(response.data.data)
     );
-    if (isLoggedIn) {
-      timerRef.current = setTimeout(handleLogout, 60 * 60 * 1000);
-    }
-    return () => {
-      clearTimeout(timerRef.current);
-    };
-  }, [isLoggedIn]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    setIsLoggedIn(false);
-    window.location.href = "/login";
-  };
+  }, [isAuthenticated]);
 
   return (
     <nav className="Main-navbar-wrapper">
       <Link to="/" className="active">
         Home
       </Link>
-      {isLoggedIn ? (
-        <Link to="/logout" onClick={handleLogout}>
+      {isAuthenticated ? (
+        <Link
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
+        >
           Logout
         </Link>
       ) : (
-        <Link to="/login">Login</Link>
+        <Link onClick={() => loginWithRedirect()}>Login</Link>
       )}
 
       <FlashcardSetsDropdownMenu programLanguages={programLanguages} />
