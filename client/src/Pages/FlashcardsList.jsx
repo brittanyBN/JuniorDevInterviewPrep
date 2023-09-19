@@ -11,8 +11,8 @@ export const FlashcardsListPage = () => {
   const { id } = useParams();
   const [flashcards, setFlashcards] = useState([]);
   const { user, getAccessTokenSilently } = useAuth0();
-  const token = getAccessTokenSilently();
-  const userId = user.sub;
+  const [token] = useState(getAccessTokenSilently());
+  const [userId] = useState(user.sub);
   const [creatorId, setCreatorId] = useState("");
 
   useEffect(() => {

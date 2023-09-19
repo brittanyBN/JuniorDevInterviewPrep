@@ -5,7 +5,6 @@ const CodeChallengeCategoryService = require("../services/CodeChallengeCategoryS
 const codeChallengeCategoryService = new CodeChallengeCategoryService(db);
 const UserService = require("../services/UserService");
 const userService = new UserService(db);
-const authorization = require("../middleware/authorization");
 const codeChallengeCategorySchema = require("../schemas/codeChallengeCategory.schema");
 const { getPagination } = require("../utils/getPagination");
 const { requiresAuth } = require("express-openid-connect");
@@ -29,29 +28,33 @@ router.get("/", requiresAuth(), async (req, res, next) => {
   }
 });
 
-router.get("/language/:programLanguageId", async (req, res, next) => {
-  try {
-    const { page, size } = req.query;
-    const pagination = getPagination(page, size);
-    const programLanguageId = req.params.programLanguageId;
-    const codeChallengeCategories =
-      await codeChallengeCategoryService.getByLanguage(
-        pagination,
-        programLanguageId
-      );
-    const totalCount = await codeChallengeCategoryService.countAll();
-    pagination.totalPages = Math.ceil(totalCount / pagination.limit);
-    res.status(200).json({
-      message: "Successfully fetched all code challenge categories",
-      data: codeChallengeCategories,
-      pagination: pagination,
-    });
-  } catch (err) {
-    next(err);
+router.get(
+  "/language/:programLanguageId",
+  requiresAuth(),
+  async (req, res, next) => {
+    try {
+      const { page, size } = req.query;
+      const pagination = getPagination(page, size);
+      const programLanguageId = req.params.programLanguageId;
+      const codeChallengeCategories =
+        await codeChallengeCategoryService.getByLanguage(
+          pagination,
+          programLanguageId
+        );
+      const totalCount = await codeChallengeCategoryService.countAll();
+      pagination.totalPages = Math.ceil(totalCount / pagination.limit);
+      res.status(200).json({
+        message: "Successfully fetched all code challenge categories",
+        data: codeChallengeCategories,
+        pagination: pagination,
+      });
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.getOne(
       req.params.id
@@ -70,7 +73,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", authorization, async (req, res, next) => {
+router.post("/", requiresAuth(), async (req, res, next) => {
   try {
     const { name, UserId, ProgramLanguageId } = req.body;
     await codeChallengeCategorySchema.validateAsync({
@@ -99,7 +102,7 @@ router.post("/", authorization, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authorization, async (req, res, next) => {
+router.put("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const { name, UserId, ProgramLanguageId } = req.body;
     const id = req.params.id;
@@ -133,7 +136,7 @@ router.put("/:id", authorization, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", authorization, async (req, res, next) => {
+router.delete("/:id", requiresAuth(), async (req, res, next) => {
   try {
     const codeChallengeCategory = await codeChallengeCategoryService.delete(
       req.params.id

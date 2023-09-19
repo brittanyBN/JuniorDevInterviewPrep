@@ -11,8 +11,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 export const FlashcardSetPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
   const { user, getAccessTokenSilently } = useAuth0();
-  const token = getAccessTokenSilently();
-  const id = user.sub;
+  const [token] = useState(getAccessTokenSilently());
+  const [id] = useState(user.sub);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { selectedLanguage } = useParams();
@@ -28,7 +28,7 @@ export const FlashcardSetPage = () => {
         }
       }
     );
-  }, [token, selectedLanguage, currentPage, itemsPerPage]);
+  }, [id, token, currentPage, selectedLanguage]);
 
   return (
     <div className="Main-flashcardSet-wrapper">

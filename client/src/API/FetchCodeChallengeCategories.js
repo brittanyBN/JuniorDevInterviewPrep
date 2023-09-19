@@ -26,16 +26,19 @@ export const fetchCodeChallengeCategories = async (
           }
         );
       } else {
-        return await axios.get("/codeChallengeCategories", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          params: {
-            page: currentPage,
-            size: itemsPerPage,
-          },
-        });
+        return await axios.get(
+          "http://localhost:3001/codeChallengeCategories",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            params: {
+              page: currentPage,
+              size: itemsPerPage,
+            },
+          }
+        );
       }
     } catch (error) {
       console.error("Error fetching code challenge categories:", error);

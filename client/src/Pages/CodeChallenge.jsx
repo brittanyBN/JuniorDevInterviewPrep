@@ -17,7 +17,7 @@ export const CodeChallengePage = () => {
   const { id } = useParams();
   const { selectedLanguage } = useSelectedLanguage();
   const { getAccessTokenSilently } = useAuth0();
-  const token = getAccessTokenSilently();
+  const [token] = useState(getAccessTokenSilently());
   const [currentCodeChallengeIndex, setCurrentCodeChallengeIndex] = useState(0);
   const [consoleOutput, setConsoleOutput] = useState("");
   const [error, setError] = useState("");

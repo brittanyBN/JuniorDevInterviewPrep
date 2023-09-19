@@ -5,7 +5,6 @@ const logger = require("morgan");
 const cors = require("cors");
 const { auth } = require("express-openid-connect");
 
-const authRouter = require("./routes/auth");
 const codeChallengeRouter = require("./routes/codeChallenge");
 const codeChallengeCategoryRouter = require("./routes/codeChallengeCategory");
 const flashcardRouter = require("./routes/flashcard");
@@ -26,10 +25,18 @@ const config = {
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   clientSecret: process.env.CLIENT_SECRET,
+  authorizationParams: {
+    response_type: "code",
+    audience: process.env.AUTH0_AUDIENCE,
+    scope: "openid read:flashcardSets",
+  },
 };
 
 const corsOptions = {
   origin: process.env.CLIENT,
+  methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
@@ -40,19 +47,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", authRouter);
 app.use("/codeChallenges", codeChallengeRouter);
 app.use("/programLanguage", programLanguageRouter);
-app.use(
-  auth({
-    authRequired: false,
-    authorizationParams: {
-      response_type: "code",
-      audience: process.env.AUTH0_AUDIENCE,
-      scope: "openid read:flashcardSets",
-    },
-  })
-);
+app.use(auth(config));
 app.use("/codeChallengeCategories", codeChallengeCategoryRouter);
 app.use("/flashcards", flashcardRouter);
 app.use("/flashcardSets", flashcardSetRouter);
