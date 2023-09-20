@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const { auth } = require("express-openid-connect");
+const rateLimit = require("express-rate-limit");
 
 const codeChallengeRouter = require("./routes/codeChallenge");
 const codeChallengeCategoryRouter = require("./routes/codeChallengeCategory");
@@ -16,6 +17,12 @@ const db = require("./models");
 db.sequelize.sync({ force: false });
 
 const app = express();
+
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 100,
+  message: "Too many requests from this IP, please try again after an hour.",
+});
 
 const config = {
   authRequired: false,
@@ -41,6 +48,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(limiter);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

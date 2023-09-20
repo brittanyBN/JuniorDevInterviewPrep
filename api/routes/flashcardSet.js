@@ -14,9 +14,6 @@ const { requiresAuth } = require("express-openid-connect");
 router.get("/set", requiresAuth(), async (req, res, next) => {
   try {
     const { page, size } = req.query;
-    const tokenSet = req.oidc.accessToken;
-    const accessToken = tokenSet.access_token;
-    const userInfo = await req.oidc.fetchUserInfo();
     const userId = req.oidc.user.sub;
     const pagination = getPagination(page, size);
     const condition = {
@@ -46,9 +43,6 @@ router.get(
   async (req, res, next) => {
     try {
       const { page, size } = req.query;
-      const tokenSet = req.oidc.accessToken;
-      const accessToken = tokenSet.access_token;
-      const userInfo = await req.oidc.fetchUserInfo();
       const userId = req.oidc.user.sub;
       const pagination = getPagination(page, size);
       const condition = {

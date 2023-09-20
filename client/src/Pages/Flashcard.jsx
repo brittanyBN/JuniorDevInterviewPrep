@@ -13,11 +13,8 @@ export const FlashcardPage = () => {
   useEffect(() => {
     const flashcardsData = location.search.split("=")[1];
     if (flashcardsData) {
-      console.log("data", flashcardsData);
       const decodedFlashcards = JSON.parse(decodeURIComponent(flashcardsData));
-      console.log("dec", decodedFlashcards);
       setFlashcards(decodedFlashcards);
-      console.log(flashcards);
       setCurrentFlashcardIndex(0);
     }
   }, [location.search]);

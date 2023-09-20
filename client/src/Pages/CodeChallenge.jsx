@@ -8,7 +8,7 @@ import axios from "axios";
 import "../CSS Styles/BottomButtons.css";
 import "../CSS Styles/CodeChallenge.css";
 import { NavigationBar } from "../Components/Common/NavigationBar";
-import { csharp, java, javascript } from "../Components/programLanguages";
+import { csharp, java, javascript } from "../Components/ProgramLanguages";
 import { HelpButtons } from "../Components/HelpButtons";
 import { PracticeButtonGroup } from "../Components/Common/PracticeButtonGroup";
 import { useAuth0 } from "@auth0/auth0-react";

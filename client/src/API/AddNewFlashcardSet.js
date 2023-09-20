@@ -4,7 +4,7 @@ import {
   general,
   java,
   javascript,
-} from "../Components/programLanguages";
+} from "../Components/ProgramLanguages";
 
 export const addNewFlashcardSet = async (id, token) => {
   if (!token) {

@@ -16,10 +16,12 @@ export const FlashcardsListPage = () => {
   const [creatorId, setCreatorId] = useState("");
 
   useEffect(() => {
-    fetchFlashcards(id, token, setCreatorId, setFlashcards).then(() =>
-      console.log(flashcards)
-    );
-  }, [flashcards, id, token, userId]);
+    fetchFlashcards(id, token).then((response) => {
+      const { Flashcards, UserId } = response.data.data;
+      setCreatorId(UserId);
+      setFlashcards(Flashcards);
+    });
+  }, [id, token, userId]);
 
   return (
     <div className="Main-codeChallengeList-wrapper">
